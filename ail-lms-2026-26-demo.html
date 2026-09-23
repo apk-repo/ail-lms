@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F6B45">
+<title>AIL Last Man Standing (demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F2F4F0;
+    --card: #FFFFFF;
+    --ink: #14231C;
+    --muted: #5B6B62;
+    --line: #CBD5CE;
+    --pitch: #1F6B45;
+    --pitch-deep: #164E33;
+    --gold: #E2B93B;
+    --flag: #B8322A;
+    --display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --body: 'Barlow', 'Segoe UI', Roboto, Arial, sans-serif;
+    --tabbar: 64px;
+    --pending: #FBEFC6;
+    --bar: #14231C;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0F1A15; --card: #16241D; --ink: #E6EEE9; --muted: #9AAEA3; --line: #2A3D33;
+      --pitch: #2E8B5C; --pitch-deep: #9ED8B8; --flag: #E0625A; --pending: #4A4020; --bar: #243A2F;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0F1A15; --card: #16241D; --ink: #E6EEE9; --muted: #9AAEA3; --line: #2A3D33;
+    --pitch: #2E8B5C; --pitch-deep: #9ED8B8; --flag: #E0625A; --pending: #4A4020; --bar: #243A2F;
+    color-scheme: dark;
+  }
+  :root { box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font: 16px/1.45 var(--body);
+    padding-bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+  button, input, select { font: inherit; color: inherit; }
+  a { color: var(--pitch); }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+ 
+  header.top {
+    background: var(--pitch); color: #fff;
+    padding: 14px 18px 18px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  header .comp { font-weight: 600; opacity: .85; font-size: 15px; }
+  header .round { font: 700 44px/1 var(--display); margin: 6px 0 4px; letter-spacing: .5px; }
+  header .status { font-size: 15px; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  header .status b { font-weight: 700; }
+ 
+  main { padding: 18px; }
+  h2 { font: 700 28px/1.1 var(--display); margin: 0 0 6px; }
+  h3 { font: 700 21px/1.15 var(--display); margin: 26px 0 10px; }
+  p { margin: 0 0 12px; }
+  .muted { color: var(--muted); }
+  .small { font-size: 14px; }
+ 
+  .note {
+    background: var(--card); border-left: 4px solid var(--pitch);
+    padding: 12px 14px; margin: 0 0 16px; border-radius: 2px;
+  }
+  .note.warn { border-left-color: var(--gold); }
+  .note.out { border-left-color: var(--flag); }
+ 
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 46px; padding: 0 18px; border-radius: 6px; border: 2px solid var(--pitch);
+    background: var(--pitch); color: #fff; font-weight: 700; cursor: pointer; text-decoration: none;
+  }
+  .btn.ghost { background: transparent; color: var(--pitch); }
+  .btn.danger { background: transparent; color: var(--flag); border-color: var(--flag); }
+  .btn.small { min-height: 36px; padding: 0 12px; font-size: 14px; }
+  .btn[disabled] { opacity: .5; cursor: default; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .stack > * + * { margin-top: 10px; }
+  label.field { display: block; font-weight: 600; font-size: 14px; }
+  label.field input, label.field select {
+    display: block; width: 100%; margin-top: 4px; min-height: 46px; padding: 0 12px;
+    border: 1.5px solid var(--line); border-radius: 6px; background: var(--card);
+  }
+ 
+  /* Fixture list */
+  .div-head { font: 700 20px/1 var(--display); margin: 24px 0 8px; display: flex; justify-content: space-between; align-items: baseline; }
+  .div-head span { font: 500 14px var(--body); color: var(--muted); }
+  .match { background: var(--card); border: 1px solid var(--line); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+  .match .sides { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: stretch; }
+  .match .v { display: grid; place-items: center; font: 700 16px var(--display); color: var(--muted); }
+  .team {
+    display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+    padding: 14px 8px 12px; border: 0; background: transparent; cursor: pointer; min-height: 108px;
+  }
+  .team .name { font-weight: 700; line-height: 1.2; }
+  .team .tag { font-size: 13px; color: var(--muted); min-height: 18px; }
+  .team:disabled { cursor: default; }
+  .team.unavailable .crest, .team.unavailable .name { opacity: .4; }
+  .team.used .name { text-decoration: line-through; text-decoration-thickness: 2px; }
+  .team.chosen { background: var(--gold); color: #14231C; }
+  .team.chosen .crest b { color: #164E33; }
+  .team.chosen .tag { color: #14231C; font-weight: 700; }
+  .team.pending { background: var(--pending); }
+  .match .meta { border-top: 1px solid var(--line); padding: 7px 12px; font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; gap: 10px; }
+  .crest {
+    position: relative; width: 40px; height: 40px; border-radius: 50%; background: var(--paper);
+    display: grid; place-items: center; overflow: hidden; border: 1px solid var(--line);
+  }
+  .crest b { font: 700 14px var(--display); color: var(--pitch-deep); }
+  .crest img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #fff; }
+ 
+  /* Pending pick bar */
+  .confirm-bar {
+    position: fixed; left: 0; right: 0; bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px));
+    background: var(--bar); color: #fff; padding: 12px 18px;
+  }
+  .confirm-bar .wrap { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .confirm-bar .btn { background: var(--gold); border-color: var(--gold); color: #14231C; }
+  .confirm-bar .btn.ghost { background: transparent; color: #fff; border-color: #fff; }
+ 
+  /* Board: the dressing-room whiteboard */
+  .board { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 16px; }
+  .board .person { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .board .person:last-child { border-bottom: 0; }
+  .board .pname { font: 700 22px/1.15 var(--display); display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+  .board .pname small { font: 500 13px var(--body); color: var(--muted); white-space: nowrap; }
+  .board .person.gone .pname > span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--flag); text-decoration-thickness: 3px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .chip { font-size: 13px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); }
+  .chip.won { border-color: var(--pitch); color: var(--pitch-deep); }
+  .chip.lost, .chip.drew { border-color: var(--flag); color: var(--flag); }
+  .paid { font-size: 12px; font-weight: 700; padding: 1px 7px; border-radius: 4px; background: var(--pitch); color: #fff; text-decoration: none; }
+  .paid.no { background: var(--flag); }
+ 
+  /* Admin */
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+  .panel h3 { margin-top: 0; }
+  .result-row { display: grid; grid-template-columns: 1fr 56px 56px 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .result-row input[type=number] { width: 100%; min-height: 40px; text-align: center; border: 1.5px solid var(--line); border-radius: 6px; }
+  .result-row .r { text-align: right; }
+  .result-row .extra { grid-column: 1 / -1; display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; }
+  table.list { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.list td { padding: 8px 4px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  table.list td:last-child { text-align: right; white-space: nowrap; }
+ 
+  /* Tab bar */
+  nav.tabs {
+    position: fixed; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  nav.tabs .wrap { display: flex; }
+  nav.tabs button {
+    flex: 1; height: var(--tabbar); border: 0; background: transparent; font-weight: 600; font-size: 15px; color: var(--muted); cursor: pointer;
+    border-top: 3px solid transparent;
+  }
+  nav.tabs button[aria-current="page"] { color: var(--pitch); border-top-color: var(--pitch); }
+ 
+  .toast {
+    position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px) + 80px);
+    background: var(--bar); color: #fff; padding: 10px 16px; border-radius: 6px; font-weight: 600; max-width: 90vw; z-index: 5;
+  }
+  footer.credit { text-align: center; font-size: 13px; color: var(--muted); padding: 24px 18px 8px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .team.chosen { transition: background-color .2s; }
+  }
+ 
+  .demo { background: #2B2F2D; color: #F2F4F0; font-size: 14px; padding: 8px 18px 10px; }
+  .demo .wrap { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+  .demo b { font-weight: 700; }
+  .demo select, .demo button { min-height: 36px; border-radius: 6px; border: 1px solid #6B746F; background: #3A403D; color: #F2F4F0; padding: 0 10px; font: inherit; }
+  .demo button.go { background: #E2B93B; border-color: #E2B93B; color: #14231C; font-weight: 700; }
+  .demo .clock { opacity: .8; }
+  .demo-note { background: #FBEFC6; color: #14231C; padding: 10px 18px; font-size: 14px; }
+  .demo-note .wrap { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; white-space: pre-line; }
+  .demo-note button { border: 0; background: transparent; font-weight: 700; cursor: pointer; color: #14231C; min-height: 32px; }
+</style>
+</head>
+<body>
+<div class="demo" role="region" aria-label="Demo controls"><div class="wrap">
+  <b>Demo</b>
+  <label>View as <select id="demoUser"><option value="aaron">Aaron (organiser)</option><option value="niamh">Niamh (player)</option><option value="guest">New player (not joined)</option><option value="none">Signed out</option></select></label>
+  <button class="go" id="demoFF">Fast-forward to full time</button>
+  <button id="demoReset">Reset</button>
+  <span class="clock">Demo clock: <span id="demoClock"></span></span>
+</div></div>
+<div class="demo-note" id="demoNote" hidden><div class="wrap"><span></span><button id="demoNoteClose" aria-label="Dismiss">Dismiss</button></div></div>
+<header class="top"><div class="wrap" id="header"></div></header>
+<main><div class="wrap" id="app"><p class="muted">Loading…</p></div></main>
+<footer class="credit">Created by Aaron Kane</footer>
+<div id="bar"></div>
+<nav class="tabs" aria-label="Sections"><div class="wrap" id="tabs"></div></nav>
+ 
+<script>
+(function () {
+  const LS = 'ailLmsDemo_v1';
+  const realNow = Date.now.bind(Date);
+  let offset = 0;            // seconds the demo clock is ahead of real time
+  let store = new Map();     // 'collection/id' -> data
+  let fixtures = [];
+  let user = null;
+  const listeners = new Set();
+  const authCbs = [];
+ 
+  const USERS = {
+    aaron: { uid: 'aaron', email: 'aaron@example.com', displayName: 'Aaron Kane', label: 'Aaron (organiser)' },
+    niamh: { uid: 'niamh', email: 'niamh@example.com', displayName: 'Niamh Byrne', label: 'Niamh (player)' },
+    guest: { uid: 'guest', email: 'new@example.com', displayName: 'New Player', label: 'New player (not joined)' },
+  };
+ 
+  Date.now = () => realNow() + offset * 1000;
+  const nowS = () => Math.floor(Date.now() / 1000);
+ 
+  // ---------- sample fixtures ----------
+  const TEAMS = {
+    '1A': ["St Mary's College", 'Clontarf', 'Lansdowne', 'Terenure College', 'Cork Constitution', 'Young Munster', 'Old Belvedere', 'Ballynahinch', 'UCD', 'Garryowen'],
+    '1B': ['Dublin University', 'Instonians', 'City of Armagh', 'Old Wesley', 'Nenagh Ormond', 'Blackrock College', 'Banbridge', 'Naas', 'Buccaneers', 'Highfield'],
+    '2A': ['Shannon', "Queen's University", 'Ballymena', 'Greystones', 'Cashel', 'UL Bohemian', 'Dungannon', 'Galwegians', 'Galway Corinthians', 'Wanderers'],
+    '2B': ['Old Crescent', 'Rainey', 'Malahide', 'Enniscorthy', 'MU Barnhall', 'Sligo', 'Skerries', 'Navan', 'Ballyclare', 'Belfast Harlequins'],
+    '2C': ['Clonmel', 'Bective Rangers', 'Thomond', 'Bruff', 'Dolphin', 'Midleton', 'Monkstown', 'Tullamore', 'Enniskillen', 'Omagh Academicals'],
+  };
+  function buildFixtures() {
+    const base = Math.ceil(realNow() / 3600000) * 3600 + 2 * 86400;
+    const out = [];
+    for (const [div, names] of Object.entries(TEAMS)) {
+      const ids = names.map((_, i) => `${div}-t${i}`);
+      let rot = ids.slice(1);
+      for (let r = 1; r <= 6; r++) {
+        const order = [ids[0], ...rot];
+        for (let i = 0; i < 5; i++) {
+          let h = order[i], a = order[9 - i];
+          if ((r + i) % 2) [h, a] = [a, h];
+          const shift = (div === '1A' && i === 0) ? -64800 : [0, 0, 1800, 1800, 3600][i];
+          const name = id => names[ids.indexOf(id)];
+          out.push({
+            id: `${div}-r${r}-g${i}`, comp: div, div, round: r,
+            kickoff: base + (r - 1) * 7 * 86400 + shift,
+            venue: `${name(h)} home ground`, status: 'fixture', postponed: false,
+            home: { id: h, name: name(h), logo: '', score: null },
+            away: { id: a, name: name(a), logo: '', score: null },
+          });
+        }
+        rot = [rot[rot.length - 1], ...rot.slice(0, -1)];
+      }
+    }
+    return out.sort((a, b) => a.kickoff - b.kickoff);
+  }
+ 
+  function seed() {
+    offset = 0; store = new Map(); fixtures = buildFixtures(); user = USERS.aaron;
+    const ts = { seconds: nowS() };
+    store.set('config/settings', { title: 'AIL Last Man Standing', entryFee: 10, revolutLink: 'https://revolut.me/example' });
+    store.set('admins/aaron', { role: 'organiser' });
+    store.set('games/g1', { status: 'active', startRound: 1, currentRound: 1, joinOpen: true, confirmedRounds: [], winners: [], createdAt: ts });
+    const people = [['aaron', 'Aaron K', false], ['niamh', 'Niamh B', true], ['bot1', 'Dec M', true], ['bot2', 'Ciarán O', false],
+      ['bot3', 'Sinéad K', true], ['bot4', 'Paddy F', true], ['bot5', 'Aoife R', false], ['bot6', 'Tom W', true], ['bot7', 'Gráinne D', true]];
+    for (const [uid, name, paid] of people) {
+      store.set(`entries/g1_${uid}`, { gameId: 'g1', uid, name, status: 'alive', paid, usedTeams: [], outRound: null, joinedAt: ts });
+    }
+    save();
+  }
+  function save() {
+    try { localStorage.setItem(LS, JSON.stringify({ offset, store: [...store], fixtures, uid: user?.uid || null })); } catch {}
+  }
+  function load() {
+    try {
+      const j = JSON.parse(localStorage.getItem(LS));
+      if (!j || !j.fixtures) return false;
+      offset = j.offset; store = new Map(j.store); fixtures = j.fixtures; user = j.uid ? USERS[j.uid] : null;
+      Date.now = () => realNow() + offset * 1000;
+      return true;
+    } catch { return false; }
+  }
+  if (!load()) seed();
+ 
+  // ---------- fake Firestore ----------
+  const TS = { __ts: true };
+  const resolve = (val, prev) => {
+    if (val && val.__ts) return { seconds: nowS() };
+    if (val && val.__union) return [...new Set([...(Array.isArray(prev) ? prev : []), ...val.__union])];
+    return val;
+  };
+  function write(path, data, merge) {
+    const prev = merge ? (store.get(path) || {}) : {};
+    const next = { ...prev };
+    for (const [k, v] of Object.entries(data)) next[k] = resolve(v, prev[k]);
+    store.set(path, next); changed();
+  }
+  let pendingNotify = false;
+  function changed() {
+    save();
+    if (pendingNotify) return; pendingNotify = true;
+    setTimeout(() => { pendingNotify = false; listeners.forEach(l => l.cb(evaluate(l.ref))); }, 0);
+  }
+  function evaluate(ref) {
+    if (ref.type === 'doc') {
+      const d = store.get(ref.path);
+      return { id: ref.id, exists: () => d !== undefined, data: () => (d ? JSON.parse(JSON.stringify(d)) : undefined) };
+    }
+    const depth = ref.path.split('/').length + 1;
+    let docs = [...store.entries()]
+      .filter(([p]) => p.startsWith(ref.path + '/') && p.split('/').length === depth)
+      .map(([p, d]) => ({ id: p.split('/').pop(), d }));
+    for (const c of ref.cons || []) {
+      if (c.kind === 'where') docs = docs.filter(x => x.d[c.f] === c.v);
+      if (c.kind === 'order') docs.sort((a, b) => {
+        const va = a.d[c.f]?.seconds ?? a.d[c.f], vb = b.d[c.f]?.seconds ?? b.d[c.f];
+        return (va > vb ? 1 : va < vb ? -1 : 0) * (c.dir === 'desc' ? -1 : 1);
+      });
+      if (c.kind === 'limit') docs = docs.slice(0, c.n);
+    }
+    return { docs: docs.map(x => ({ id: x.id, data: () => JSON.parse(JSON.stringify(x.d)) })) };
+  }
+ 
+  const confirmNote = msg => window.__demoNote && window.__demoNote(msg);
+ 
+  window.MockFB = {
+    initializeApp: () => ({}), getAuth: () => ({}), getFirestore: () => ({}),
+    onAuthStateChanged: (_, cb) => { authCbs.push(cb); setTimeout(() => cb(user), 0); return () => {}; },
+    GoogleAuthProvider: function () {},
+    signInWithPopup: async () => setUser(USERS.guest),
+    signOut: async () => setUser(null),
+    sendSignInLinkToEmail: async () => setUser(USERS.guest),
+    isSignInWithEmailLink: () => false,
+    signInWithEmailLink: async () => {},
+    doc: (_, ...segs) => ({ type: 'doc', path: segs.join('/'), id: segs[segs.length - 1] }),
+    collection: (_, ...segs) => ({ type: 'col', path: segs.join('/') }),
+    query: (col, ...cons) => ({ type: 'query', path: col.path, cons }),
+    where: (f, op, v) => ({ kind: 'where', f, v }),
+    orderBy: (f, dir) => ({ kind: 'order', f, dir }),
+    limit: n => ({ kind: 'limit', n }),
+    onSnapshot: (ref, cb) => {
+      const l = { ref, cb }; listeners.add(l);
+      setTimeout(() => listeners.has(l) && cb(evaluate(ref)), 0);
+      return () => listeners.delete(l);
+    },
+    getDoc: async ref => evaluate(ref),
+    getDocs: async ref => evaluate(ref),
+    setDoc: async (ref, data, opts) => write(ref.path, data, !!opts?.merge),
+    addDoc: async (col, data) => { const id = 'g' + Math.random().toString(36).slice(2, 8); write(`${col.path}/${id}`, data, false); return { id }; },
+    updateDoc: async (ref, data) => write(ref.path, data, true),
+    deleteDoc: async ref => { store.delete(ref.path); changed(); },
+    writeBatch: () => {
+      const ops = [];
+      return {
+        set: (ref, data, opts) => ops.push(() => write(ref.path, data, !!opts?.merge)),
+        update: (ref, data) => ops.push(() => write(ref.path, data, true)),
+        commit: async () => ops.forEach(fn => fn()),
+      };
+    },
+    serverTimestamp: () => TS,
+    Timestamp: { fromMillis: ms => ({ seconds: Math.floor(ms / 1000) }) },
+    arrayUnion: (...v) => ({ __union: v }),
+  };
+ 
+  function setUser(u) { user = u; save(); authCbs.forEach(cb => cb(u)); refreshBar(); }
+ 
+  // Serve the sample fixtures in place of data/fixtures.json.
+  const realFetch = window.fetch.bind(window);
+  window.fetch = async (url, opts) => {
+    const u = String(url);
+    if (u.startsWith('data/fixtures.json')) return { ok: true, json: async () => ({ fixtures: JSON.parse(JSON.stringify(fixtures)) }) };
+    if (u.startsWith('data/health.json')) return { ok: true, json: async () => ({ fixturesChangedAt: new Date(Date.now()).toISOString(), divisions: Object.keys(TEAMS).map(d => ({ comp: d, division: d, ok: true })) }) };
+    return realFetch(url, opts);
+  };
+ 
+  // Native dialogs can be blocked inside embedded viewers, so the demo shows them as notes and carries on.
+  window.confirm = msg => { const rest = msg.split('\n').slice(1).join('\n').trim(); confirmNote('Done. ' + rest); return true; };
+  window.alert = msg => confirmNote(msg);
+ 
+  // ---------- demo actions ----------
+  const rand = n => Math.floor(Math.random() * n);
+  function currentGame() {
+    const games = [...store.entries()].filter(([p]) => p.startsWith('games/') && p.split('/').length === 2)
+      .map(([p, d]) => ({ id: p.split('/')[1], ...d })).sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    return games[0];
+  }
+  function fastForward() {
+    const g = currentGame();
+    if (!g || g.status !== 'active') { confirmNote('No game is running. Start one from the Admin tab.'); return; }
+    const r = g.currentRound;
+    const fx = fixtures.filter(f => f.round === r);
+    if (!fx.length) return;
+    // Now and then a game is postponed, so that rule gets tested too.
+    if (Math.random() < 0.35) fx[rand(fx.length)].postponed = true;
+    // Sample players who haven't picked make a pick before kickoff.
+    for (const [p, e] of store.entries()) {
+      if (!p.startsWith('entries/') || e.gameId !== g.id || e.status !== 'alive' || !e.uid.startsWith('bot')) continue;
+      const pid = `picks/${g.id}_${e.uid}_${r}`;
+      if (store.has(pid)) continue;
+      const options = fx.filter(f => !f.postponed).flatMap(f => [[f, f.home], [f, f.away]]).filter(([, t]) => !(e.usedTeams || []).includes(t.id));
+      if (!options.length) continue;
+      const [f, t] = options[rand(options.length)];
+      store.set(pid, { gameId: g.id, uid: e.uid, round: r, fixtureId: f.id, teamId: t.id, teamName: t.name, auto: false, revealed: false, updatedAt: { seconds: nowS() } });
+    }
+    // Full-time scores arrive in the feed.
+    for (const f of fixtures) {
+      if (f.round > r || f.home.score !== null || f.postponed) continue;
+      const roll = Math.random(), win = 15 + rand(30), lose = rand(Math.max(1, win - 3));
+      if (roll < 0.04) { f.home.score = f.away.score = 10 + rand(20); }
+      else if (roll < 0.58) { f.home.score = win; f.away.score = lose; }
+      else { f.home.score = lose; f.away.score = win; }
+      f.status = 'result';
+    }
+    const last = Math.max(...fx.map(f => f.kickoff));
+    offset = Math.max(offset, last + 2 * 3600 - Math.floor(realNow() / 1000));
+    Date.now = () => realNow() + offset * 1000;
+    changed();
+    window.__reloadFixtures && window.__reloadFixtures();
+    confirmNote(`Round ${r} has finished and the scores are in. As the organiser, open the Admin tab and confirm the results.`);
+  }
+ 
+  // ---------- demo strip ----------
+  function refreshBar() {
+    const sel = document.getElementById('demoUser');
+    if (sel) sel.value = user ? user.uid : 'none';
+    const clock = document.getElementById('demoClock');
+    if (clock) clock.textContent = new Intl.DateTimeFormat('en-IE', { timeZone: 'Europe/Dublin', weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(Date.now()));
+  }
+  window.__demoNote = msg => {
+    const n = document.getElementById('demoNote'); if (!n) return;
+    n.querySelector('span').textContent = msg; n.hidden = false;
+  };
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('demoUser').addEventListener('change', e => {
+      setUser(e.target.value === 'none' ? null : USERS[e.target.value]);
+    });
+    document.getElementById('demoFF').addEventListener('click', () => { fastForward(); refreshBar(); });
+    document.getElementById('demoReset').addEventListener('click', () => {
+      seed(); location.reload();
+    });
+    document.getElementById('demoNoteClose').addEventListener('click', () => { document.getElementById('demoNote').hidden = true; });
+    refreshBar(); setInterval(refreshBar, 30000);
+  });
+})();
+ 
+</script>
+<script type="module">
+const { initializeApp } = window.MockFB;
+const {
+  getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut,
+  sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink,
+} = window.MockFB;
+const {
+  getFirestore, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, collection, query, where, orderBy, limit,
+  onSnapshot, getDocs, writeBatch, serverTimestamp, Timestamp, arrayUnion,
+} = window.MockFB;
+ 
+// ============ PASTE YOUR FIREBASE CONFIG BELOW (see SETUP.md, step 7) ============
+const firebaseConfig = {
+  apiKey: "PASTE_HERE",
+  authDomain: "PASTE_HERE",
+  projectId: "PASTE_HERE",
+  storageBucket: "PASTE_HERE",
+  messagingSenderId: "PASTE_HERE",
+  appId: "PASTE_HERE"
+};
+// ================================================================================
+ 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+ 
+const DIVS = ['1A', '1B', '2A', '2B', '2C'];
+const TZ = 'Europe/Dublin';
+const S = {
+  user: null, isAdmin: false, config: {}, game: null,
+  entries: [], myPicks: [], revealed: [], allPicks: [],
+  fixtures: [], fixturesLoaded: false, health: null, syncState: '',
+  tab: 'pick', pending: null, drafts: {}, emailSent: false, busy: false,
+};
+const fxById = new Map();
+let unsubs = [];
+ 
+// ---------- helpers ----------
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const now = () => Date.now() / 1000;
+const fmt = (ts, opts) => new Intl.DateTimeFormat('en-IE', { timeZone: TZ, ...opts }).format(new Date(ts * 1000));
+const fmtKick = ts => fmt(ts, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+const fmtDay = ts => fmt(ts, { weekday: 'long', day: 'numeric', month: 'long' });
+const euro = n => '€' + (Math.round(n * 100) / 100).toLocaleString('en-IE');
+const initials = n => n.split(/\s+/).filter(w => w && !/^(of|the)$/i.test(w)).map(w => w[0]).join('').slice(0, 3).toUpperCase();
+const hashStr = s => { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+const draft = (id, fallback) => (id in S.drafts ? S.drafts[id] : fallback);
+ 
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 3200);
+}
+function niceError(err) {
+  const code = err?.code || '';
+  if (code.includes('permission-denied')) return "That wasn't allowed. The game may have kicked off, or the fixtures need syncing. Refresh and try again.";
+  if (code.includes('popup-closed')) return 'Sign-in window was closed before finishing.';
+  if (code.includes('unauthorized-domain')) return 'This web address needs adding to Firebase authorised domains (see SETUP.md).';
+  return err?.message || 'Something went wrong. Try again.';
+}
+const roundsList = () => [...new Set(S.fixtures.map(f => f.round))].sort((a, b) => a - b);
+const roundFixtures = r => S.fixtures.filter(f => f.round === r)
+  .sort((a, b) => DIVS.indexOf(a.div) - DIVS.indexOf(b.div) || a.kickoff - b.kickoff);
+const myEntry = () => S.user && S.entries.find(e => e.uid === S.user.uid);
+const alive = () => S.entries.filter(e => e.status === 'alive');
+const nameOf = uid => S.entries.find(e => e.uid === uid)?.name || 'Unknown';
+ 
+// ---------- data ----------
+async function loadFixtures() {
+  try {
+    const res = await fetch('data/fixtures.json?t=' + Date.now(), { cache: 'no-store' });
+    const json = await res.json();
+    S.fixtures = json.fixtures || [];
+  } catch { S.fixtures = S.fixtures || []; }
+  fxById.clear(); S.fixtures.forEach(f => fxById.set(f.id, f));
+  S.fixturesLoaded = true;
+  try { S.health = await (await fetch('data/health.json?t=' + Date.now(), { cache: 'no-store' })).json(); } catch { S.health = null; }
+  render();
+}
+ 
+function subscribeGame() {
+  unsubs.forEach(u => u()); unsubs = [];
+  S.entries = []; S.myPicks = []; S.revealed = []; S.allPicks = [];
+  const g = S.game; if (!g) return;
+  unsubs.push(onSnapshot(query(collection(db, 'entries'), where('gameId', '==', g.id)), s => {
+    S.entries = s.docs.map(d => ({ id: d.id, ...d.data() })); render();
+  }));
+  unsubs.push(onSnapshot(query(collection(db, 'picks'), where('gameId', '==', g.id), where('revealed', '==', true)), s => {
+    S.revealed = s.docs.map(d => d.data()); render();
+  }));
+  if (S.user) {
+    unsubs.push(onSnapshot(query(collection(db, 'picks'), where('gameId', '==', g.id), where('uid', '==', S.user.uid)), s => {
+      S.myPicks = s.docs.map(d => d.data()); render();
+    }));
+  }
+  if (S.isAdmin) {
+    unsubs.push(onSnapshot(query(collection(db, 'picks'), where('gameId', '==', g.id)), s => {
+      S.allPicks = s.docs.map(d => d.data()); render();
+    }));
+  }
+}
+ 
+// Copies the kickoff times and teams into Firebase so the security rules can check them.
+async function syncFixtures(force) {
+  if (!S.isAdmin || !S.fixtures.length) return;
+  const slim = S.fixtures.map(f => [f.id, f.round, f.kickoff, f.home.id, f.away.id]);
+  const hash = String(hashStr(JSON.stringify(slim)));
+  const meta = await getDoc(doc(db, 'meta', 'fixtures'));
+  if (!force && meta.exists() && meta.data().hash === hash) {
+    S.syncState = 'Up to date' + (meta.data().syncedAt ? ', last synced ' + fmtKick(meta.data().syncedAt.seconds) : '');
+    render(); return;
+  }
+  S.syncState = 'Syncing…'; render();
+  const ops = S.fixtures.map(f => b => b.set(doc(db, 'fixtures', f.id), {
+    round: f.round, kickoff: Timestamp.fromMillis(f.kickoff * 1000),
+    homeTeamId: f.home.id, awayTeamId: f.away.id, div: f.div,
+  }));
+  ops.push(b => b.set(doc(db, 'meta', 'fixtures'), { hash, syncedAt: serverTimestamp(), count: S.fixtures.length }));
+  await commitOps(ops);
+  S.syncState = `Synced ${S.fixtures.length} fixtures just now`; render();
+}
+ 
+async function commitOps(ops) {
+  for (let i = 0; i < ops.length; i += 400) {
+    const b = writeBatch(db);
+    ops.slice(i, i + 400).forEach(fn => fn(b));
+    await b.commit();
+  }
+}
+ 
+// ---------- rendering ----------
+function render() {
+  const active = document.activeElement;
+  if (active && active.closest && active.closest('#app') && active.matches('input, select')) { S.renderPending = true; return; }
+  $('#header').innerHTML = viewHeader();
+  $('#tabs').innerHTML = viewTabs();
+  const views = { pick: viewPick, board: viewBoard, mine: viewMine, rules: viewRules, admin: viewAdmin };
+  $('#app').innerHTML = (views[S.tab] || viewPick)();
+  $('#bar').innerHTML = S.tab === 'pick' ? viewConfirmBar() : '';
+}
+ 
+function viewHeader() {
+  const title = esc(S.config.title || 'AIL Last Man Standing');
+  const g = S.game;
+  if (!g) return `<div class="comp">${title}</div><div class="round">Coming soon</div>`;
+  const total = S.entries.length, left = alive().length;
+  const fee = Number(S.config.entryFee) || 0;
+  let big = g.status === 'finished' ? 'Game over' : `Round ${g.currentRound}`;
+  const bits = [];
+  if (g.status !== 'finished') bits.push(`<span><b>${left}</b> of ${total} still standing</span>`);
+  if (fee && total) bits.push(`<span><b>${euro(fee * total)}</b> pot</span>`);
+  return `<div class="comp">${title}</div><div class="round">${big}</div><div class="status">${bits.join('')}</div>`;
+}
+ 
+function viewTabs() {
+  const tabs = [['pick', 'Pick'], ['board', 'Board'], ['mine', 'My picks'], ['rules', 'Rules']];
+  if (S.isAdmin) tabs.push(['admin', 'Admin']);
+  return tabs.map(([k, l]) => `<button data-action="tab" data-tab="${k}" ${S.tab === k ? 'aria-current="page"' : ''}>${l}</button>`).join('');
+}
+ 
+function viewSignIn() {
+  return `<h2>Pick a team. If they win, you're through.</h2>
+    <p>Each round, pick one team from any of the five AIL divisions to win. Lose or draw and you're out. You can't pick the same team twice. Last one standing takes the pot.</p>
+    <div class="stack">
+      <button class="btn" data-action="google">Sign in with Google</button>
+      <p class="muted small">Or get a sign-in link by email:</p>
+      <label class="field">Email address<input id="email" type="email" autocomplete="email" value="${esc(draft('email', ''))}"></label>
+      <button class="btn ghost" data-action="emailLink">Email me a sign-in link</button>
+      ${S.emailSent ? `<div class="note">Link sent. Open it on this phone to sign in. Check your spam folder if it hasn't arrived in a couple of minutes.</div>` : ''}
+    </div>
+    <p class="muted small" style="margin-top:16px">If you opened this from Facebook or Instagram, open it in Chrome or Safari instead, as Google sign-in doesn't work inside those apps.</p>`;
+}
+ 
+function payNote(me) {
+  const fee = Number(S.config.entryFee) || 0;
+  if (!me || me.paid || !S.config.revolutLink) return '';
+  return `<div class="note warn">Entry is ${fee ? euro(fee) : 'due'}. <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Pay by Revolut</a> and the organiser will mark you as paid.</div>`;
+}
+ 
+function viewPick() {
+  const g = S.game;
+  if (!S.fixturesLoaded) return `<p class="muted">Loading fixtures…</p>`;
+  if (!g) return `<h2>No game running yet</h2><p>The organiser hasn't started a game. Check back soon.</p>`;
+  if (g.status === 'finished') return viewFinished();
+  if (!S.user) return viewSignIn();
+  const me = myEntry();
+  if (!me) return viewJoin();
+  if (me.status === 'out') {
+    const p = S.myPicks.find(x => x.round === me.outRound);
+    return `${payNote(me)}<div class="note out"><b>You're out.</b> ${p ? esc(p.teamName) + ' let you down' : 'Your team didn\'t win'} in Round ${me.outRound}. Keep an eye on the board. A new game starts when this one ends.</div>`;
+  }
+  return payNote(me) + viewRoundPicker(me);
+}
+ 
+function viewJoin() {
+  const g = S.game;
+  if (!g.joinOpen) return `<h2>Entries are closed</h2><p>This game is already under way. You can follow it on the board, and join the next one when it starts.</p>`;
+  const fee = Number(S.config.entryFee) || 0;
+  const firstRound = roundFixtures(g.startRound);
+  const first = firstRound.length ? Math.min(...firstRound.map(f => f.kickoff)) : null;
+  return `<h2>Join the game</h2>
+    <p>Entry is ${fee ? euro(fee) : 'set by the organiser'}${S.config.revolutLink ? `, paid by <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Revolut</a>` : ''}. Picks start in Round ${g.startRound}${first ? ', ' + esc(fmtDay(first)) : ''}.</p>
+    <div class="stack">
+      <label class="field">Your name, as others will see it<input id="joinName" maxlength="40" value="${esc(draft('joinName', S.user.displayName || ''))}"></label>
+      <button class="btn" data-action="join">Join the game</button>
+    </div>`;
+}
+ 
+function viewRoundPicker(me) {
+  const g = S.game, r = g.currentRound, fx = roundFixtures(r);
+  if (!fx.length) return `<h2>Round ${r}</h2><p>Fixtures for this round haven't loaded yet. Check back later.</p>`;
+  const myPick = S.myPicks.find(p => p.round === r);
+  const pickFx = myPick && fxById.get(myPick.fixtureId);
+  const locked = !!(pickFx && now() >= pickFx.kickoff);
+  const allStarted = fx.every(f => f.postponed || now() >= f.kickoff);
+  const usedRound = new Map();
+  S.myPicks.filter(p => p.round < r).forEach(p => usedRound.set(p.teamId, p.round));
+  const used = new Set(me.usedTeams || []);
+  const firstKick = Math.min(...fx.map(f => f.kickoff));
+ 
+  let status;
+  if (myPick && locked) status = `<div class="note"><b>Locked in: ${esc(myPick.teamName)}.</b> Results are confirmed after the final whistle.</div>`;
+  else if (myPick) status = `<div class="note"><b>Your pick: ${esc(myPick.teamName)}.</b> ${pickFx ? `You can change it until ${esc(fmtKick(pickFx.kickoff))}.` : 'Its game is no longer listed, so pick again.'}</div>`;
+  else if (allStarted) status = `<div class="note warn">All Round ${r} games have kicked off. As you didn't pick, you'll be given a random team you haven't used.</div>`;
+  else status = `<div class="note warn"><b>No pick yet.</b> Tap a team to pick them. Each game locks at kickoff. If you don't pick at all, you'll be given a random team you haven't used.</div>`;
+ 
+  let html = `<h2>${esc(fmtDay(firstKick))}</h2><p class="muted">Pick one team to win.</p>${status}`;
+  for (const div of DIVS) {
+    const games = fx.filter(f => f.div === div);
+    if (!games.length) continue;
+    html += `<div class="div-head">Division ${div}<span>${games.length} ${games.length === 1 ? 'game' : 'games'}</span></div>`;
+    html += games.map(f => matchCard(f, { myPick, locked, used, usedRound })).join('');
+  }
+  const other = fx.filter(f => !DIVS.includes(f.div));
+  if (other.length) html += other.map(f => matchCard(f, { myPick, locked, used, usedRound })).join('');
+  return html;
+}
+ 
+function matchCard(f, ctx) {
+  const started = now() >= f.kickoff;
+  const side = t => {
+    const isUsed = ctx.used.has(t.id) || ctx.usedRound.has(t.id);
+    const chosen = ctx.myPick?.teamId === t.id;
+    const pending = S.pending?.teamId === t.id;
+    let tag = '', off = false, cls = '';
+    if (chosen) tag = ctx.locked ? 'Locked in' : 'Your pick';
+    else if (f.postponed) { tag = 'Postponed'; off = true; }
+    else if (isUsed) { tag = ctx.usedRound.has(t.id) ? `Used R${ctx.usedRound.get(t.id)}` : 'Used'; off = true; cls = 'used'; }
+    else if (started) { tag = 'Kicked off'; off = true; }
+    else if (pending) tag = 'Selected';
+    const disabled = off || ctx.locked || chosen;
+    const logo = t.logo && !/\.pdf$/i.test(t.logo) ? `<img src="${esc(t.logo)}" alt="" loading="lazy" onerror="this.remove()">` : '';
+    return `<button class="team ${cls} ${off ? 'unavailable' : ''} ${chosen ? 'chosen' : ''} ${pending ? 'pending' : ''}"
+      data-action="choose" data-fx="${esc(f.id)}" data-team="${esc(t.id)}" ${disabled ? 'disabled' : ''}
+      aria-pressed="${chosen}" aria-label="${esc(t.name)}${tag ? ', ' + esc(tag) : ''}">
+      <span class="crest" aria-hidden="true"><b>${esc(initials(t.name))}</b>${logo}</span>
+      <span class="name">${esc(t.name)}</span><span class="tag">${esc(tag)}</span></button>`;
+  };
+  const score = (f.home.score !== null && f.away.score !== null) ? `${f.home.score}–${f.away.score}` : '';
+  return `<div class="match"><div class="sides">${side(f.home)}<div class="v">v</div>${side(f.away)}</div>
+    <div class="meta"><span>${esc(fmtKick(f.kickoff))}</span><span>${score ? esc(score) : esc(f.venue)}</span></div></div>`;
+}
+ 
+function viewConfirmBar() {
+  const p = S.pending; if (!p) return '';
+  const f = fxById.get(p.fixtureId); const t = f && (f.home.id === p.teamId ? f.home : f.away);
+  if (!t) return '';
+  return `<div class="confirm-bar" role="region" aria-label="Confirm pick"><div class="wrap">
+    <span>Pick <b>${esc(t.name)}</b>? Locks at ${esc(fmtKick(f.kickoff))}.</span>
+    <span class="row"><button class="btn ghost small" data-action="cancelPick">Cancel</button>
+    <button class="btn small" data-action="confirmPick" ${S.busy ? 'disabled' : ''}>Confirm pick</button></span></div></div>`;
+}
+ 
+function viewFinished() {
+  const g = S.game;
+  const names = (g.winners || []).map(nameOf);
+  const fee = Number(S.config.entryFee) || 0, pot = fee * S.entries.length;
+  let who = names.length === 1 ? `${esc(names[0])} is the last one standing` : names.length ? `${esc(names.join(', '))} share the pot` : 'The game has ended';
+  return `<h2>${who}.</h2>${pot ? `<p>Pot: ${euro(pot)}${names.length > 1 ? `, ${euro(pot / names.length)} each` : ''}.</p>` : ''}
+    <p class="muted">The organiser will start the next game soon. The final board is below.</p>${boardList()}`;
+}
+ 
+function boardList() {
+  const picksBy = new Map();
+  S.revealed.forEach(p => { if (!picksBy.has(p.uid)) picksBy.set(p.uid, []); picksBy.get(p.uid).push(p); });
+  const still = alive().sort((a, b) => a.name.localeCompare(b.name));
+  const gone = S.entries.filter(e => e.status !== 'alive').sort((a, b) => (b.outRound || 0) - (a.outRound || 0) || a.name.localeCompare(b.name));
+  const row = e => {
+    const ps = (picksBy.get(e.uid) || []).sort((a, b) => a.round - b.round);
+    const chips = ps.map(p => `<span class="chip ${esc(p.result || '')}">R${p.round} ${esc(p.teamName)}${p.auto ? ' (auto)' : ''}${p.result === 'won' ? ' ✓' : p.result === 'postponed' ? ' (P)' : (p.result === 'lost' || p.result === 'drew') ? ' ✗' : ''}</span>`).join('');
+    const paid = S.isAdmin ? ` <span class="paid ${e.paid ? '' : 'no'}">${e.paid ? 'Paid' : 'Unpaid'}</span>` : '';
+    return `<div class="person ${e.status === 'alive' ? '' : 'gone'}"><div class="pname"><span>${esc(e.name)}</span><small>${e.status === 'alive' ? 'Still in' : 'Out R' + e.outRound}${paid}</small></div>${chips ? `<div class="chips">${chips}</div>` : ''}</div>`;
+  };
+  if (!S.entries.length) return `<p class="muted">No one has joined yet.</p>`;
+  return `<div class="board">${still.map(row).join('')}${gone.map(row).join('')}</div>`;
+}
+ 
+function viewBoard() {
+  if (!S.game) return `<h2>No game running yet</h2>`;
+  const a = alive().length, o = S.entries.length - a;
+  return `<h2>${a} still standing</h2><p class="muted">${o} out. Picks are shown once each round is confirmed.</p>${boardList()}`;
+}
+ 
+function viewMine() {
+  if (!S.user) return `<h2>My picks</h2><p>Sign in on the Pick tab to see your picks.</p>`;
+  const labels = { won: 'Won, through', lost: 'Lost, out', drew: 'Drew, out', postponed: 'Postponed, through' };
+  const ps = [...S.myPicks].sort((a, b) => b.round - a.round);
+  const rows = ps.map(p => `<tr><td>Round ${p.round}</td><td><b>${esc(p.teamName)}</b>${p.auto ? ' (auto)' : ''}</td><td>${p.result ? labels[p.result] : 'Awaiting result'}</td></tr>`).join('');
+  return `<h2>My picks</h2>${rows ? `<div class="panel"><table class="list">${rows}</table></div>` : '<p class="muted">No picks yet.</p>'}
+    <h3>Account</h3><p class="small">Signed in as ${esc(S.user.email || S.user.displayName || 'you')}.</p>
+    <button class="btn ghost small" data-action="signOut">Sign out</button>`;
+}
+ 
+function viewRules() {
+  const fee = Number(S.config.entryFee) || 0;
+  return `<h2>How it works</h2>
+    <p>Each round, pick one team from any of the five men's AIL divisions to win their game.</p>
+    <p>If they win, you're through to the next round. If they lose or draw, you're out.</p>
+    <p>You can't pick the same team twice in a game. You can change your pick until your chosen game kicks off.</p>
+    <p>If you don't pick at all, you're given a random team you haven't used yet.</p>
+    <p>If your team's game is postponed, you go through, and that team counts as used.</p>
+    <p>If everyone left goes out in the same round, they're all reinstated.</p>
+    <p>The last one standing wins the pot. If the season runs out with more than one player left, they share it.</p>
+    <p>Entry is ${fee ? euro(fee) : 'set by the organiser'}${S.config.revolutLink ? `, paid by <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Revolut</a>` : ''}.</p>
+    ${S.user ? `<h3>Organiser setup</h3><p class="small muted">Your user ID (only needed when setting up an organiser):</p><p class="small"><code>${esc(S.user.uid)}</code></p>` : ''}`;
+}
+ 
+// ---------- admin ----------
+function viewAdmin() {
+  if (!S.isAdmin) return `<p>Organisers only.</p>`;
+  const g = S.game;
+  let html = `<h2>Organiser</h2>`;
+ 
+  // Game
+  if (!g || g.status === 'finished') {
+    const rounds = roundsList();
+    const upcoming = rounds.filter(r => roundFixtures(r).some(f => f.kickoff > now()));
+    const def = draft('startRound', String(upcoming[0] ?? rounds[0] ?? 1));
+    html += `<div class="panel"><h3>Start a new game</h3>
+      ${g ? `<p class="small muted">The last game has finished.</p>` : ''}
+      <label class="field">First round<select id="startRound">${rounds.map(r => {
+        const k = Math.min(...roundFixtures(r).map(f => f.kickoff));
+        return `<option value="${r}" ${String(r) === def ? 'selected' : ''}>Round ${r}, ${esc(fmtDay(k))}</option>`;
+      }).join('')}</select></label>
+      <p></p><button class="btn" data-action="startGame" ${rounds.length ? '' : 'disabled'}>Start game</button></div>`;
+  } else {
+    html += viewConfirmPanel();
+    html += `<div class="panel"><h3>Game</h3>
+      <p class="small">Started at Round ${g.startRound}. Now on Round ${g.currentRound}. Entries are ${g.joinOpen ? 'open' : 'closed'}.</p>
+      <div class="row"><button class="btn ghost small" data-action="toggleJoin">${g.joinOpen ? 'Close entries' : 'Reopen entries'}</button>
+      <button class="btn danger small" data-action="endGame">End game now</button></div></div>`;
+  }
+ 
+  // Players
+  if (g) {
+    const rows = [...S.entries].sort((a, b) => a.name.localeCompare(b.name)).map(e => `<tr>
+      <td><b>${esc(e.name)}</b><br><span class="muted">${e.status === 'alive' ? 'Still in' : 'Out R' + e.outRound}</span></td>
+      <td><button class="btn small ${e.paid ? '' : 'ghost'}" data-action="togglePaid" data-id="${esc(e.id)}">${e.paid ? 'Paid' : 'Mark paid'}</button>
+      <button class="btn danger small" data-action="removePlayer" data-id="${esc(e.id)}" aria-label="Remove ${esc(e.name)}">Remove</button></td></tr>`).join('');
+    const paidCount = S.entries.filter(e => e.paid).length;
+    html += `<div class="panel"><h3>Players</h3><p class="small muted">${S.entries.length} entered, ${paidCount} paid.</p>
+      ${rows ? `<table class="list">${rows}</table>` : '<p class="muted">No one has joined yet.</p>'}</div>`;
+  }
+  // Feed
+  const counts = DIVS.map(d => `${d}: ${S.fixtures.filter(f => f.div === d).length}`).join(', ');
+  const h = S.health;
+  const errors = (h?.divisions || []).filter(d => !d.ok);
+  html += `<div class="panel"><h3>Fixture feed</h3>
+    <p class="small">${S.fixtures.length} fixtures loaded (${esc(counts)}).</p>
+    ${h?.fixturesChangedAt ? `<p class="small muted">Feed last changed ${esc(new Date(h.fixturesChangedAt).toLocaleString('en-IE', { timeZone: TZ }))}.</p>` : ''}
+    ${errors.length ? `<div class="note out small">Feed problem: ${errors.map(e => esc(e.comp + ' ' + e.error)).join('; ')}. Previous data is being kept.</div>` : ''}
+    <p class="small muted">Firebase copy: ${esc(S.syncState || 'Checking…')}</p>
+    <button class="btn ghost small" data-action="syncNow">Sync fixtures now</button></div>`;
+ 
+  // Settings
+  html += `<div class="panel"><h3>Settings</h3><div class="stack">
+    <label class="field">Competition name<input id="setTitle" value="${esc(draft('setTitle', S.config.title || 'AIL Last Man Standing'))}"></label>
+    <label class="field">Entry fee (€)<input id="setFee" type="number" min="0" step="1" value="${esc(draft('setFee', S.config.entryFee ?? 10))}"></label>
+    <label class="field">Revolut payment link<input id="setRevolut" type="url" placeholder="https://revolut.me/yourname" value="${esc(draft('setRevolut', S.config.revolutLink || ''))}"></label>
+    <button class="btn small" data-action="saveSettings">Save settings</button></div></div>`;
+ 
+  return html;
+}
+ 
+function viewConfirmPanel() {
+  const g = S.game, r = g.currentRound, fx = roundFixtures(r);
+  const picked = S.allPicks.filter(p => p.round === r).length;
+  const rows = fx.map(f => {
+    const hs = draft('hs-' + f.id, f.home.score ?? ''), as = draft('as-' + f.id, f.away.score ?? '');
+    const pp = draft('pp-' + f.id, f.postponed);
+    const n = S.allPicks.filter(p => p.fixtureId === f.id && p.round === r).length;
+    return `<div class="result-row">
+      <span>${esc(f.home.name)}</span>
+      <input type="number" min="0" inputmode="numeric" id="hs-${esc(f.id)}" value="${esc(hs)}" aria-label="${esc(f.home.name)} score">
+      <input type="number" min="0" inputmode="numeric" id="as-${esc(f.id)}" value="${esc(as)}" aria-label="${esc(f.away.name)} score">
+      <span class="r">${esc(f.away.name)}</span>
+      <span class="extra"><span>${esc(f.div)}, ${esc(fmtKick(f.kickoff))}${n ? `, ${n} picked` : ''}</span>
+      <label><input type="checkbox" id="pp-${esc(f.id)}" ${pp ? 'checked' : ''}> Postponed</label></span></div>`;
+  }).join('');
+  return `<div class="panel"><h3>Confirm Round ${r} results</h3>
+    <p class="small">${picked} of ${alive().length} players still in have picked. Scores fill in from the feed. Check them, correct any that are wrong, and tick any game that was postponed.</p>
+    ${rows}<p></p><button class="btn" data-action="confirmRound" ${S.busy ? 'disabled' : ''}>Confirm Round ${r} results</button></div>`;
+}
+ 
+async function confirmRound() {
+  const g = S.game, r = g.currentRound, fx = roundFixtures(r);
+  const results = {}; const missing = [];
+  for (const f of fx) {
+    const pp = document.getElementById('pp-' + f.id).checked;
+    const hs = document.getElementById('hs-' + f.id).value, as = document.getElementById('as-' + f.id).value;
+    if (!pp && (hs === '' || as === '')) missing.push(`${f.home.name} v ${f.away.name}`);
+    results[f.id] = { postponed: pp, home: hs === '' ? null : +hs, away: as === '' ? null : +as };
+  }
+  if (missing.length) { alert(`Enter a score, or tick Postponed, for:\n\n${missing.join('\n')}`); return; }
+ 
+  const aliveNow = alive();
+  const snap = await getDocs(query(collection(db, 'picks'), where('gameId', '==', g.id), where('round', '==', r)));
+  const picks = new Map(snap.docs.map(d => [d.data().uid, d.data()]));
+  const outcomes = [];
+  for (const e of aliveNow) {
+    let p = picks.get(e.uid), auto = false;
+    if (!p) {
+      const used = new Set(e.usedTeams || []);
+      const options = fx.filter(f => !results[f.id].postponed)
+        .flatMap(f => [[f, f.home], [f, f.away]])
+        .filter(([, t]) => !used.has(t.id))
+        .sort((a, b) => a[1].id.localeCompare(b[1].id));
+      if (!options.length) { outcomes.push({ e, p: null, result: 'postponed' }); continue; }
+      const [f, t] = options[hashStr(e.uid + ':' + r) % options.length];
+      p = { gameId: g.id, uid: e.uid, round: r, fixtureId: f.id, teamId: t.id, teamName: t.name };
+      auto = true;
+    }
+    const res = results[p.fixtureId]; const f = fxById.get(p.fixtureId);
+    let result = 'postponed';
+    if (res && f && !res.postponed) {
+      const mine = f.home.id === p.teamId ? res.home : res.away;
+      const theirs = f.home.id === p.teamId ? res.away : res.home;
+      result = mine > theirs ? 'won' : mine === theirs ? 'drew' : 'lost';
+    }
+    outcomes.push({ e, p, auto, result });
+  }
+  const survivors = outcomes.filter(o => o.result === 'won' || o.result === 'postponed');
+  const reinstated = survivors.length === 0 && outcomes.length > 0;
+  const outCount = reinstated ? 0 : outcomes.length - survivors.length;
+  const autoCount = outcomes.filter(o => o.auto).length;
+  const msg = `Confirm Round ${r}?\n\n${outCount} going out, ${reinstated ? outcomes.length : survivors.length} still in.` +
+    (autoCount ? `\n${autoCount} given a random team for not picking.` : '') +
+    (reinstated ? '\n\nEveryone lost, so everyone still in is reinstated.' : '');
+  if (!confirm(msg)) return;
+ 
+  S.busy = true; render();
+  try {
+    const ops = [];
+    for (const o of outcomes) {
+      if (o.p) {
+        const id = `${g.id}_${o.e.uid}_${r}`;
+        ops.push(b => b.set(doc(db, 'picks', id), {
+          gameId: g.id, uid: o.e.uid, round: r, fixtureId: o.p.fixtureId, teamId: o.p.teamId, teamName: o.p.teamName,
+          auto: !!o.auto, revealed: true, result: o.result, updatedAt: serverTimestamp(),
+        }));
+      }
+      const goesOut = !reinstated && (o.result === 'lost' || o.result === 'drew');
+      const upd = {};
+      if (o.p) upd.usedTeams = arrayUnion(o.p.teamId);
+      if (goesOut) { upd.status = 'out'; upd.outRound = r; }
+      if (Object.keys(upd).length) ops.push(b => b.update(doc(db, 'entries', o.e.id), upd));
+    }
+    const next = roundsList().find(x => x > r);
+    const stillIn = reinstated ? outcomes.map(o => o.e) : survivors.map(o => o.e);
+    const gUpd = { confirmedRounds: arrayUnion(r), joinOpen: false };
+    if (stillIn.length === 1) Object.assign(gUpd, { status: 'finished', winners: [stillIn[0].uid], finishedRound: r });
+    else if (!next) Object.assign(gUpd, { status: 'finished', winners: stillIn.map(e => e.uid), finishedRound: r });
+    else gUpd.currentRound = next;
+    ops.push(b => b.update(doc(db, 'games', g.id), gUpd));
+    ops.push(b => b.set(doc(db, 'games', g.id, 'rounds', String(r)), { results, reinstated, confirmedAt: serverTimestamp() }));
+    await commitOps(ops);
+    fx.forEach(f => ['hs-', 'as-', 'pp-'].forEach(k => delete S.drafts[k + f.id]));
+    toast(`Round ${r} confirmed`);
+  } catch (err) { alert(niceError(err)); }
+  S.busy = false; render();
+}
+ 
+// ---------- actions ----------
+const actions = {
+  tab: el => { S.tab = el.dataset.tab; S.pending = null; render(); window.scrollTo(0, 0); },
+  async google() {
+    try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch (err) { toast(niceError(err)); }
+  },
+  async emailLink() {
+    const email = $('#email').value.trim();
+    if (!/^\S+@\S+\.\S+$/.test(email)) { toast('Enter a valid email address.'); return; }
+    try {
+      await sendSignInLinkToEmail(auth, email, { url: location.origin + location.pathname, handleCodeInApp: true });
+      try { localStorage.setItem('lmsEmail', email); } catch {}
+      S.emailSent = true; render();
+    } catch (err) { toast(niceError(err)); }
+  },
+  async signOut() { await signOut(auth); S.tab = 'pick'; },
+  async join() {
+    const name = $('#joinName').value.trim().slice(0, 40);
+    if (!name) { toast('Enter your name.'); return; }
+    try {
+      await setDoc(doc(db, 'entries', `${S.game.id}_${S.user.uid}`), {
+        gameId: S.game.id, uid: S.user.uid, name, status: 'alive', paid: false, usedTeams: [], outRound: null, joinedAt: serverTimestamp(),
+      });
+      delete S.drafts.joinName; toast("You're in. Now make your pick.");
+    } catch (err) { toast(niceError(err)); }
+  },
+  choose: el => {
+    S.pending = { fixtureId: el.dataset.fx, teamId: el.dataset.team }; render();
+  },
+  cancelPick: () => { S.pending = null; render(); },
+  async confirmPick() {
+    const p = S.pending, g = S.game; if (!p || !g) return;
+    const f = fxById.get(p.fixtureId); const t = f.home.id === p.teamId ? f.home : f.away;
+    if (now() >= f.kickoff) { toast('That game has kicked off. Pick another team.'); S.pending = null; render(); return; }
+    S.busy = true; render();
+    try {
+      await setDoc(doc(db, 'picks', `${g.id}_${S.user.uid}_${g.currentRound}`), {
+        gameId: g.id, uid: S.user.uid, round: g.currentRound, fixtureId: f.id, teamId: t.id, teamName: t.name,
+        auto: false, revealed: false, updatedAt: serverTimestamp(),
+      });
+      S.pending = null; toast(`Picked: ${t.name}`);
+    } catch (err) { toast(niceError(err)); }
+    S.busy = false; render();
+  },
+  async saveSettings() {
+    try {
+      await setDoc(doc(db, 'config', 'settings'), {
+        title: $('#setTitle').value.trim() || 'AIL Last Man Standing',
+        entryFee: Number($('#setFee').value) || 0,
+        revolutLink: $('#setRevolut').value.trim(),
+      }, { merge: true });
+      ['setTitle', 'setFee', 'setRevolut'].forEach(k => delete S.drafts[k]);
+      toast('Settings saved');
+    } catch (err) { toast(niceError(err)); }
+  },
+  async syncNow() { try { await syncFixtures(true); } catch (err) { toast(niceError(err)); } },
+  async startGame() {
+    const startRound = Number($('#startRound').value);
+    if (!confirm(`Start a new game from Round ${startRound}? Players can then join and pick.`)) return;
+    try {
+      await syncFixtures(false);
+      await addDoc(collection(db, 'games'), {
+        status: 'active', startRound, currentRound: startRound, joinOpen: true,
+        confirmedRounds: [], winners: [], createdAt: serverTimestamp(),
+      });
+      delete S.drafts.startRound; toast('Game started. Share the link!');
+    } catch (err) { toast(niceError(err)); }
+  },
+  async toggleJoin() { try { await updateDoc(doc(db, 'games', S.game.id), { joinOpen: !S.game.joinOpen }); } catch (err) { toast(niceError(err)); } },
+  async endGame() {
+    const still = alive();
+    if (!confirm(`End the game now? The ${still.length} player(s) still in will share the pot.`)) return;
+    try { await updateDoc(doc(db, 'games', S.game.id), { status: 'finished', winners: still.map(e => e.uid), finishedRound: S.game.currentRound }); }
+    catch (err) { toast(niceError(err)); }
+  },
+  async togglePaid(el) {
+    const e = S.entries.find(x => x.id === el.dataset.id);
+    try { await updateDoc(doc(db, 'entries', e.id), { paid: !e.paid }); } catch (err) { toast(niceError(err)); }
+  },
+  async removePlayer(el) {
+    const e = S.entries.find(x => x.id === el.dataset.id);
+    if (!confirm(`Remove ${e.name} from this game?`)) return;
+    try { await deleteDoc(doc(db, 'entries', e.id)); } catch (err) { toast(niceError(err)); }
+  },
+  confirmRound: () => confirmRound(),
+};
+ 
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-action]');
+  if (el && actions[el.dataset.action]) actions[el.dataset.action](el, e);
+});
+document.addEventListener('input', e => {
+  const el = e.target; if (!el.id) return;
+  S.drafts[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+});
+document.addEventListener('change', e => {
+  const el = e.target; if (el.id) S.drafts[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+});
+document.addEventListener('focusout', () => setTimeout(() => {
+  if (S.renderPending) { S.renderPending = false; render(); }
+}, 0));
+ 
+// ---------- start ----------
+async function handleEmailLink() {
+  if (!isSignInWithEmailLink(auth, location.href)) return;
+  let email = null;
+  try { email = localStorage.getItem('lmsEmail'); } catch {}
+  if (!email) email = prompt('Confirm your email address to finish signing in');
+  if (!email) return;
+  try { await signInWithEmailLink(auth, email, location.href); } catch (err) { toast(niceError(err)); }
+  history.replaceState(null, '', location.pathname);
+}
+ 
+const fixturesReady = loadFixtures();
+handleEmailLink();
+onSnapshot(doc(db, 'config', 'settings'), s => { S.config = s.data() || {}; render(); });
+onSnapshot(query(collection(db, 'games'), orderBy('createdAt', 'desc'), limit(1)), snap => {
+  const d = snap.docs[0]; const prev = S.game?.id;
+  S.game = d ? { id: d.id, ...d.data() } : null;
+  if (S.game?.id !== prev) subscribeGame();
+  render();
+});
+onAuthStateChanged(auth, async u => {
+  S.user = u; S.isAdmin = false;
+  if (u) { try { S.isAdmin = (await getDoc(doc(db, 'admins', u.uid))).exists(); } catch {} }
+  subscribeGame(); render();
+  if (S.isAdmin) { await fixturesReady; syncFixtures(false).catch(err => { S.syncState = niceError(err); render(); }); }
+});
+setInterval(render, 60 * 1000);            // keeps kickoff locks current
+setInterval(loadFixtures, 5 * 60 * 1000);  // picks up time changes and scores
+window.__reloadFixtures = loadFixtures;
+</script>
+</body>
+</html>
