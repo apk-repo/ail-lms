@@ -54,7 +54,7 @@
   button, input, select { font: inherit; color: inherit; }
   a { color: var(--pitch); }
   :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
-
+ 
   /* Header: a floodlit, freshly mown pitch */
   header.top {
     color: #fff; padding: 16px 18px 20px; border-bottom: 4px solid var(--gold);
@@ -70,14 +70,14 @@
     background: rgba(0,0,0,.28); border: 1px solid rgba(255,255,255,.22);
   }
   header .deadline.closed { background: var(--gold); border-color: var(--gold); color: #0E1C15; }
-
+ 
   main { padding: 20px 18px; }
   h2 { font: 700 30px/1.05 var(--display); margin: 0 0 8px; }
   h3 { font: 700 22px/1.15 var(--display); margin: 26px 0 10px; }
   p { margin: 0 0 12px; }
   .muted { color: var(--muted); }
   .small { font-size: 14px; }
-
+ 
   .note {
     background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--pitch);
     padding: 12px 14px; margin: 0 0 16px; border-radius: 4px 10px 10px 4px;
@@ -85,7 +85,7 @@
   .note.warn { border-left-color: var(--gold); }
   .note.out { border-left-color: var(--flag); }
   .hint { font-size: 14px; color: var(--muted); margin: 6px 0 0; }
-
+ 
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     min-height: 46px; padding: 0 18px; border-radius: 999px; border: 2px solid var(--pitch);
@@ -103,7 +103,7 @@
     display: block; width: 100%; margin-top: 4px; min-height: 46px; padding: 0 12px;
     border: 1.5px solid var(--line); border-radius: 8px; background: var(--card);
   }
-
+ 
   /* Fixture list */
   .div-head { font: 700 21px/1 var(--display); margin: 26px 0 10px; display: flex; justify-content: space-between; align-items: baseline; }
   .div-head span { font: 500 14px var(--body); color: var(--muted); }
@@ -131,7 +131,7 @@
   }
   .crest b { font: 700 14px var(--display); color: var(--crest-ink); }
   .crest img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #fff; }
-
+ 
   /* Pending pick bar */
   .confirm-bar {
     position: fixed; left: 0; right: 0; bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px));
@@ -140,7 +140,7 @@
   .confirm-bar .wrap { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
   .confirm-bar .btn { background: var(--gold); border-color: var(--gold); color: #0E1C15; }
   .confirm-bar .btn.ghost { background: transparent; color: #fff; border-color: #fff; }
-
+ 
   /* Board */
   .this-round { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 22px; }
   .this-round .head { padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
@@ -157,7 +157,7 @@
   .prow .what .score.behind { color: var(--flag); }
   .prow.me .who::after { content: ' (you)'; font: 500 14px var(--body); color: var(--muted); }
   .tally { padding: 10px 16px; font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); background: var(--paper); }
-
+ 
   .board { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 6px 16px; }
   .board .person { padding: 10px 0; border-bottom: 1px solid var(--line); }
   .board .person:last-child { border-bottom: 0; }
@@ -170,7 +170,7 @@
   .chip.lost, .chip.drew { border-color: var(--flag); color: var(--flag); }
   .paid { font-size: 12px; font-weight: 700; padding: 1px 7px; border-radius: 4px; background: var(--pitch); color: #fff; text-decoration: none; }
   .paid.no { background: var(--flag); }
-
+ 
   /* Admin */
   .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
   .panel h3 { margin-top: 0; }
@@ -184,7 +184,7 @@
   table.list td:last-child { text-align: right; white-space: nowrap; }
   .roundup-preview { margin-top: 12px; }
   .roundup-preview img { display: block; width: 100%; max-width: 420px; border-radius: 10px; border: 1px solid var(--line); }
-
+ 
   /* Tab bar */
   nav.tabs {
     position: fixed; left: 0; right: 0; bottom: 0; background: var(--turf-a);
@@ -196,7 +196,7 @@
     color: rgba(255,255,255,.7); cursor: pointer; border-top: 3px solid transparent;
   }
   nav.tabs button[aria-current="page"] { color: #fff; border-top-color: var(--gold); }
-
+ 
   .toast {
     position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px) + 80px);
     background: var(--turf-a); color: #fff; padding: 10px 16px; border-radius: 999px; font-weight: 600; max-width: 90vw; z-index: 5;
@@ -213,7 +213,7 @@
 <footer class="credit">Created by Aaron Kane</footer>
 <div id="bar"></div>
 <nav class="tabs" aria-label="Sections"><div class="wrap" id="tabs"></div></nav>
-
+ 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import {
@@ -224,22 +224,22 @@ import {
   getFirestore, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, collection, query, where, orderBy, limit,
   onSnapshot, getDocs, writeBatch, serverTimestamp, Timestamp, arrayUnion,
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-
+ 
 // ============ PASTE YOUR FIREBASE CONFIG BELOW (see SETUP.md, step 7) ============
 const firebaseConfig = {
-  apiKey: "AIzaSyCXS0rzaSdhjptGFyMvAx698AUI991o580",
-  authDomain: "ail-lms.firebaseapp.com",
-  projectId: "ail-lms",
-  storageBucket: "ail-lms.firebasestorage.app",
-  messagingSenderId: "510427808650",
-  appId: "1:510427808650:web:16703d0e5a674e163b7e73"
+  apiKey: "PASTE_HERE",
+  authDomain: "PASTE_HERE",
+  projectId: "PASTE_HERE",
+  storageBucket: "PASTE_HERE",
+  messagingSenderId: "PASTE_HERE",
+  appId: "PASTE_HERE"
 };
 // ================================================================================
-
+ 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
+ 
 const DIVS = ['1A', '1B', '2A', '2B', '2C'];
 const TZ = 'Europe/Dublin';
 const DEFAULT_TITLE = "Cill Dara Senior Men's AIL Last Man Standing";
@@ -252,7 +252,7 @@ const S = {
 const fxById = new Map();
 let unsubs = [];
 let roundSub = null, roundSubKey = '';
-
+ 
 // ---------- helpers ----------
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -264,7 +264,7 @@ const euro = n => '€' + (Math.round(n * 100) / 100).toLocaleString('en-IE');
 const initials = n => n.split(/\s+/).filter(w => w && !/^(of|the)$/i.test(w)).map(w => w[0]).join('').slice(0, 3).toUpperCase();
 const hashStr = s => { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
 const draft = (id, fallback) => (id in S.drafts ? S.drafts[id] : fallback);
-
+ 
 function toast(msg) {
   const t = document.createElement('div');
   t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
@@ -283,7 +283,7 @@ const roundFixtures = r => S.fixtures.filter(f => f.round === r)
 const myEntry = () => S.user && S.entries.find(e => e.uid === S.user.uid);
 const alive = () => S.entries.filter(e => e.status === 'alive');
 const nameOf = uid => S.entries.find(e => e.uid === uid)?.name || 'Unknown';
-
+ 
 // ---------- pick deadline: 3pm Irish time on the Friday before each round ----------
 function dublinParts(ts) {
   const o = {};
@@ -322,7 +322,7 @@ const fmtLock = ts => {
   return fmt(ts, { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '') + ', ' + h + (p.mi ? ':' + String(p.mi).padStart(2, '0') : '') + (p.h < 12 ? 'am' : 'pm');
 };
 const lockFields = (r, ts) => ({ lockAt: Timestamp.fromMillis(ts * 1000), lockRound: r, lockOverride: false });
-
+ 
 // ---------- data ----------
 async function loadFixtures() {
   try {
@@ -336,7 +336,7 @@ async function loadFixtures() {
   try { S.health = await (await fetch('data/health.json?t=' + Date.now(), { cache: 'no-store' })).json(); } catch { S.health = null; }
   render();
 }
-
+ 
 function subscribeGame() {
   unsubs.forEach(u => u()); unsubs = [];
   S.entries = []; S.myPicks = []; S.revealed = []; S.allPicks = [];
@@ -358,7 +358,7 @@ function subscribeGame() {
     }));
   }
 }
-
+ 
 // Once picks close, everyone's pick for the current round can be read and shown on the board.
 function syncRoundSub() {
   const g = S.game;
@@ -371,7 +371,7 @@ function syncRoundSub() {
     s => { S.roundPicks = s.docs.map(d => d.data()); render(); },
     () => { roundSubKey = ''; S.roundPicks = []; });
 }
-
+ 
 // Copies the kickoff times and teams into Firebase so the security rules can check them.
 async function syncFixtures(force) {
   if (!S.isAdmin || !S.fixtures.length) return;
@@ -399,7 +399,7 @@ async function refreshLock() {
     await updateDoc(doc(db, 'games', g.id), lockFields(g.currentRound, want));
   }
 }
-
+ 
 async function commitOps(ops) {
   for (let i = 0; i < ops.length; i += 400) {
     const b = writeBatch(db);
@@ -407,7 +407,7 @@ async function commitOps(ops) {
     await b.commit();
   }
 }
-
+ 
 // ---------- rendering ----------
 function render() {
   const active = document.activeElement;
@@ -419,7 +419,7 @@ function render() {
   $('#app').innerHTML = (views[S.tab] || viewPick)();
   $('#bar').innerHTML = S.tab === 'pick' ? viewConfirmBar() : '';
 }
-
+ 
 function viewHeader() {
   const title = esc(S.config.title || DEFAULT_TITLE);
   const g = S.game;
@@ -436,13 +436,13 @@ function viewHeader() {
   if (fee && total) bits.push(`<span><b>${euro(fee * total)}</b> pot</span>`);
   return `<div class="comp">${title}</div><div class="round">${big}</div><div class="status">${bits.join('')}</div>`;
 }
-
+ 
 function viewTabs() {
   const tabs = [['pick', 'Pick'], ['board', 'Board'], ['mine', 'My picks'], ['rules', 'Rules']];
   if (S.isAdmin) tabs.push(['admin', 'Admin']);
   return tabs.map(([k, l]) => `<button data-action="tab" data-tab="${k}" ${S.tab === k ? 'aria-current="page"' : ''}>${l}</button>`).join('');
 }
-
+ 
 function viewSignIn() {
   return `<h2>Pick a team. If they win, you're through.</h2>
     <p>Each round, pick one team from any of the five AIL divisions to win. Lose or draw and you're out. You can't pick the same team twice. Last one standing takes the pot.</p>
@@ -456,17 +456,24 @@ function viewSignIn() {
     </div>
     <p class="muted small" style="margin-top:16px">If you opened this from Facebook or Instagram, open it in Chrome or Safari instead, as Google sign-in doesn't work inside those apps.</p>`;
 }
-
+ 
 function payNote(me) {
   const fee = Number(S.config.entryFee) || 0;
   if (!me || me.paid || !S.config.revolutLink) return '';
   return `<div class="note warn">Entry is ${fee ? euro(fee) : 'due'}. <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Pay by Revolut</a> and the organiser will mark you as paid.</div>`;
 }
-
+ 
 function viewPick() {
   const g = S.game;
   if (!S.fixturesLoaded) return `<p class="muted">Loading fixtures…</p>`;
-  if (!g) return `<h2>No game running yet</h2><p>The organiser hasn't started a game. Check back soon.</p>`;
+  if (!S.user) return viewSignIn();
+  if (!g) {
+    if (S.isAdmin) return `<h2>No game running yet</h2><p>You're an organiser. Open the <b>Admin</b> tab to start the game.</p>`;
+    return `<h2>No game running yet</h2><p>The organiser hasn't started a game. Check back soon.</p>
+      <div class="note"><b>Setting up as organiser?</b> Your user ID is below. Add it to the <b>admins</b> collection in Firebase, then refresh this page.</div>
+      <p class="small"><code style="word-break:break-all;user-select:all">${esc(S.user.uid)}</code></p>
+      <button class="btn ghost" data-action="copyUid">Copy my user ID</button>`;
+  }
   if (g.status === 'finished') return viewFinished();
   if (!S.user) return viewSignIn();
   const me = myEntry();
@@ -477,7 +484,7 @@ function viewPick() {
   }
   return (me.paid || picksClosed() ? payNote(me) : '') + viewRoundPicker(me);
 }
-
+ 
 function viewJoin() {
   const g = S.game;
   if (!g.joinOpen) return `<h2>Entries are closed</h2><p>This game is already under way. You can follow it on the board, and join the next one when it starts.</p>`;
@@ -491,7 +498,7 @@ function viewJoin() {
       <button class="btn" data-action="join">Join the game</button>
     </div>`;
 }
-
+ 
 function viewRoundPicker(me) {
   const g = S.game, r = g.currentRound, fx = roundFixtures(r);
   if (!fx.length) return `<h2>Round ${r}</h2><p>Fixtures for this round haven't loaded yet. Check back later.</p>`;
@@ -504,14 +511,14 @@ function viewRoundPicker(me) {
   const used = new Set(me.usedTeams || []);
   const firstKick = Math.min(...fx.map(f => f.kickoff));
   const unpaid = !me.paid;
-
+ 
   let status;
   if (myPick && locked) status = `<div class="note"><b>Locked in: ${esc(myPick.teamName)}.</b> Everyone's picks are now on the board. Results are confirmed after the final whistle.</div>`;
   else if (myPick) status = `<div class="note"><b>Your pick: ${esc(myPick.teamName)}.</b> ${pickFx ? `You can change it until ${esc(fmtLock(lock))}.` : 'Its game is no longer listed, so pick again.'}</div>`;
   else if (unpaid && !locked) status = `<div class="note warn"><b>Pay to pick.</b> Picks open once the organiser marks your entry as paid${S.config.revolutLink ? ` (<a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">pay by Revolut</a>)` : ''}. Picks close <b>${esc(fmtLock(lock))}</b>.</div>`;
   else if (locked) status = `<div class="note warn">Picks for Round ${r} closed ${esc(fmtLock(lock))}. As you didn't pick, you'll be given a random team you haven't used.</div>`;
   else status = `<div class="note warn"><b>No pick yet.</b> Tap a team to pick them. Picks close <b>${esc(fmtLock(lock))}</b>. If you don't pick, you'll be given a random team you haven't used.</div>`;
-
+ 
   let html = `<h2>${esc(fmtDay(firstKick))}</h2><p class="muted">Pick one team to win.</p>${status}`;
   for (const div of DIVS) {
     const games = fx.filter(f => f.div === div);
@@ -523,7 +530,7 @@ function viewRoundPicker(me) {
   if (other.length) html += other.map(f => matchCard(f, { myPick, locked, used, usedRound, unpaid })).join('');
   return html;
 }
-
+ 
 function matchCard(f, ctx) {
   const started = now() >= f.kickoff;
   const side = t => {
@@ -550,7 +557,7 @@ function matchCard(f, ctx) {
   return `<div class="match"><div class="sides">${side(f.home)}<div class="v">v</div>${side(f.away)}</div>
     <div class="meta"><span>${esc(fmtKick(f.kickoff))}</span><span>${score ? esc(score) : esc(f.venue)}</span></div></div>`;
 }
-
+ 
 function viewConfirmBar() {
   const p = S.pending; if (!p) return '';
   const f = fxById.get(p.fixtureId); const t = f && (f.home.id === p.teamId ? f.home : f.away);
@@ -560,7 +567,7 @@ function viewConfirmBar() {
     <span class="row"><button class="btn ghost small" data-action="cancelPick">Cancel</button>
     <button class="btn small" data-action="confirmPick" ${S.busy ? 'disabled' : ''}>Confirm pick</button></span></div></div>`;
 }
-
+ 
 function viewFinished() {
   const g = S.game;
   const names = (g.winners || []).map(nameOf);
@@ -569,7 +576,7 @@ function viewFinished() {
   return `<h2>${who}.</h2>${pot ? `<p>Pot: ${euro(pot)}${names.length > 1 ? `, ${euro(pot / names.length)} each` : ''}.</p>` : ''}
     <p class="muted">The organiser will start the next game soon. The final board is below.</p>${boardList()}`;
 }
-
+ 
 function boardList() {
   const picksBy = new Map();
   S.revealed.forEach(p => { if (!picksBy.has(p.uid)) picksBy.set(p.uid, []); picksBy.get(p.uid).push(p); });
@@ -584,13 +591,13 @@ function boardList() {
   if (!S.entries.length) return `<p class="muted">No one has joined yet.</p>`;
   return `<div class="board">${still.map(row).join('')}${gone.map(row).join('')}</div>`;
 }
-
+ 
 function viewBoard() {
   if (!S.game) return `<h2>No game running yet</h2>`;
   const a = alive().length, o = S.entries.length - a;
   return `<h2>${a} still standing</h2><p class="muted">${o} out.</p>${S.game.status === 'active' ? roundPicksSection() : ''}<h3>Whole game</h3>${boardList()}`;
 }
-
+ 
 // This round: who's picked, and once picks close, what everyone picked.
 function roundPicksSection() {
   const g = S.game, r = g.currentRound, closed = picksClosed(), l = lockAt();
@@ -601,7 +608,7 @@ function roundPicksSection() {
   const people = alive().sort((x, y) => x.name.localeCompare(y.name));
   if (!people.length) return '';
   const pickedCount = people.filter(e => picks.has(e.uid) || e.pickedRound === r).length;
-
+ 
   const rows = people.map(e => {
     const p = picks.get(e.uid), isMe = S.user && e.uid === S.user.uid;
     let what;
@@ -621,7 +628,7 @@ function roundPicksSection() {
     else what = e.pickedRound === r ? `<div class="what wait">Picked ✓</div>` : `<div class="what wait">Not picked yet</div>`;
     return `<div class="prow ${isMe ? 'me' : ''}"><span class="who">${esc(e.name)}</span>${what}</div>`;
   }).join('');
-
+ 
   let tally = '';
   if (closed && picks.size) {
     const counts = new Map();
@@ -632,7 +639,7 @@ function roundPicksSection() {
   const headRight = closed ? 'Picks closed' : `${pickedCount} of ${people.length} picked. Revealed ${esc(fmtLock(l))}`;
   return `<div class="this-round"><div class="head"><b>Round ${r} picks</b><span>${headRight}</span></div>${rows}${tally}</div>`;
 }
-
+ 
 function viewMine() {
   if (!S.user) return `<h2>My picks</h2><p>Sign in on the Pick tab to see your picks.</p>`;
   const labels = { won: 'Won, through', lost: 'Lost, out', drew: 'Drew, out', postponed: 'Postponed, through' };
@@ -642,7 +649,7 @@ function viewMine() {
     <h3>Account</h3><p class="small">Signed in as ${esc(S.user.email || S.user.displayName || 'you')}.</p>
     <button class="btn ghost small" data-action="signOut">Sign out</button>`;
 }
-
+ 
 function viewRules() {
   const fee = Number(S.config.entryFee) || 0;
   return `<h2>How it works</h2>
@@ -659,13 +666,13 @@ function viewRules() {
     <p>Entry is ${fee ? euro(fee) : 'set by the organiser'}${S.config.revolutLink ? `, paid by <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Revolut</a>` : ''}.</p>
     ${S.user ? `<h3>Organiser setup</h3><p class="small muted">Your user ID (only needed when setting up an organiser):</p><p class="small"><code>${esc(S.user.uid)}</code></p>` : ''}`;
 }
-
+ 
 // ---------- admin ----------
 function viewAdmin() {
   if (!S.isAdmin) return `<p>Organisers only.</p>`;
   const g = S.game;
   let html = `<h2>Organiser</h2>`;
-
+ 
   // Game
   if (!g || g.status === 'finished') {
     const rounds = roundsList();
@@ -686,9 +693,9 @@ function viewAdmin() {
       <div class="row"><button class="btn ghost small" data-action="toggleJoin">${g.joinOpen ? 'Close entries' : 'Reopen entries'}</button>
       <button class="btn danger small" data-action="endGame">End game now</button></div></div>`;
   }
-
+ 
   if (g && (g.confirmedRounds || []).length) html += viewRoundupPanel();
-
+ 
   // Players
   if (g) {
     const rows = [...S.entries].sort((a, b) => a.name.localeCompare(b.name)).map(e => `<tr>
@@ -709,17 +716,17 @@ function viewAdmin() {
     ${errors.length ? `<div class="note out small">Feed problem: ${errors.map(e => esc(e.comp + ' ' + e.error)).join('; ')}. Previous data is being kept.</div>` : ''}
     <p class="small muted">Firebase copy: ${esc(S.syncState || 'Checking…')}</p>
     <button class="btn ghost small" data-action="syncNow">Sync fixtures now</button></div>`;
-
+ 
   // Settings
   html += `<div class="panel"><h3>Settings</h3><div class="stack">
     <label class="field">Competition name<input id="setTitle" value="${esc(draft('setTitle', S.config.title || DEFAULT_TITLE))}"></label>
     <label class="field">Entry fee (€)<input id="setFee" type="number" min="0" step="1" value="${esc(draft('setFee', S.config.entryFee ?? 10))}"></label>
     <label class="field">Revolut payment link<input id="setRevolut" type="url" placeholder="https://revolut.me/yourname" value="${esc(draft('setRevolut', S.config.revolutLink || ''))}"></label>
     <button class="btn small" data-action="saveSettings">Save settings</button></div></div>`;
-
+ 
   return html;
 }
-
+ 
 function viewDeadlinePanel() {
   const g = S.game, r = g.currentRound, l = lockAt(), closed = picksClosed();
   const people = alive().sort((a, b) => a.name.localeCompare(b.name));
@@ -728,7 +735,7 @@ function viewDeadlinePanel() {
   const lp = l ? dublinParts(l) : null;
   const pad = n => String(n).padStart(2, '0');
   const local = lp ? `${lp.y}-${pad(lp.m)}-${pad(lp.d)}T${pad(lp.h)}:${pad(lp.mi)}` : '';
-
+ 
   const ovP = draft('ovPlayer', '');
   const ent = people.find(e => e.uid === ovP);
   const used = new Set(ent?.usedTeams || []);
@@ -736,7 +743,7 @@ function viewDeadlinePanel() {
     .filter(([, t]) => !used.has(t.id))
     .map(([f, t, o]) => `<option value="${esc(f.id + '|' + t.id)}">${esc(t.name)} (v ${esc(o.name)}, ${esc(f.div)})</option>`).join('') : '';
   const current = ent && picks.get(ent.uid);
-
+ 
   return `<div class="panel"><h3>Round ${r} picks</h3>
     <p class="small">Picks ${closed ? 'closed' : 'close'} <b>${l ? esc(fmtLock(l)) : 'when fixtures load'}</b>${g.lockOverride ? ' (changed by you)' : ''}.
       ${people.length - missing.length} of ${people.length} still in have picked.</p>
@@ -756,7 +763,7 @@ function viewDeadlinePanel() {
       <p></p><button class="btn small" data-action="savePickFor">Save pick for ${esc(ent.name)}</button>` : ''}
   </div>`;
 }
-
+ 
 function viewConfirmPanel() {
   const g = S.game, r = g.currentRound, fx = roundFixtures(r);
   const picked = S.allPicks.filter(p => p.round === r).length;
@@ -776,7 +783,7 @@ function viewConfirmPanel() {
     <p class="small">${picked} of ${alive().length} players still in have picked. Scores fill in from the feed. Check them, correct any that are wrong, and tick any game that was postponed.</p>
     ${rows}<p></p><button class="btn" data-action="confirmRound" ${S.busy ? 'disabled' : ''}>Confirm Round ${r} results</button></div>`;
 }
-
+ 
 function viewRoundupPanel() {
   const g = S.game, done = [...(g.confirmedRounds || [])].sort((a, b) => b - a);
   const sel = draft('ruRound', String(done[0]));
@@ -794,7 +801,7 @@ function viewRoundupPanel() {
       <p class="hint">On a phone, Share opens your share menu: choose WhatsApp, then the group. "Make a new version" swaps in different jokes.</p></div>` : ''}
   </div>`;
 }
-
+ 
 async function confirmRound() {
   const g = S.game, r = g.currentRound, fx = roundFixtures(r);
   const results = {}; const missing = [];
@@ -805,7 +812,7 @@ async function confirmRound() {
     results[f.id] = { postponed: pp, home: hs === '' ? null : +hs, away: as === '' ? null : +as };
   }
   if (missing.length) { alert(`Enter a score, or tick Postponed, for:\n\n${missing.join('\n')}`); return; }
-
+ 
   const aliveNow = alive();
   const snap = await getDocs(query(collection(db, 'picks'), where('gameId', '==', g.id), where('round', '==', r)));
   const picks = new Map(snap.docs.map(d => [d.data().uid, d.data()]));
@@ -840,7 +847,7 @@ async function confirmRound() {
     (autoCount ? `\n${autoCount} given a random team for not picking.` : '') +
     (reinstated ? '\n\nEveryone lost, so everyone still in is reinstated.' : '');
   if (!confirm(msg)) return;
-
+ 
   S.busy = true; render();
   try {
     const ops = [];
@@ -873,8 +880,8 @@ async function confirmRound() {
   } catch (err) { alert(niceError(err)); }
   S.busy = false; render();
 }
-
-
+ 
+ 
 // ---------- weekend roundup image ----------
 const JOKES = {
   lost: [
@@ -908,7 +915,7 @@ function joke(kind, key, vars) {
   const t = list[hashStr(key + ':' + kind + ':' + roundupSeed) % list.length];
   return t.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
 }
-
+ 
 async function roundupData(r) {
   const g = S.game;
   const snap = await getDoc(doc(db, 'games', g.id, 'rounds', String(r)));
@@ -928,7 +935,7 @@ async function roundupData(r) {
   });
   return { r, items, reinstated: !!rd.reinstated, pot: rd.pot || (Number(S.config.entryFee) || 0) * S.entries.length };
 }
-
+ 
 function wrapLines(ctx, text, maxW) {
   const words = text.split(' '), lines = [];
   let line = '';
@@ -939,7 +946,7 @@ function wrapLines(ctx, text, maxW) {
   if (line) lines.push(line);
   return lines;
 }
-
+ 
 async function drawRoundup(data) {
   try {
     await Promise.all(['700 120px "Barlow Condensed"', '600 40px "Barlow Condensed"', '400 30px Barlow', '700 30px Barlow']
@@ -952,7 +959,7 @@ async function drawRoundup(data) {
   const fallen = data.reinstated ? [] : items.filter(i => i.result === 'lost' || i.result === 'drew');
   const survivors = items.filter(i => !fallen.includes(i));
   const stillIn = survivors.length;
-
+ 
   // Sections, in order
   const sections = [];
   if (data.reinstated) sections.push({ title: 'Everyone back', color: C.gold, entries: [{ text: joke('reinstated', 'x', {}) }] });
@@ -961,7 +968,7 @@ async function drawRoundup(data) {
     text: joke(i.auto ? 'autoLost' : i.result === 'drew' ? 'drew' : 'lost', i.uid, { name: i.name, team: i.teamName, score: i.score || 'on the day' }),
   })) });
   else sections.push({ title: 'The fallen', color: C.flag, entries: [{ text: joke('noneOut', String(r), {}) }] });
-
+ 
   const wins = survivors.filter(i => i.result === 'won' && i.sc && !i.auto).sort((a, b) => (a.sc.mine - a.sc.theirs) - (b.sc.mine - b.sc.theirs));
   if (wins.length && wins[0].sc.mine - wins[0].sc.theirs <= 7) {
     const e = wins[0], m = e.sc.mine - e.sc.theirs;
@@ -987,7 +994,7 @@ async function drawRoundup(data) {
     return { name: i.name, right: what };
   });
   if (standing.length) sections.push({ title: 'Still standing', color: C.good, max: 40, entries: standing });
-
+ 
   const cv = document.createElement('canvas');
   const ctx = cv.getContext('2d');
   // Layout pass, then draw pass
@@ -1087,14 +1094,17 @@ async function drawRoundup(data) {
   const caption = `🏉 Round ${r} roundup: ${stillIn} still standing, ${fallen.length} fell.${next} Make your pick: ${link}`;
   return { round: r, blob, url, caption };
 }
-
+ 
 async function copyText(t, msg) {
   try { await navigator.clipboard.writeText(t); toast(msg || 'Copied'); }
   catch { prompt('Copy this:', t); }
 }
-
+ 
 // ---------- actions ----------
 const actions = {
+  async copyUid() {
+    try { await navigator.clipboard.writeText(S.user.uid); toast('User ID copied.'); } catch { toast('Press and hold the ID to copy it.'); }
+  },
   tab: el => { S.tab = el.dataset.tab; S.pending = null; render(); window.scrollTo(0, 0); },
   async google() {
     try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch (err) { toast(niceError(err)); }
@@ -1250,7 +1260,7 @@ const actions = {
   },
   copyCaption() { if (S.roundup) copyText(S.roundup.caption, 'Caption copied'); },
 };
-
+ 
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-action]');
   if (el && actions[el.dataset.action]) actions[el.dataset.action](el, e);
@@ -1266,7 +1276,7 @@ document.addEventListener('change', e => {
 document.addEventListener('focusout', () => setTimeout(() => {
   if (S.renderPending) { S.renderPending = false; render(); }
 }, 0));
-
+ 
 // ---------- start ----------
 async function handleEmailLink() {
   if (!isSignInWithEmailLink(auth, location.href)) return;
@@ -1277,7 +1287,7 @@ async function handleEmailLink() {
   try { await signInWithEmailLink(auth, email, location.href); } catch (err) { toast(niceError(err)); }
   history.replaceState(null, '', location.pathname);
 }
-
+ 
 const fixturesReady = loadFixtures();
 handleEmailLink();
 onSnapshot(doc(db, 'config', 'settings'), s => { S.config = s.data() || {}; render(); });
@@ -1302,3 +1312,4 @@ setInterval(loadFixtures, 5 * 60 * 1000);  // picks up time changes and scores
 </script>
 </body>
 </html>
+ 
