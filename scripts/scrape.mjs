@@ -44,7 +44,11 @@ const isPostponed = r => {
 };
 
 const division = r => {
-  const m = `${r.competitionShortName || ''} ${r.competitionName || ''}`.match(/\b([12][ABC])\b/);
+  const t = `${r.competitionShortName || ''} ${r.competitionName || ''}`;
+  // 2026/27: old 2B and 2C became 2B North (2BN) and 2B South (2BS)
+  if (/\b2\s?BN\b|\b2B\s+North/i.test(t)) return '2BN';
+  if (/\b2\s?BS\b|\b2B\s+South/i.test(t)) return '2BS';
+  const m = t.match(/\b([12][ABC])\b/);
   return m ? m[1] : (r.competitionShortName || r.competitionId);
 };
 
