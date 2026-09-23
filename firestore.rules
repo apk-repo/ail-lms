@@ -1,0 +1,109 @@
+rules_version = '2';
+
+// Paste this into Firebase console > Firestore Database > Rules, then Publish.
+// These rules stop anyone bending the competition by editing the page:
+// you can only pick for yourself, only in the current round, only a team
+// you haven't used, only before the round's pick deadline (3pm Friday unless the
+// organiser changes it), only once you're marked as paid, and only while you're still in.
+// Everyone's picks for a round become readable once that deadline passes.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    function gameDoc(id) { return get(/databases/$(database)/documents/games/$(id)).data; }
+    function fixtureDoc(id) { return get(/databases/$(database)/documents/fixtures/$(id)).data; }
+
+    match /admins/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false; // added by hand in the Firebase console
+    }
+
+    match /config/{id}   { allow read: if true; allow write: if isAdmin(); }
+    match /meta/{id}     { allow read: if true; allow write: if isAdmin(); }
+    match /fixtures/{id} { allow read: if true; allow write: if isAdmin(); }
+
+    match /games/{gameId} {
+      allow read: if true;
+      allow write: if isAdmin();
+      match /rounds/{round} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+    }
+
+    match /entries/{entryId} {
+      allow read: if true;
+      allow create: if isAdmin() || validJoin(entryId);
+      allow update: if isAdmin() || validPickedFlag();
+      allow delete: if isAdmin();
+    }
+
+    // Players may only mark their own entry as "picked this round", so the board can show who's picked.
+    function validPickedFlag() {
+      let g = gameDoc(resource.data.gameId);
+      return signedIn()
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pickedRound'])
+        && request.resource.data.pickedRound == g.currentRound
+        && request.time < g.lockAt;
+    }
+
+    function validJoin(entryId) {
+      let d = request.resource.data;
+      let g = gameDoc(d.gameId);
+      return signedIn()
+        && d.keys().hasOnly(['gameId', 'uid', 'name', 'status', 'paid', 'usedTeams', 'outRound', 'joinedAt'])
+        && d.uid == request.auth.uid
+        && entryId == d.gameId + '_' + request.auth.uid
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 40
+        && d.status == 'alive'
+        && d.paid == false
+        && d.usedTeams is list && d.usedTeams.size() == 0
+        && d.outRound == null
+        && d.joinedAt == request.time
+        && g.status == 'active'
+        && g.joinOpen == true;
+    }
+
+    match /picks/{pickId} {
+      // Other players' picks stay hidden until the round's pick deadline passes.
+      allow read: if isAdmin()
+        || resource.data.revealed == true
+        || (signedIn() && resource.data.uid == request.auth.uid)
+        || request.time >= gameDoc(resource.data.gameId).lockAt;
+      allow create: if isAdmin() || validPick(pickId, null);
+      allow update: if isAdmin() || validPick(pickId, resource.data);
+      allow delete: if isAdmin();
+    }
+
+    function validPick(pickId, before) {
+      let d = request.resource.data;
+      let g = gameDoc(d.gameId);
+      let e = get(/databases/$(database)/documents/entries/$(d.gameId + '_' + request.auth.uid)).data;
+      let f = fixtureDoc(d.fixtureId);
+      return signedIn()
+        && d.keys().hasOnly(['gameId', 'uid', 'round', 'fixtureId', 'teamId', 'teamName', 'auto', 'revealed', 'updatedAt'])
+        && d.uid == request.auth.uid
+        && pickId == d.gameId + '_' + request.auth.uid + '_' + string(d.round)
+        && g.status == 'active'
+        && d.round == g.currentRound
+        && e.status == 'alive'
+        && f.round == d.round
+        && (d.teamId == f.homeTeamId || d.teamId == f.awayTeamId)
+        && request.time < f.kickoff
+        && request.time < g.lockAt
+        && !(d.teamId in e.usedTeams)
+        && e.paid == true
+        && d.auto == false
+        && d.revealed == false
+        && d.teamName is string && d.teamName.size() <= 60
+        && d.updatedAt == request.time
+        // Changing an existing pick is only allowed if its game hasn't kicked off either.
+        && (before == null || request.time < fixtureDoc(before.fixtureId).kickoff);
+    }
+  }
+}
