@@ -1,0 +1,28 @@
+name: Update fixtures
+
+on:
+  schedule:
+    # Every 20 minutes Friday to Sunday (match weekends), once a morning Monday to Thursday. Times are UTC.
+    - cron: '*/20 * * * 5,6,0'
+    - cron: '0 7 * * 1-4'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Fetch fixtures and results
+        run: node scripts/scrape.mjs
+      - name: Save any changes
+        run: |
+          git config user.name "fixtures-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet || (git commit -m "Update fixtures" && git push)
