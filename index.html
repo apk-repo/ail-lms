@@ -179,6 +179,10 @@
   .result-row input[type=number] { width: 100%; min-height: 40px; text-align: center; border: 1.5px solid var(--line); border-radius: 8px; background: var(--card); }
   .result-row .r { text-align: right; }
   .result-row .extra { grid-column: 1 / -1; display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; }
+  label.check { display: flex; gap: 10px; align-items: flex-start; margin: 4px 0 14px; font-size: 15px; }
+  label.check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--pitch); flex: none; }
+  .field textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--ink); resize: vertical; }
+  .payinfo { margin: 10px 0 0; white-space: pre-line; }
   .paybox { margin-top: 12px; display: grid; gap: 10px; }
   .paybox > .btn { justify-self: start; }
   .paylink { display: flex; align-items: center; gap: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 8px 8px 8px 12px; }
@@ -464,10 +468,16 @@ function viewSignIn() {
     <p class="muted small" style="margin-top:16px">If you opened this from Facebook or Instagram, open it in Chrome or Safari instead, as Google sign-in doesn't work inside those apps.</p>`;
 }
  
+// Revolut details can be switched off in Settings (e.g. when an organiser collects by a Revolut pocket instead)
+const revolutOn = () => !!S.config.revolutLink && S.config.showRevolut !== false;
+const payInstructions = () => {
+  const fee = Number(S.config.entryFee) || 0;
+  return (S.config.payInstructions || '').trim() || `Pay your ${fee ? euro(fee) + ' ' : ''}entry to one of the organisers.`;
+};
 // Pay button plus the link written out, for when the button won't open the app
 function revolutBox() {
   const link = S.config.revolutLink;
-  if (!link) return '';
+  if (!revolutOn()) return `<p class="payinfo">${esc(payInstructions())}</p>`;
   const fee = Number(S.config.entryFee) || 0;
   const tag = (link.match(/revolut\.me\/@?([\w.-]+)/i) || [])[1];
   return `<div class="paybox">
@@ -479,8 +489,8 @@ function revolutBox() {
  
 function payNote(me) {
   const fee = Number(S.config.entryFee) || 0;
-  if (!me || me.paid || !S.config.revolutLink) return '';
-  return `<div class="note warn">Entry is ${fee ? euro(fee) : 'due'}. Pay by Revolut and the organiser will mark you as paid.${revolutBox()}</div>`;
+  if (!me || me.paid) return '';
+  return `<div class="note warn">Entry is ${fee ? euro(fee) : 'due'}.${revolutOn() ? ' Pay by Revolut and' : ' Once it\'s paid,'} the organiser will mark you as paid.${revolutBox()}</div>`;
 }
  
 function viewPick() {
@@ -515,7 +525,7 @@ function viewJoin() {
   const firstRound = roundFixtures(g.startRound);
   const first = firstRound.length ? Math.min(...firstRound.map(f => f.kickoff)) : null;
   return `<h2>Join the game</h2>
-    <p>Entry is ${fee ? euro(fee) : 'set by the organiser'}${S.config.revolutLink ? `, paid by <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Revolut</a>` : ''}. Picks start in Round ${g.startRound}${first ? ', ' + esc(fmtDay(first)) : ''}.</p>
+    <p>Entry is ${fee ? euro(fee) : 'set by the organiser'}${revolutOn() ? `, paid by <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Revolut</a>` : ''}. Picks start in Round ${g.startRound}${first ? ', ' + esc(fmtDay(first)) : ''}.</p>
     <div class="stack">
       <label class="field">Your name, as others will see it<input id="joinName" maxlength="40" value="${esc(draft('joinName', S.user.displayName || ''))}"></label>
       <button class="btn" data-action="join">Join the game</button>
@@ -691,7 +701,7 @@ function viewRules() {
     <p>If your team's game is postponed, you go through, and that team counts as used.</p>
     <p>If everyone left loses or draws in the same round, nobody goes out: they're all reinstated for the next round, and the teams they picked still count as used. This can happen more than once.</p>
     <p>The last one standing wins the pot. If the season runs out with more than one player left, they share it.</p>
-    <p>Entry is ${fee ? euro(fee) : 'set by the organiser'}${S.config.revolutLink ? `, paid by <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Revolut</a>` : ''}.</p>
+    <p>Entry is ${fee ? euro(fee) : 'set by the organiser'}${revolutOn() ? `, paid by <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Revolut</a>` : ''}.</p>
     ${S.user ? `<h3>Organiser setup</h3><p class="small muted">Your user ID (only needed when setting up an organiser):</p><p class="small"><code>${esc(S.user.uid)}</code></p>` : ''}`;
 }
  
@@ -751,6 +761,8 @@ function viewAdmin() {
     <label class="field">Competition name<input id="setTitle" value="${esc(draft('setTitle', S.config.title || DEFAULT_TITLE))}"></label>
     <label class="field">Entry fee (€)<input id="setFee" type="number" min="0" step="1" value="${esc(draft('setFee', S.config.entryFee ?? 10))}"></label>
     <label class="field">Revolut payment link<input id="setRevolut" type="url" placeholder="https://revolut.me/yourname" value="${esc(draft('setRevolut', S.config.revolutLink || ''))}"></label>
+    <label class="check"><input id="setShowRev" type="checkbox" ${draft('setShowRev', S.config.showRevolut !== false) ? 'checked' : ''}> Show the Revolut link and pay button to players</label>
+    <label class="field">How to pay, shown when the Revolut link is hidden<textarea id="setPayText" rows="3" placeholder="${esc(`Pay your ${Number(S.config.entryFee) ? euro(Number(S.config.entryFee)) + ' ' : ''}entry to one of the organisers.`)}">${esc(draft('setPayText', S.config.payInstructions || ''))}</textarea></label>
     <button class="btn small" data-action="saveSettings">Save settings</button></div></div>`;
  
   return html;
@@ -1381,8 +1393,10 @@ const actions = {
         title: $('#setTitle').value.trim() || DEFAULT_TITLE,
         entryFee: Number($('#setFee').value) || 0,
         revolutLink: $('#setRevolut').value.trim(),
+        showRevolut: $('#setShowRev').checked,
+        payInstructions: $('#setPayText').value.trim(),
       }, { merge: true });
-      ['setTitle', 'setFee', 'setRevolut'].forEach(k => delete S.drafts[k]);
+      ['setTitle', 'setFee', 'setRevolut', 'setShowRev', 'setPayText'].forEach(k => delete S.drafts[k]);
       toast('Settings saved');
     } catch (err) { toast(niceError(err)); }
   },
@@ -1535,4 +1549,3 @@ setInterval(loadFixtures, 5 * 60 * 1000);  // picks up time changes and scores
 </script>
 </body>
 </html>
- 
