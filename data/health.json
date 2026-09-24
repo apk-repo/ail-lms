@@ -1,6 +1,6 @@
 {
- "fixturesChangedAt": "2026-09-23T20:17:09.105Z",
- "checkedAt": "2026-09-23T20:17:09.105Z",
+ "fixturesChangedAt": "2026-09-24T07:05:12.319Z",
+ "checkedAt": "2026-09-24T07:05:12.319Z",
  "total": 450,
  "divisions": [
   {
@@ -12,7 +12,7 @@
   },
   {
    "comp": "215683",
-   "division": "AIL 2BS",
+   "division": "2BS",
    "ok": true,
    "fixtures": 90,
    "results": 0
@@ -33,7 +33,7 @@
   },
   {
    "comp": "215686",
-   "division": "AIL 2BN",
+   "division": "2BN",
    "ok": true,
    "fixtures": 90,
    "results": 0
