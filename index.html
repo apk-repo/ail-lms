@@ -54,7 +54,7 @@
   button, input, select { font: inherit; color: inherit; }
   a { color: var(--pitch); }
   :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
-
+ 
   /* Header: a floodlit, freshly mown pitch */
   header.top {
     color: #fff; padding: 16px 18px 20px; border-bottom: 4px solid var(--gold);
@@ -70,14 +70,14 @@
     background: rgba(0,0,0,.28); border: 1px solid rgba(255,255,255,.22);
   }
   header .deadline.closed { background: var(--gold); border-color: var(--gold); color: #0E1C15; }
-
+ 
   main { padding: 20px 18px; }
   h2 { font: 700 30px/1.05 var(--display); margin: 0 0 8px; }
   h3 { font: 700 22px/1.15 var(--display); margin: 26px 0 10px; }
   p { margin: 0 0 12px; }
   .muted { color: var(--muted); }
   .small { font-size: 14px; }
-
+ 
   .note {
     background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--pitch);
     padding: 12px 14px; margin: 0 0 16px; border-radius: 4px 10px 10px 4px;
@@ -85,7 +85,7 @@
   .note.warn { border-left-color: var(--gold); }
   .note.out { border-left-color: var(--flag); }
   .hint { font-size: 14px; color: var(--muted); margin: 6px 0 0; }
-
+ 
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     min-height: 46px; padding: 0 18px; border-radius: 999px; border: 2px solid var(--pitch);
@@ -103,7 +103,7 @@
     display: block; width: 100%; margin-top: 4px; min-height: 46px; padding: 0 12px;
     border: 1.5px solid var(--line); border-radius: 8px; background: var(--card);
   }
-
+ 
   /* Fixture list */
   .div-head { font: 700 21px/1 var(--display); margin: 26px 0 10px; display: flex; justify-content: space-between; align-items: baseline; }
   .div-head span { font: 500 14px var(--body); color: var(--muted); }
@@ -131,7 +131,7 @@
   }
   .crest b { font: 700 14px var(--display); color: var(--crest-ink); }
   .crest img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #fff; }
-
+ 
   /* Pending pick bar */
   .confirm-bar {
     position: fixed; left: 0; right: 0; bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px));
@@ -140,7 +140,7 @@
   .confirm-bar .wrap { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
   .confirm-bar .btn { background: var(--gold); border-color: var(--gold); color: #0E1C15; }
   .confirm-bar .btn.ghost { background: transparent; color: #fff; border-color: #fff; }
-
+ 
   /* Board */
   .this-round { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 22px; }
   .this-round .head { padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
@@ -157,7 +157,7 @@
   .prow .what .score.behind { color: var(--flag); }
   .prow.me .who::after { content: ' (you)'; font: 500 14px var(--body); color: var(--muted); }
   .tally { padding: 10px 16px; font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); background: var(--paper); }
-
+ 
   .board { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 6px 16px; }
   .board .person { padding: 10px 0; border-bottom: 1px solid var(--line); }
   .board .person:last-child { border-bottom: 0; }
@@ -170,7 +170,7 @@
   .chip.lost, .chip.drew { border-color: var(--flag); color: var(--flag); }
   .paid { font-size: 12px; font-weight: 700; padding: 1px 7px; border-radius: 4px; background: var(--pitch); color: #fff; text-decoration: none; }
   .paid.no { background: var(--flag); }
-
+ 
   /* Admin */
   .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
   .panel h3 { margin-top: 0; }
@@ -179,12 +179,17 @@
   .result-row input[type=number] { width: 100%; min-height: 40px; text-align: center; border: 1.5px solid var(--line); border-radius: 8px; background: var(--card); }
   .result-row .r { text-align: right; }
   .result-row .extra { grid-column: 1 / -1; display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; }
+  .paybox { margin-top: 12px; display: grid; gap: 10px; }
+  .paybox > .btn { justify-self: start; }
+  .paylink { display: flex; align-items: center; gap: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 8px 8px 8px 12px; }
+  .paylink span { flex: 1; min-width: 0; overflow-wrap: anywhere; font-family: ui-monospace, Menlo, monospace; font-size: 14px; user-select: all; }
+  .paybox p { margin: 0; }
   table.list { width: 100%; border-collapse: collapse; font-size: 14px; }
   table.list td { padding: 8px 4px; border-bottom: 1px solid var(--line); vertical-align: middle; }
   table.list td:last-child { text-align: right; white-space: nowrap; }
   .roundup-preview { margin-top: 12px; }
   .roundup-preview img { display: block; width: 100%; max-width: 420px; border-radius: 10px; border: 1px solid var(--line); }
-
+ 
   /* Tab bar */
   nav.tabs {
     position: fixed; left: 0; right: 0; bottom: 0; background: var(--turf-a);
@@ -196,7 +201,7 @@
     color: rgba(255,255,255,.7); cursor: pointer; border-top: 3px solid transparent;
   }
   nav.tabs button[aria-current="page"] { color: #fff; border-top-color: var(--gold); }
-
+ 
   .toast {
     position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px) + 80px);
     background: var(--turf-a); color: #fff; padding: 10px 16px; border-radius: 999px; font-weight: 600; max-width: 90vw; z-index: 5;
@@ -210,10 +215,10 @@
 <body>
 <header class="top"><div class="wrap" id="header"></div></header>
 <main><div class="wrap" id="app"><p class="muted">Loading…</p></div></main>
-<footer class="credit">Created by Aaron Kane & Autism</footer>
+<footer class="credit">Created by Aaron Kane</footer>
 <div id="bar"></div>
 <nav class="tabs" aria-label="Sections"><div class="wrap" id="tabs"></div></nav>
-
+ 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import {
@@ -224,7 +229,7 @@ import {
   getFirestore, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, collection, query, where, orderBy, limit,
   onSnapshot, getDocs, writeBatch, serverTimestamp, Timestamp, arrayUnion,
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-
+ 
 // ============ PASTE YOUR FIREBASE CONFIG BELOW (see SETUP.md, step 7) ============
 const firebaseConfig = {
   apiKey: "AIzaSyCXS0rzaSdhjptGFyMvAx698AUI991o580",
@@ -235,11 +240,11 @@ const firebaseConfig = {
   appId: "1:510427808650:web:16703d0e5a674e163b7e73"
 };
 // ================================================================================
-
+ 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
+ 
 const DIVS = ['1A', '1B', '2A', '2BN', '2BS'];
 const DIV_NAMES = { '2BN': '2B North', '2BS': '2B South' };
 const divName = d => DIV_NAMES[d] || d;
@@ -254,7 +259,7 @@ const S = {
 const fxById = new Map();
 let unsubs = [];
 let roundSub = null, roundSubKey = '';
-
+ 
 // ---------- helpers ----------
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -266,7 +271,7 @@ const euro = n => '€' + (Math.round(n * 100) / 100).toLocaleString('en-IE');
 const initials = n => n.split(/\s+/).filter(w => w && !/^(of|the)$/i.test(w)).map(w => w[0]).join('').slice(0, 3).toUpperCase();
 const hashStr = s => { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
 const draft = (id, fallback) => (id in S.drafts ? S.drafts[id] : fallback);
-
+ 
 function toast(msg) {
   const t = document.createElement('div');
   t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
@@ -285,7 +290,7 @@ const roundFixtures = r => S.fixtures.filter(f => f.round === r)
 const myEntry = () => S.user && S.entries.find(e => e.uid === S.user.uid);
 const alive = () => S.entries.filter(e => e.status === 'alive');
 const nameOf = uid => S.entries.find(e => e.uid === uid)?.name || 'Unknown';
-
+ 
 // ---------- pick deadline: 3pm Irish time on the Friday before each round ----------
 function dublinParts(ts) {
   const o = {};
@@ -324,7 +329,7 @@ const fmtLock = ts => {
   return fmt(ts, { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '') + ', ' + h + (p.mi ? ':' + String(p.mi).padStart(2, '0') : '') + (p.h < 12 ? 'am' : 'pm');
 };
 const lockFields = (r, ts) => ({ lockAt: Timestamp.fromMillis(ts * 1000), lockRound: r, lockOverride: false });
-
+ 
 // ---------- data ----------
 async function loadFixtures() {
   try {
@@ -338,7 +343,7 @@ async function loadFixtures() {
   try { S.health = await (await fetch('data/health.json?t=' + Date.now(), { cache: 'no-store' })).json(); } catch { S.health = null; }
   render();
 }
-
+ 
 function subscribeGame() {
   unsubs.forEach(u => u()); unsubs = [];
   S.entries = []; S.myPicks = []; S.revealed = []; S.allPicks = [];
@@ -360,7 +365,7 @@ function subscribeGame() {
     }));
   }
 }
-
+ 
 // Once picks close, everyone's pick for the current round can be read and shown on the board.
 function syncRoundSub() {
   const g = S.game;
@@ -373,7 +378,7 @@ function syncRoundSub() {
     s => { S.roundPicks = s.docs.map(d => d.data()); render(); },
     () => { roundSubKey = ''; S.roundPicks = []; });
 }
-
+ 
 // Copies the kickoff times and teams into Firebase so the security rules can check them.
 async function syncFixtures(force) {
   if (!S.isAdmin || !S.fixtures.length) return;
@@ -401,7 +406,7 @@ async function refreshLock() {
     await updateDoc(doc(db, 'games', g.id), lockFields(g.currentRound, want));
   }
 }
-
+ 
 async function commitOps(ops) {
   for (let i = 0; i < ops.length; i += 400) {
     const b = writeBatch(db);
@@ -409,7 +414,7 @@ async function commitOps(ops) {
     await b.commit();
   }
 }
-
+ 
 // ---------- rendering ----------
 function render() {
   const active = document.activeElement;
@@ -421,7 +426,7 @@ function render() {
   $('#app').innerHTML = (views[S.tab] || viewPick)();
   $('#bar').innerHTML = S.tab === 'pick' ? viewConfirmBar() : '';
 }
-
+ 
 function viewHeader() {
   const title = esc(S.config.title || DEFAULT_TITLE);
   const g = S.game;
@@ -438,13 +443,13 @@ function viewHeader() {
   if (fee && total) bits.push(`<span><b>${euro(fee * total)}</b> pot</span>`);
   return `<div class="comp">${title}</div><div class="round">${big}</div><div class="status">${bits.join('')}</div>`;
 }
-
+ 
 function viewTabs() {
   const tabs = [['pick', 'Pick'], ['board', 'Board'], ['mine', 'My picks'], ['rules', 'Rules']];
   if (S.isAdmin) tabs.push(['admin', 'Admin']);
   return tabs.map(([k, l]) => `<button data-action="tab" data-tab="${k}" ${S.tab === k ? 'aria-current="page"' : ''}>${l}</button>`).join('');
 }
-
+ 
 function viewSignIn() {
   return `<h2>Pick a team. If they win, you're through.</h2>
     <p>Each round, pick one team from any of the five AIL divisions to win. Lose or draw and you're out. You can't pick the same team twice. Last one standing takes the pot.</p>
@@ -458,13 +463,26 @@ function viewSignIn() {
     </div>
     <p class="muted small" style="margin-top:16px">If you opened this from Facebook or Instagram, open it in Chrome or Safari instead, as Google sign-in doesn't work inside those apps.</p>`;
 }
-
+ 
+// Pay button plus the link written out, for when the button won't open the app
+function revolutBox() {
+  const link = S.config.revolutLink;
+  if (!link) return '';
+  const fee = Number(S.config.entryFee) || 0;
+  const tag = (link.match(/revolut\.me\/@?([\w.-]+)/i) || [])[1];
+  return `<div class="paybox">
+    <a class="btn" href="${esc(link)}" target="_blank" rel="noopener">Pay ${fee ? euro(fee) + ' ' : ''}by Revolut</a>
+    <div class="paylink"><span>${esc(link.replace(/^https?:\/\//, ''))}</span><button class="btn ghost small" data-action="copyRevolut">Copy link</button></div>
+    <p class="small muted">If the button doesn't open Revolut, copy the link and paste it into your browser${tag ? `, or open Revolut and send ${fee ? euro(fee) : 'the entry'} to <b>@${esc(tag)}</b>` : ''}. On iPhone, pressing and holding the button and choosing <b>Open in Revolut</b> also works.</p>
+  </div>`;
+}
+ 
 function payNote(me) {
   const fee = Number(S.config.entryFee) || 0;
   if (!me || me.paid || !S.config.revolutLink) return '';
-  return `<div class="note warn">Entry is ${fee ? euro(fee) : 'due'}. <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Pay by Revolut</a> and the organiser will mark you as paid.</div>`;
+  return `<div class="note warn">Entry is ${fee ? euro(fee) : 'due'}. Pay by Revolut and the organiser will mark you as paid.${revolutBox()}</div>`;
 }
-
+ 
 function viewPick() {
   const g = S.game;
   if (!S.fixturesLoaded) return `<p class="muted">Loading fixtures…</p>`;
@@ -484,9 +502,12 @@ function viewPick() {
     const p = S.myPicks.find(x => x.round === me.outRound);
     return `${payNote(me)}<div class="note out"><b>You're out.</b> ${p ? esc(p.teamName) + ' let you down' : 'Your team didn\'t win'} in Round ${me.outRound}. Keep an eye on the board. A new game starts when this one ends.</div>`;
   }
-  return (me.paid || picksClosed() ? payNote(me) : '') + viewRoundPicker(me);
+  const lastDone = Math.max(0, ...(g.confirmedRounds || []));
+  const redo = (g.reinstatedRounds || []).includes(lastDone)
+    ? `<div class="note"><b>Everyone lost in Round ${lastDone}, so you're all back in.</b> The teams you picked still count as used.</div>` : '';
+  return redo + (me.paid || picksClosed() ? payNote(me) : '') + viewRoundPicker(me);
 }
-
+ 
 function viewJoin() {
   const g = S.game;
   if (!g.joinOpen) return `<h2>Entries are closed</h2><p>This game is already under way. You can follow it on the board, and join the next one when it starts.</p>`;
@@ -500,7 +521,7 @@ function viewJoin() {
       <button class="btn" data-action="join">Join the game</button>
     </div>`;
 }
-
+ 
 function viewRoundPicker(me) {
   const g = S.game, r = g.currentRound, fx = roundFixtures(r);
   if (!fx.length) return `<h2>Round ${r}</h2><p>Fixtures for this round haven't loaded yet. Check back later.</p>`;
@@ -513,14 +534,14 @@ function viewRoundPicker(me) {
   const used = new Set(me.usedTeams || []);
   const firstKick = Math.min(...fx.map(f => f.kickoff));
   const unpaid = !me.paid;
-
+ 
   let status;
   if (myPick && locked) status = `<div class="note"><b>Locked in: ${esc(myPick.teamName)}.</b> Everyone's picks are now on the board. Results are confirmed after the final whistle.</div>`;
   else if (myPick) status = `<div class="note"><b>Your pick: ${esc(myPick.teamName)}.</b> ${pickFx ? `You can change it until ${esc(fmtLock(lock))}.` : 'Its game is no longer listed, so pick again.'}</div>`;
-  else if (unpaid && !locked) status = `<div class="note warn"><b>Pay to pick.</b> Picks open once the organiser marks your entry as paid${S.config.revolutLink ? ` (<a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">pay by Revolut</a>)` : ''}. Picks close <b>${esc(fmtLock(lock))}</b>.</div>`;
+  else if (unpaid && !locked) status = `<div class="note warn"><b>Pay to pick.</b> Picks open once the organiser marks your entry as paid. Picks close <b>${esc(fmtLock(lock))}</b>.${revolutBox()}</div>`;
   else if (locked) status = `<div class="note warn">Picks for Round ${r} closed ${esc(fmtLock(lock))}. As you didn't pick, you'll be given a random team you haven't used.</div>`;
   else status = `<div class="note warn"><b>No pick yet.</b> Tap a team to pick them. Picks close <b>${esc(fmtLock(lock))}</b>. If you don't pick, you'll be given a random team you haven't used.</div>`;
-
+ 
   let html = `<h2>${esc(fmtDay(firstKick))}</h2><p class="muted">Pick one team to win.</p>${status}`;
   for (const div of DIVS) {
     const games = fx.filter(f => f.div === div);
@@ -536,7 +557,7 @@ function viewRoundPicker(me) {
   }
   return html;
 }
-
+ 
 function matchCard(f, ctx) {
   const started = now() >= f.kickoff;
   const side = t => {
@@ -563,7 +584,7 @@ function matchCard(f, ctx) {
   return `<div class="match"><div class="sides">${side(f.home)}<div class="v">v</div>${side(f.away)}</div>
     <div class="meta"><span>${esc(fmtKick(f.kickoff))}</span><span>${score ? esc(score) : esc(f.venue)}</span></div></div>`;
 }
-
+ 
 function viewConfirmBar() {
   const p = S.pending; if (!p) return '';
   const f = fxById.get(p.fixtureId); const t = f && (f.home.id === p.teamId ? f.home : f.away);
@@ -573,7 +594,7 @@ function viewConfirmBar() {
     <span class="row"><button class="btn ghost small" data-action="cancelPick">Cancel</button>
     <button class="btn small" data-action="confirmPick" ${S.busy ? 'disabled' : ''}>Confirm pick</button></span></div></div>`;
 }
-
+ 
 function viewFinished() {
   const g = S.game;
   const names = (g.winners || []).map(nameOf);
@@ -582,7 +603,7 @@ function viewFinished() {
   return `<h2>${who}.</h2>${pot ? `<p>Pot: ${euro(pot)}${names.length > 1 ? `, ${euro(pot / names.length)} each` : ''}.</p>` : ''}
     <p class="muted">The organiser will start the next game soon. The final board is below.</p>${boardList()}`;
 }
-
+ 
 function boardList() {
   const picksBy = new Map();
   S.revealed.forEach(p => { if (!picksBy.has(p.uid)) picksBy.set(p.uid, []); picksBy.get(p.uid).push(p); });
@@ -590,20 +611,20 @@ function boardList() {
   const gone = S.entries.filter(e => e.status !== 'alive').sort((a, b) => (b.outRound || 0) - (a.outRound || 0) || a.name.localeCompare(b.name));
   const row = e => {
     const ps = (picksBy.get(e.uid) || []).sort((a, b) => a.round - b.round);
-    const chips = ps.map(p => `<span class="chip ${esc(p.result || '')}">R${p.round} ${esc(p.teamName)}${p.auto ? ' (auto)' : ''}${p.result === 'won' ? ' ✓' : p.result === 'postponed' ? ' (P)' : (p.result === 'lost' || p.result === 'drew') ? ' ✗' : ''}</span>`).join('');
+    const chips = ps.map(p => `<span class="chip ${esc(p.result || '')}">R${p.round} ${esc(p.teamName)}${p.auto ? ' (auto)' : ''}${p.result === 'won' ? ' ✓' : p.result === 'postponed' ? ' (P)' : (p.result === 'lost' || p.result === 'drew') ? (p.reinstated ? ' ↺' : ' ✗') : ''}</span>`).join('');
     const paid = S.isAdmin ? ` <span class="paid ${e.paid ? '' : 'no'}">${e.paid ? 'Paid' : 'Unpaid'}</span>` : '';
     return `<div class="person ${e.status === 'alive' ? '' : 'gone'}"><div class="pname"><span>${esc(e.name)}</span><small>${e.status === 'alive' ? 'Still in' : 'Out R' + e.outRound}${paid}</small></div>${chips ? `<div class="chips">${chips}</div>` : ''}</div>`;
   };
   if (!S.entries.length) return `<p class="muted">No one has joined yet.</p>`;
   return `<div class="board">${still.map(row).join('')}${gone.map(row).join('')}</div>`;
 }
-
+ 
 function viewBoard() {
   if (!S.game) return `<h2>No game running yet</h2>`;
   const a = alive().length, o = S.entries.length - a;
   return `<h2>${a} still standing</h2><p class="muted">${o} out.</p>${S.game.status === 'active' ? roundPicksSection() : ''}<h3>Whole game</h3>${boardList()}`;
 }
-
+ 
 // This round: who's picked, and once picks close, what everyone picked.
 function roundPicksSection() {
   const g = S.game, r = g.currentRound, closed = picksClosed(), l = lockAt();
@@ -614,7 +635,7 @@ function roundPicksSection() {
   const people = alive().sort((x, y) => x.name.localeCompare(y.name));
   if (!people.length) return '';
   const pickedCount = people.filter(e => picks.has(e.uid) || e.pickedRound === r).length;
-
+ 
   const rows = people.map(e => {
     const p = picks.get(e.uid), isMe = S.user && e.uid === S.user.uid;
     let what;
@@ -634,7 +655,7 @@ function roundPicksSection() {
     else what = e.pickedRound === r ? `<div class="what wait">Picked ✓</div>` : `<div class="what wait">Not picked yet</div>`;
     return `<div class="prow ${isMe ? 'me' : ''}"><span class="who">${esc(e.name)}</span>${what}</div>`;
   }).join('');
-
+ 
   let tally = '';
   if (closed && picks.size) {
     const counts = new Map();
@@ -645,17 +666,18 @@ function roundPicksSection() {
   const headRight = closed ? 'Picks closed' : `${pickedCount} of ${people.length} picked. Revealed ${esc(fmtLock(l))}`;
   return `<div class="this-round"><div class="head"><b>Round ${r} picks</b><span>${headRight}</span></div>${rows}${tally}</div>`;
 }
-
+ 
 function viewMine() {
   if (!S.user) return `<h2>My picks</h2><p>Sign in on the Pick tab to see your picks.</p>`;
   const labels = { won: 'Won, through', lost: 'Lost, out', drew: 'Drew, out', postponed: 'Postponed, through' };
   const ps = [...S.myPicks].sort((a, b) => b.round - a.round);
-  const rows = ps.map(p => `<tr><td>Round ${p.round}</td><td><b>${esc(p.teamName)}</b>${p.auto ? ' (auto)' : ''}</td><td>${p.result ? labels[p.result] : 'Awaiting result'}</td></tr>`).join('');
+  const lbl = p => !p.result ? 'Awaiting result' : p.reinstated ? `${p.result === 'drew' ? 'Drew' : 'Lost'}, but everyone was reinstated` : labels[p.result];
+  const rows = ps.map(p => `<tr><td>Round ${p.round}</td><td><b>${esc(p.teamName)}</b>${p.auto ? ' (auto)' : ''}</td><td>${lbl(p)}</td></tr>`).join('');
   return `<h2>My picks</h2>${rows ? `<div class="panel"><table class="list">${rows}</table></div>` : '<p class="muted">No picks yet.</p>'}
     <h3>Account</h3><p class="small">Signed in as ${esc(S.user.email || S.user.displayName || 'you')}.</p>
     <button class="btn ghost small" data-action="signOut">Sign out</button>`;
 }
-
+ 
 function viewRules() {
   const fee = Number(S.config.entryFee) || 0;
   return `<h2>How it works</h2>
@@ -667,18 +689,18 @@ function viewRules() {
     <p>If something goes wrong, like you can't get online before the deadline, contact the organiser. They can enter a pick for you or extend the deadline.</p>
     <p>If you don't pick at all, you're given a random team you haven't used yet.</p>
     <p>If your team's game is postponed, you go through, and that team counts as used.</p>
-    <p>If everyone left goes out in the same round, they're all reinstated.</p>
+    <p>If everyone left loses or draws in the same round, nobody goes out: they're all reinstated for the next round, and the teams they picked still count as used. This can happen more than once.</p>
     <p>The last one standing wins the pot. If the season runs out with more than one player left, they share it.</p>
     <p>Entry is ${fee ? euro(fee) : 'set by the organiser'}${S.config.revolutLink ? `, paid by <a href="${esc(S.config.revolutLink)}" target="_blank" rel="noopener">Revolut</a>` : ''}.</p>
     ${S.user ? `<h3>Organiser setup</h3><p class="small muted">Your user ID (only needed when setting up an organiser):</p><p class="small"><code>${esc(S.user.uid)}</code></p>` : ''}`;
 }
-
+ 
 // ---------- admin ----------
 function viewAdmin() {
   if (!S.isAdmin) return `<p>Organisers only.</p>`;
   const g = S.game;
   let html = `<h2>Organiser</h2>`;
-
+ 
   // Game
   if (!g || g.status === 'finished') {
     const rounds = roundsList();
@@ -699,9 +721,9 @@ function viewAdmin() {
       <div class="row"><button class="btn ghost small" data-action="toggleJoin">${g.joinOpen ? 'Close entries' : 'Reopen entries'}</button>
       <button class="btn danger small" data-action="endGame">End game now</button></div></div>`;
   }
-
+ 
   if (g && (g.confirmedRounds || []).length) html += viewRoundupPanel();
-
+ 
   // Players
   if (g) {
     const rows = [...S.entries].sort((a, b) => a.name.localeCompare(b.name)).map(e => `<tr>
@@ -723,17 +745,17 @@ function viewAdmin() {
     ${errors.length ? `<div class="note out small">Feed problem: ${errors.map(e => esc(e.comp + ' ' + e.error)).join('; ')}. Previous data is being kept.</div>` : ''}
     <p class="small muted">Firebase copy: ${esc(S.syncState || 'Checking…')}</p>
     <button class="btn ghost small" data-action="syncNow">Sync fixtures now</button></div>`;
-
+ 
   // Settings
   html += `<div class="panel"><h3>Settings</h3><div class="stack">
     <label class="field">Competition name<input id="setTitle" value="${esc(draft('setTitle', S.config.title || DEFAULT_TITLE))}"></label>
     <label class="field">Entry fee (€)<input id="setFee" type="number" min="0" step="1" value="${esc(draft('setFee', S.config.entryFee ?? 10))}"></label>
     <label class="field">Revolut payment link<input id="setRevolut" type="url" placeholder="https://revolut.me/yourname" value="${esc(draft('setRevolut', S.config.revolutLink || ''))}"></label>
     <button class="btn small" data-action="saveSettings">Save settings</button></div></div>`;
-
+ 
   return html;
 }
-
+ 
 function viewDeadlinePanel() {
   const g = S.game, r = g.currentRound, l = lockAt(), closed = picksClosed();
   const people = alive().sort((a, b) => a.name.localeCompare(b.name));
@@ -742,7 +764,7 @@ function viewDeadlinePanel() {
   const lp = l ? dublinParts(l) : null;
   const pad = n => String(n).padStart(2, '0');
   const local = lp ? `${lp.y}-${pad(lp.m)}-${pad(lp.d)}T${pad(lp.h)}:${pad(lp.mi)}` : '';
-
+ 
   const ovP = draft('ovPlayer', '');
   const ent = people.find(e => e.uid === ovP);
   const used = new Set(ent?.usedTeams || []);
@@ -750,7 +772,7 @@ function viewDeadlinePanel() {
     .filter(([, t]) => !used.has(t.id))
     .map(([f, t, o]) => `<option value="${esc(f.id + '|' + t.id)}">${esc(t.name)} (v ${esc(o.name)}, ${esc(f.div)})</option>`).join('') : '';
   const current = ent && picks.get(ent.uid);
-
+ 
   return `<div class="panel"><h3>Round ${r} picks</h3>
     <p class="small">Picks ${closed ? 'closed' : 'close'} <b>${l ? esc(fmtLock(l)) : 'when fixtures load'}</b>${g.lockOverride ? ' (changed by you)' : ''}.
       ${people.length - missing.length} of ${people.length} still in have picked.</p>
@@ -770,7 +792,7 @@ function viewDeadlinePanel() {
       <p></p><button class="btn small" data-action="savePickFor">Save pick for ${esc(ent.name)}</button>` : ''}
   </div>`;
 }
-
+ 
 function viewConfirmPanel() {
   const g = S.game, r = g.currentRound, fx = roundFixtures(r);
   const picked = S.allPicks.filter(p => p.round === r).length;
@@ -790,7 +812,7 @@ function viewConfirmPanel() {
     <p class="small">${picked} of ${alive().length} players still in have picked. Scores fill in from the feed. Check them, correct any that are wrong, and tick any game that was postponed.</p>
     ${rows}<p></p><button class="btn" data-action="confirmRound" ${S.busy ? 'disabled' : ''}>Confirm Round ${r} results</button></div>`;
 }
-
+ 
 function viewRoundupPanel() {
   const g = S.game, done = [...(g.confirmedRounds || [])].sort((a, b) => b - a);
   const sel = draft('ruRound', String(done[0]));
@@ -808,7 +830,7 @@ function viewRoundupPanel() {
       <p class="hint">On a phone, Share opens your share menu: choose WhatsApp, then the group. "Make a new version" swaps in different jokes.</p></div>` : ''}
   </div>`;
 }
-
+ 
 async function confirmRound() {
   const g = S.game, r = g.currentRound, fx = roundFixtures(r);
   const results = {}; const missing = [];
@@ -819,7 +841,7 @@ async function confirmRound() {
     results[f.id] = { postponed: pp, home: hs === '' ? null : +hs, away: as === '' ? null : +as };
   }
   if (missing.length) { alert(`Enter a score, or tick Postponed, for:\n\n${missing.join('\n')}`); return; }
-
+ 
   const aliveNow = alive();
   const snap = await getDocs(query(collection(db, 'picks'), where('gameId', '==', g.id), where('round', '==', r)));
   const picks = new Map(snap.docs.map(d => [d.data().uid, d.data()]));
@@ -852,9 +874,9 @@ async function confirmRound() {
   const autoCount = outcomes.filter(o => o.auto).length;
   const msg = `Confirm Round ${r}?\n\n${outCount} going out, ${reinstated ? outcomes.length : survivors.length} still in.` +
     (autoCount ? `\n${autoCount} given a random team for not picking.` : '') +
-    (reinstated ? '\n\nEveryone lost, so everyone still in is reinstated.' : '');
+    (reinstated ? `\n\nEveryone lost, so everyone still in is reinstated. Their teams still count as used.${(g.reinstatedRounds || []).length ? ` This is do-over number ${(g.reinstatedRounds || []).length + 1} this season.` : ''}` : '');
   if (!confirm(msg)) return;
-
+ 
   S.busy = true; render();
   try {
     const ops = [];
@@ -863,7 +885,7 @@ async function confirmRound() {
         const id = `${g.id}_${o.e.uid}_${r}`;
         ops.push(b => b.set(doc(db, 'picks', id), {
           gameId: g.id, uid: o.e.uid, round: r, fixtureId: o.p.fixtureId, teamId: o.p.teamId, teamName: o.p.teamName,
-          auto: !!o.auto, revealed: true, result: o.result, updatedAt: serverTimestamp(),
+          auto: !!o.auto, revealed: true, result: o.result, reinstated: reinstated && (o.result === 'lost' || o.result === 'drew'), updatedAt: serverTimestamp(),
         }));
       }
       const goesOut = !reinstated && (o.result === 'lost' || o.result === 'drew');
@@ -875,6 +897,7 @@ async function confirmRound() {
     const next = roundsList().find(x => x > r);
     const stillIn = reinstated ? outcomes.map(o => o.e) : survivors.map(o => o.e);
     const gUpd = { confirmedRounds: arrayUnion(r), joinOpen: false };
+    if (reinstated) gUpd.reinstatedRounds = arrayUnion(r);
     if (stillIn.length === 1) Object.assign(gUpd, { status: 'finished', winners: [stillIn[0].uid], finishedRound: r });
     else if (!next) Object.assign(gUpd, { status: 'finished', winners: stillIn.map(e => e.uid), finishedRound: r });
     else { gUpd.currentRound = next; Object.assign(gUpd, lockFields(next, defaultLock(next))); }
@@ -887,42 +910,125 @@ async function confirmRound() {
   } catch (err) { alert(niceError(err)); }
   S.busy = false; render();
 }
-
-
+ 
+ 
 // ---------- weekend roundup image ----------
 const JOKES = {
   lost: [
     '{name} backed {team}. {team} did not back {name}.',
     '{name} rode {team} straight into the ditch, {score}.',
     '{team} lost {score}. {name} is taking it well. (Not true.)',
-    '{name} has been released to concentrate on the fantasy league.',
+    '{team} lost {score}, so {name} has been released to concentrate on the fantasy league.',
     '{team} lost {score}. Gone but not forgotten. Well, mostly forgotten. Slán, {name}.',
     '{name} trusted {team}. Lesson learned, {score}.',
     '{team} went down {score}, and {name} went down with the ship.',
     'Pour one out for {name}, undone by {team}, {score}.',
+    '{name} went with {team}. {team} went with a {score} defeat.',
+    '{team} lost {score}. {name} has asked for a steward\'s enquiry. Denied.',
+    'Thoughts and prayers for {name}, who picked {team}. They lost {score}.',
+    '{name} is out. {team} lost {score}, and the group chat will not let this go.',
+    'Somewhere, {name} is still staring at the {score} scoreline. {team}, how could you.',
+    '{team} lost {score}. {name} now has a lot more free time on Saturdays.',
+    '{name} backed {team} with total confidence. {score}. Confidence misplaced.',
   ],
   drew: [
     '{team} drew {score}. Not a loss, not a win, and {name} is gone all the same.',
     'A {score} draw. {name} is out on a technicality and will not be letting it go.',
+    '{team} drew {score}. {name} didn\'t lose, exactly. {name} is out, exactly.',
+    'Neither side could be bothered winning. {team} drew {score} and {name} pays the price.',
   ],
-  autoLost: ['{name} forgot to pick. The random team, {team}, lost {score}. Set an alarm next time.'],
-  autoWon: ['{name} forgot to pick, got {team} at random, and they won {score}. Insufferable.'],
+  autoLost: ['{name} forgot to pick. The random team, {team}, lost {score}. Set an alarm next time.',
+    '{name} left it to fate. Fate picked {team}. {team} lost {score}.',
+    'No pick from {name}. The app chose {team}. The app chose poorly, {score}.',
+    '{name} slept through the deadline and woke up to {team} losing {score}.'],
+  autoWon: ['{name} forgot to pick, got {team} at random, and they won {score}. Insufferable.',
+    'No pick from {name}, so the app chose {team}. They won {score}. The app would like a cut.',
+    '{name} didn\'t pick and still got through with {team}, {score}. There is no justice.',
+    '{name} forgot, {team} won {score} anyway. Some people are just born lucky.'],
   escape: [
     '{name} survived by {margin} with {team}. Heart rate still recovering.',
     '{team} dragged {name} over the line by {margin}. Squeaky bum time.',
     '{name} and {team} won by {margin}. Nobody breathe.',
+    '{team} won by {margin}. {name} watched the last ten minutes through their fingers.',
+    '{margin} in it. {name} and {team} are through, and {name} needs a lie down.',
+    '{team} got there by {margin}. {name} has aged about five years.',
   ],
-  postponed: ['{name} survives on a postponement. {team} never even took the field.'],
-  noneOut: ['Nobody fell this weekend. Suspiciously sensible.', 'A clean sheet. Everyone gets to be nervous again next week.'],
-  reinstated: ['Everyone left lost, so everyone is back in. Nobody learned anything.'],
+  postponed: ['{name} survives on a postponement. {team} never even took the field.',
+    '{team} were postponed, so {name} lives to fight another week without breaking sweat.',
+    'No game for {team}, no problem for {name}. Through on a walkover of sorts.',
+    '{name} survives thanks to the fixture gods. {team} didn\'t play.'],
+  noneOut: ['Nobody fell this weekend. Suspiciously sensible.', 'A clean sheet. Everyone gets to be nervous again next week.',
+    'Not a single casualty. Enjoy it, it won\'t last.', 'Everyone survived. The pot is not amused.'],
+  reinstated: ['Everyone left lost, so everyone is back in. Nobody learned anything.',
+    'A clean sweep of wrong answers. Everyone survives on a technicality.',
+    'Not one winner among you. The rules say you all go through. The rules are very generous.',
+    'Total wipeout, so total amnesty. Those teams are still used, mind.'],
+  reinstatedAgain: ['Everyone lost again. Do-over number {count}. Is anyone actually trying?',
+    'Another round, another mass failure, another reprieve. That is do-over number {count}.'],
 };
 let roundupSeed = 0;
+let jokeRound = 0;
+const HEADLINES = {
+  normal: ['Round {r} roundup', 'Round {r}: the damage', "Round {r}: who's left", 'Round {r} in the books', 'Round {r}: the verdict'],
+  carnage: ['Round {r}: carnage', 'Round {r}: the bloodbath', 'Round {r}: nobody is safe', 'Round {r}: absolute chaos'],
+  quiet: ['Round {r}: all quiet', 'Round {r}: nobody blinked', 'Round {r}: clean sheet'],
+  reinstated: ['Round {r}: do-over', 'Round {r}: as you were', 'Round {r}: everyone wrong', 'Round {r}: amnesty'],
+  reinstatedAgain: ['Round {r}: do-over, again', 'Round {r}: here we go again', 'Round {r}: groundhog day'],
+  opener: ["Round {r}: and they're off", 'Round {r}: the first cut', 'Opening weekend', 'Round {r}: here we go'],
+  halfway: ['Round {r}: halfway there', 'Half-time in the season', 'Round {r}: the turn'],
+  homestretch: ['Round {r}: the home straight', 'Round {r}: {togo} to go', 'Round {r}: nerves jangling'],
+  finalFew: ['Round {r}: the final {n}', 'Round {r}: {n} left', 'Round {r}: nearly there'],
+  final2: ['Round {r}: then there were two', 'Round {r}: head to head', 'Round {r}: two left'],
+  winner: ['We have a winner', '{name} takes it', 'Last man standing: {name}'],
+  split: ['Season over', "It's a split", 'Share the spoils'],
+};
+const LEDES = {
+  opener: ['{entered} started. {fell} fell at the first weekend.', '{entered} in, {fell} gone already. It only gets harder from here.'],
+  openerNone: ['{entered} started, and everyone survived the first weekend. Enjoy it.'],
+  halfway: ['Halfway through the season and {left} of {entered} are still going.', 'Round {r} of {total}. Half the season gone, {left} of {entered} still standing.'],
+  homestretch: ['Only {togo} to go. {left} still in, and every pick counts now.', '{togo} left in the season. Anyone holding a big team back, now might be the time.'],
+  normal: ['Round {r} of {total}. {left} of {entered} still standing.', '{left} of {entered} still in, with {togo} to go.'],
+  finalFew: ['Just {n} left: {names}. Somebody is going to be insufferable.', 'Down to {n}: {names}. The pot is getting closer.'],
+  final2: ['{a} v {b}. Only one of you is getting out of this.', "It's {a} against {b}. The group chat is ready."],
+  winner: ['{name} survived {k} rounds and takes home {pot}. Drinks are on {name}.', '{k} rounds, {k} right calls, {pot} in the bank. Take a bow, {name}.'],
+  split: ['The season ran out before the players did. {n} left standing, {share} each.', 'Nobody could be split, so the pot is. {n} winners, {share} each.'],
+  breakAhead: [' Next round is not until {date}. Enjoy the break.'],
+  reinstated: ['All {n} lost, so all {n} are back in for next week.', 'Every one of the {n} left picked a loser. All {n} live to fight on.'],
+  reinstated2: ['{a} and {b} both lost, so both are back in. Try again.', "Neither {a} nor {b} could pick a winner. It's a do-over."],
+  splitReinstated: ['Everyone lost in the final round, so all {n} share the pot, {share} each.'],
+};
+const TITLES = {
+  fallen: ['The fallen', 'Gone but not forgotten', 'Taken out back', 'Sent to the stands', 'Binned'],
+  escape: ['Great escape', 'Heart in mouth', 'Got away with it', 'Squeaky bum time'],
+  lucky: ['Lucky ones', 'Jammy', 'Horseshoes'],
+  crowd: ['Crowd favourite', "Everyone's banker", 'Herd mentality', 'Safety in numbers?'],
+  stat: ['Stat of the round', 'By the numbers', 'Nerd corner'],
+  standing: ['Still standing', 'Still in', 'Survivors', 'Living to fight another week'],
+};
+const CROWD = {
+  won: ['{n} players went with {team}, and they delivered, {score}.', '{n} of you piled onto {team}. They won {score}. Boring, but effective.',
+    '{team} were the popular pick with {n} backers, and they came good, {score}.'],
+  lost: ['{n} players went with {team}, and they let everyone down, {score}.', '{n} of you trusted {team}. {team} lost {score}. Mass casualties.',
+    'The {n} {team} backers are holding a support group. {score}.'],
+  postponed: ['{n} players went with {team}, and the game was postponed.', '{n} backed {team}, who didn\'t play. Anticlimax of the round.'],
+};
+let jokesUsed = new Set();
+// Seeded by player, round and version, so each round reads differently,
+// and nothing is repeated within one roundup
+function pickIdx(kind, key, len) {
+  let i = hashStr(`${key}:${kind}:${jokeRound}:${roundupSeed}`) % len;
+  for (let n = 0; n < len && jokesUsed.has(kind + i); n++) i = (i + 1) % len;
+  jokesUsed.add(kind + i);
+  return i;
+}
+const fill = (t, vars) => t.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+const pickText = (kind, list, vars = {}) => fill(list[pickIdx(kind, 'x', list.length)], vars);
 function joke(kind, key, vars) {
   const list = JOKES[kind];
-  const t = list[hashStr(key + ':' + kind + ':' + roundupSeed) % list.length];
+  const t = list[pickIdx(kind, key, list.length)];
   return t.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
 }
-
+ 
 async function roundupData(r) {
   const g = S.game;
   const snap = await getDoc(doc(db, 'games', g.id, 'rounds', String(r)));
@@ -940,9 +1046,37 @@ async function roundupData(r) {
     const sc = scoreFor(p);
     return { ...p, sc, score: sc ? `${sc.mine}–${sc.theirs}` : '' };
   });
-  return { r, items, reinstated: !!rd.reinstated, pot: rd.pot || (Number(S.config.entryFee) || 0) * S.entries.length };
+  // Where this round sits in the season
+  const rounds = roundsList().filter(x => x >= (g.startRound || 1));
+  const idx = rounds.indexOf(r);
+  const total = rounds.length, toGo = idx >= 0 ? total - idx - 1 : 0;
+  const lastKick = Math.max(...roundFixtures(r).map(f => f.kickoff), 0);
+  const nextR = rounds[idx + 1];
+  const nextKick = nextR ? Math.min(...roundFixtures(nextR).map(f => f.kickoff)) : 0;
+  const breakAhead = nextKick && nextKick - lastKick > 16 * 86400 ? nextKick : 0;
+  const finishedHere = g.status === 'finished' && g.finishedRound === r;
+  const winners = finishedHere ? (g.winners || []).map(uid => ({ uid, name: nameOf(uid) })) : [];
+  const mine = winners.length === 1 ? S.revealed.filter(p => p.uid === winners[0].uid).sort((a, b) => a.round - b.round) : [];
+  // Scores for earlier rounds live in each round's own summary
+  const pastResults = {};
+  await Promise.all(mine.filter(p => p.round !== r).map(async p => {
+    try { const d = await getDoc(doc(db, 'games', g.id, 'rounds', String(p.round))); if (d.exists()) Object.assign(pastResults, d.data().results || {}); } catch {}
+  }));
+  const scoreAny = p => {
+    const res = results[p.fixtureId] || pastResults[p.fixtureId], f = fxById.get(p.fixtureId);
+    if (!res || !f || res.home === null || res.away === null) return null;
+    const home = f.home.id === p.teamId;
+    return { mine: home ? res.home : res.away, theirs: home ? res.away : res.home };
+  };
+  const path = mine.map(p => {
+    const sc = scoreAny(p);
+    return { round: p.round, teamName: p.teamName, auto: p.auto, result: p.result, score: sc ? `${sc.mine}–${sc.theirs}` : '' };
+  });
+  return { r, items, reinstated: !!rd.reinstated, pot: rd.pot || (Number(S.config.entryFee) || 0) * S.entries.length,
+    total, toGo, stage: idx + 1, breakAhead, winners, path, entered: S.entries.length,
+    reinstatedCount: (g.reinstatedRounds || []).filter(x => x <= r).length };
 }
-
+ 
 function wrapLines(ctx, text, maxW) {
   const words = text.split(' '), lines = [];
   let line = '';
@@ -953,7 +1087,7 @@ function wrapLines(ctx, text, maxW) {
   if (line) lines.push(line);
   return lines;
 }
-
+ 
 async function drawRoundup(data) {
   try {
     await Promise.all(['700 120px "Barlow Condensed"', '600 40px "Barlow Condensed"', '400 30px Barlow', '700 30px Barlow']
@@ -963,36 +1097,58 @@ async function drawRoundup(data) {
   const C = { turfA: '#0B3B26', turfB: '#0F4630', gold: '#E8B63D', paper: '#EEF2EF', ink: '#0E1C15', muted: '#52645A', flag: '#C2362B', good: '#13613F', line: '#D3DDD7' };
   const D = '"Barlow Condensed", "Arial Narrow", sans-serif', B = 'Barlow, "Segoe UI", Arial, sans-serif';
   const { r, items } = data;
+  jokesUsed = new Set();
+  jokeRound = `${g.id}:${r}`;
   const fallen = data.reinstated ? [] : items.filter(i => i.result === 'lost' || i.result === 'drew');
   const survivors = items.filter(i => !fallen.includes(i));
   const stillIn = survivors.length;
-
+ 
   // Sections, in order
   const sections = [];
-  if (data.reinstated) sections.push({ title: 'Everyone back', color: C.gold, entries: [{ text: joke('reinstated', 'x', {}) }] });
-  else if (fallen.length) sections.push({ title: 'The fallen', color: C.flag, entries: fallen.map(i => ({
+  const T = k => pickText('t-' + k, TITLES[k]);
+  const redoCount = data.reinstatedCount || 1;
+  if (data.reinstated) sections.push({ title: redoCount > 1 ? 'Everyone back, again' : 'Everyone back', color: C.gold,
+    entries: [{ text: redoCount > 1 ? joke('reinstatedAgain', 'x', { count: redoCount }) : joke('reinstated', 'x', {}) }] });
+  else if (fallen.length) sections.push({ title: T('fallen'), color: C.flag, entries: fallen.map(i => ({
     name: i.name,
     text: joke(i.auto ? 'autoLost' : i.result === 'drew' ? 'drew' : 'lost', i.uid, { name: i.name, team: i.teamName, score: i.score || 'on the day' }),
   })) });
-  else sections.push({ title: 'The fallen', color: C.flag, entries: [{ text: joke('noneOut', String(r), {}) }] });
-
+  else sections.push({ title: T('fallen'), color: C.flag, entries: [{ text: joke('noneOut', String(r), {}) }] });
+ 
   const wins = survivors.filter(i => i.result === 'won' && i.sc && !i.auto).sort((a, b) => (a.sc.mine - a.sc.theirs) - (b.sc.mine - b.sc.theirs));
-  if (wins.length && wins[0].sc.mine - wins[0].sc.theirs <= 7) {
-    const e = wins[0], m = e.sc.mine - e.sc.theirs;
-    sections.push({ title: 'Great escape', color: C.gold, entries: [{ name: e.name, text: joke('escape', e.uid, { name: e.name, team: e.teamName, margin: m === 1 ? '1 point' : `${m} points` }) }] });
-  }
+  // Everyone who scraped through by a score or less, closest first (up to 4)
+  const close = wins.filter(e => e.sc.mine - e.sc.theirs <= 7).slice(0, 4);
+  const escT = T('escape');
+  if (close.length) sections.push({ title: close.length > 1 && escT === 'Great escape' ? 'Great escapes' : escT, color: C.gold, entries: close.map(e => {
+    const m = e.sc.mine - e.sc.theirs;
+    return { name: e.name, text: joke('escape', e.uid, { name: e.name, team: e.teamName, margin: m === 1 ? '1 point' : `${m} points` }) };
+  }) });
   const lucky = survivors.filter(i => i.auto && i.result === 'won');
   const pp = survivors.filter(i => i.result === 'postponed' && i.teamName);
   const extras = [...lucky.map(i => ({ name: i.name, text: joke('autoWon', i.uid, { name: i.name, team: i.teamName, score: i.score }) })),
     ...pp.map(i => ({ name: i.name, text: joke('postponed', i.uid, { name: i.name, team: i.teamName }) }))];
-  if (extras.length) sections.push({ title: 'Lucky ones', color: C.good, entries: extras });
+  if (extras.length) sections.push({ title: T('lucky'), color: C.good, entries: extras });
   const counts = new Map();
   items.filter(i => i.teamName && !i.auto).forEach(i => counts.set(i.teamName, (counts.get(i.teamName) || { n: 0, res: i.result, score: i.score })) && (counts.get(i.teamName).n++));
   const top = [...counts.entries()].sort((a, b) => b[1].n - a[1].n)[0];
   if (top && top[1].n > 1) {
-    const verdict = top[1].res === 'won' ? `and they delivered, ${top[1].score}.` : top[1].res === 'postponed' ? 'and the game was postponed.' : `and they let everyone down, ${top[1].score}.`;
-    sections.push({ title: 'Crowd favourite', color: C.good, entries: [{ text: `${top[1].n} players went with ${top[0]}, ${verdict}` }] });
+    const kind = top[1].res === 'won' ? 'won' : top[1].res === 'postponed' ? 'postponed' : 'lost';
+    sections.push({ title: T('crowd'), color: C.good, entries: [{ text: pickText('crowd-' + kind, CROWD[kind], { n: top[1].n, team: top[0], score: top[1].score }) }] });
   }
+  // One random fact about the round, from whichever ones apply
+  const facts = [];
+  const picked = items.filter(i => i.teamName && !i.auto);
+  const lone = picked.filter(i => i.result === 'won' && counts.get(i.teamName)?.n === 1);
+  if (lone.length) { const e = lone[hashStr(jokeRound + roundupSeed) % lone.length]; facts.push(`${e.name} was the only one on ${e.teamName}. Brave, and correct (${e.score}).`); }
+  const big = [...wins].sort((a, b) => (b.sc.mine - b.sc.theirs) - (a.sc.mine - a.sc.theirs))[0];
+  if (big && big.sc.mine - big.sc.theirs >= 15) facts.push(`Biggest win backed: ${big.teamName} by ${big.sc.mine - big.sc.theirs}, for ${big.name}. Never in doubt.`);
+  if (items.length && !data.reinstated) facts.push(`${Math.round(100 * survivors.length / items.length)}% of those still in made it through this round.`);
+  const distinct = new Set(picked.map(i => i.teamName)).size;
+  if (distinct > 2) facts.push(`${distinct} different teams were backed this round.`);
+  const losers = picked.filter(i => i.result === 'lost' && i.sc);
+  const worst = losers.sort((a, b) => (a.sc.mine - a.sc.theirs) - (b.sc.mine - b.sc.theirs))[0];
+  if (worst && worst.sc.theirs - worst.sc.mine >= 20) facts.push(`Worst pick of the round: ${worst.teamName}, beaten by ${worst.sc.theirs - worst.sc.mine}. Sorry, ${worst.name}.`);
+  if (facts.length) sections.push({ title: T('stat'), color: C.gold, entries: [{ text: facts[hashStr('fact' + jokeRound + roundupSeed) % facts.length] }] });
   const standing = [...survivors].sort((a, b) => a.name.localeCompare(b.name)).map(i => {
     let what = i.teamName || 'No game';
     if (i.teamName && i.result === 'postponed') what += ', postponed';
@@ -1000,8 +1156,37 @@ async function drawRoundup(data) {
     if (i.auto) what += ' (random)';
     return { name: i.name, right: what };
   });
-  if (standing.length) sections.push({ title: 'Still standing', color: C.good, max: 40, entries: standing });
-
+  if (standing.length) sections.push({ title: data.reinstated ? 'Back in' : T('standing'), color: C.good, max: 40, entries: standing });
+ 
+  const left = survivors.length, wn = data.winners || [];
+  const carnage = fallen.length >= 5 || fallen.length / Math.max(1, items.length) >= 0.4;
+  const stage = wn.length === 1 ? 'winner' : wn.length > 1 ? 'split' : data.reinstated ? 'reinstated'
+    : left === 2 ? 'final2' : left >= 3 && left <= 5 ? 'finalFew'
+    : data.stage === 1 ? 'opener' : carnage ? 'carnage' : !fallen.length ? 'quiet'
+    : data.total >= 6 && data.stage === Math.ceil(data.total / 2) ? 'halfway'
+    : data.toGo > 0 && data.toGo <= 3 ? 'homestretch' : 'normal';
+  const vars = { r, n: stage === 'split' ? wn.length : left, name: wn[0]?.name || '', togo: data.toGo === 1 ? '1 round' : `${data.toGo} rounds`,
+    total: data.total, left, entered: data.entered, fell: fallen.length, k: (data.path || []).length || data.stage,
+    pot: euro(data.pot || 0), share: wn.length ? euro(Math.floor((data.pot || 0) * 100 / wn.length) / 100) : '',
+    names: survivors.map(i => i.name).sort().join(', ').replace(/, ([^,]*)$/, ' and $1'),
+    a: survivors[0]?.name, b: survivors[1]?.name, date: data.breakAhead ? fmtDay(data.breakAhead) : '' };
+  const headline = pickText('headline', HEADLINES[stage === 'reinstated' && redoCount > 1 ? 'reinstatedAgain' : stage], vars);
+  let ledeKey = { winner: 'winner', split: 'split', final2: 'final2', finalFew: 'finalFew', opener: fallen.length ? 'opener' : 'openerNone',
+    halfway: 'halfway', homestretch: 'homestretch', reinstated: left === 2 ? 'reinstated2' : 'reinstated' }[stage] || 'normal';
+  if (stage === 'split' && data.reinstated) ledeKey = 'splitReinstated';
+  let lede = ledeKey ? pickText('lede-' + ledeKey, LEDES[ledeKey], vars) : '';
+  if (data.breakAhead && lede && stage !== 'winner' && stage !== 'split') lede += fill(LEDES.breakAhead[0], vars);
+  if (lede) sections.unshift({ lede: true, entries: [{ text: lede }] });
+  // Finale extras
+  if (stage === 'winner' && data.path?.length) sections.splice(1, 0, { title: 'The road to glory', color: C.gold, max: 40,
+    entries: data.path.map(p => ({ name: `Round ${p.round}`, right: `${p.teamName}${p.result === 'postponed' ? ', postponed' : p.score ? `, won ${p.score}` : ''}${p.auto ? ' (random)' : ''}` })) });
+  if (stage === 'split') sections.splice(1, 0, { title: 'Sharing the pot', color: C.gold, max: 40,
+    entries: wn.map(w => ({ name: w.name, right: vars.share })) });
+  if (stage === 'winner' || stage === 'split') {
+    // The full survivor list and stat add nothing once it's over
+    for (let i = sections.length - 1; i >= 0; i--) if (sections[i].max === 40 && sections[i].title !== 'The road to glory' && sections[i].title !== 'Sharing the pot') sections.splice(i, 1);
+  }
+  const style = hashStr('style' + jokeRound + roundupSeed) % 3;
   const cv = document.createElement('canvas');
   const ctx = cv.getContext('2d');
   // Layout pass, then draw pass
@@ -1009,10 +1194,23 @@ async function drawRoundup(data) {
     let y = 0;
     // Header
     if (draw) {
-      for (let x = 0; x < W; x += 180) { ctx.fillStyle = (x / 180) % 2 ? C.turfB : C.turfA; ctx.fillRect(x, 0, 90, 330); ctx.fillStyle = (x / 180) % 2 ? C.turfA : C.turfB; ctx.fillRect(x + 90, 0, 90, 330); }
+      if (style === 0) {
+        for (let x = 0; x < W; x += 180) { ctx.fillStyle = (x / 180) % 2 ? C.turfB : C.turfA; ctx.fillRect(x, 0, 90, 330); ctx.fillStyle = (x / 180) % 2 ? C.turfA : C.turfB; ctx.fillRect(x + 90, 0, 90, 330); }
+      } else if (style === 1) {
+        // Diagonal mowing
+        ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, 330); ctx.clip();
+        ctx.fillStyle = C.turfA; ctx.fillRect(0, 0, W, 330); ctx.fillStyle = C.turfB;
+        for (let x = -400; x < W + 400; x += 160) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + 80, 0); ctx.lineTo(x - 250, 330); ctx.lineTo(x - 330, 330); ctx.fill(); }
+        ctx.restore();
+      } else {
+        // Chequered mowing
+        for (let x = 0, i = 0; x < W; x += 120, i++) for (let yy = 0, j = 0; yy < 330; yy += 110, j++) { ctx.fillStyle = (i + j) % 2 ? C.turfB : C.turfA; ctx.fillRect(x, yy, 120, Math.min(110, 330 - yy)); }
+      }
       ctx.fillStyle = '#fff'; ctx.globalAlpha = .9; ctx.font = `600 34px ${B}`; ctx.textBaseline = 'top';
       ctx.fillText(S.config.title || DEFAULT_TITLE, PAD, 60, TEXT); ctx.globalAlpha = 1;
-      ctx.font = `700 150px ${D}`; ctx.fillText(`Round ${r} roundup`, PAD, 120, TEXT);
+      let fs = 150; ctx.font = `700 ${fs}px ${D}`;
+      while (ctx.measureText(headline).width > TEXT && fs > 84) { fs -= 6; ctx.font = `700 ${fs}px ${D}`; }
+      ctx.fillText(headline, PAD, 120 + (150 - fs) / 2, TEXT);
       ctx.fillStyle = C.gold; ctx.fillRect(0, 330, W, 14);
     }
     y = 344;
@@ -1022,16 +1220,26 @@ async function drawRoundup(data) {
       ctx.textBaseline = 'alphabetic';
       ctx.fillStyle = C.ink; ctx.font = `700 130px ${D}`; ctx.fillText(String(stillIn), PAD, y + 160);
       let w = ctx.measureText(String(stillIn)).width;
-      ctx.font = `600 40px ${D}`; ctx.fillStyle = C.muted; ctx.fillText('still standing', PAD + w + 18, y + 160);
-      const gone = fallen.length, gx = W / 2 + 40;
-      ctx.fillStyle = gone ? C.flag : C.ink; ctx.font = `700 130px ${D}`; ctx.fillText(String(gone), gx, y + 160);
+      const standLabel = (data.winners || []).length === 1 ? 'winner' : (data.winners || []).length > 1 ? 'winners' : 'still standing';
+      ctx.font = `600 40px ${D}`; ctx.fillStyle = C.muted; ctx.fillText(standLabel, PAD + w + 18, y + 160);
+      const gone = data.reinstated ? items.length : fallen.length, gx = W / 2 + 40;
+      ctx.fillStyle = data.reinstated ? C.gold : gone ? C.flag : C.ink; ctx.font = `700 130px ${D}`; ctx.fillText(String(gone), gx, y + 160);
       w = ctx.measureText(String(gone)).width;
-      ctx.font = `600 40px ${D}`; ctx.fillStyle = C.muted; ctx.fillText('fell', gx + w + 18, y + 160);
+      ctx.font = `600 40px ${D}`; ctx.fillStyle = C.muted; ctx.fillText(data.reinstated ? 'reinstated' : 'fell', gx + w + 18, y + 160);
     }
     y += 230;
     if (draw) { ctx.fillStyle = C.paper; ctx.fillRect(0, y, W, 100000); }
     // Sections
     for (const sec of sections) {
+      if (sec.lede) {
+        y += 36;
+        ctx.font = `italic 500 36px ${B}`;
+        for (const line of wrapLines(ctx, sec.entries[0].text, TEXT)) {
+          if (draw) { ctx.fillStyle = C.ink; ctx.textBaseline = 'top'; ctx.fillText(line, PAD, y); }
+          y += 48;
+        }
+        continue;
+      }
       y += 40;
       if (draw) {
         ctx.fillStyle = sec.color; ctx.fillRect(PAD, y + 8, 10, 48);
@@ -1077,7 +1285,7 @@ async function drawRoundup(data) {
     }
     // Footer
     y += 30;
-    const fh = 200;
+    const fh = 240;
     if (draw) {
       ctx.fillStyle = C.turfA; ctx.fillRect(0, y, W, fh);
       ctx.fillStyle = C.gold; ctx.fillRect(0, y, W, 10);
@@ -1086,6 +1294,10 @@ async function drawRoundup(data) {
       ctx.font = `500 31px ${B}`; ctx.globalAlpha = .9;
       const next = g.status === 'active' && g.currentRound > r ? `Round ${g.currentRound} picks close ${fmtLock(lockAt())}` : g.status === 'finished' ? 'Game over' : '';
       if (next) ctx.fillText(next, PAD, y + 124, TEXT);
+      if (data.total && g.status !== 'finished') {
+        ctx.globalAlpha = .7; ctx.font = `500 28px ${B}`;
+        ctx.fillText(`Round ${data.stage} of ${data.total}${data.toGo ? `, ${data.toGo} to go` : ', last round'}`, PAD, y + 172, TEXT);
+      }
       ctx.globalAlpha = 1;
     }
     return y + fh;
@@ -1101,16 +1313,20 @@ async function drawRoundup(data) {
   const caption = `🏉 Round ${r} roundup: ${stillIn} still standing, ${fallen.length} fell.${next} Make your pick: ${link}`;
   return { round: r, blob, url, caption };
 }
-
+ 
 async function copyText(t, msg) {
   try { await navigator.clipboard.writeText(t); toast(msg || 'Copied'); }
   catch { prompt('Copy this:', t); }
 }
-
+ 
 // ---------- actions ----------
 const actions = {
   async copyUid() {
     try { await navigator.clipboard.writeText(S.user.uid); toast('User ID copied.'); } catch { toast('Press and hold the ID to copy it.'); }
+  },
+  async copyRevolut() {
+    try { await navigator.clipboard.writeText(S.config.revolutLink); toast('Revolut link copied.'); }
+    catch { toast('Press and hold the link to copy it.'); }
   },
   tab: el => { S.tab = el.dataset.tab; S.pending = null; render(); window.scrollTo(0, 0); },
   async google() {
@@ -1267,7 +1483,7 @@ const actions = {
   },
   copyCaption() { if (S.roundup) copyText(S.roundup.caption, 'Caption copied'); },
 };
-
+ 
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-action]');
   if (el && actions[el.dataset.action]) actions[el.dataset.action](el, e);
@@ -1283,7 +1499,7 @@ document.addEventListener('change', e => {
 document.addEventListener('focusout', () => setTimeout(() => {
   if (S.renderPending) { S.renderPending = false; render(); }
 }, 0));
-
+ 
 // ---------- start ----------
 async function handleEmailLink() {
   if (!isSignInWithEmailLink(auth, location.href)) return;
@@ -1294,7 +1510,7 @@ async function handleEmailLink() {
   try { await signInWithEmailLink(auth, email, location.href); } catch (err) { toast(niceError(err)); }
   history.replaceState(null, '', location.pathname);
 }
-
+ 
 const fixturesReady = loadFixtures();
 handleEmailLink();
 onSnapshot(doc(db, 'config', 'settings'), s => { S.config = s.data() || {}; render(); });
@@ -1319,3 +1535,4 @@ setInterval(loadFixtures, 5 * 60 * 1000);  // picks up time changes and scores
 </script>
 </body>
 </html>
+ 
