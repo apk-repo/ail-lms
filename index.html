@@ -271,6 +271,18 @@ const now = () => Date.now() / 1000;
 const fmt = (ts, opts) => new Intl.DateTimeFormat('en-IE', { timeZone: TZ, ...opts }).format(new Date(ts * 1000));
 const fmtKick = ts => fmt(ts, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 const fmtDay = ts => fmt(ts, { weekday: 'long', day: 'numeric', month: 'long' });
+// Buy-backs: players knocked out early can pay to come back in for the next round
+const buybackOn = () => S.config.buybackOn === true;
+const buybackFee = () => (S.config.buybackFee === undefined || S.config.buybackFee === null || S.config.buybackFee === '')
+  ? (Number(S.config.entryFee) || 0) : (Number(S.config.buybackFee) || 0);
+const buybackUpTo = () => Number(S.config.buybackUpTo) || 1;
+// Can this player still buy back? (Organisers can do it after the deadline too.)
+const buybackOpen = (e, forAdmin = false) => {
+  const g = S.game;
+  return !!(g && g.status === 'active' && buybackOn() && e && e.status === 'out' && !e.boughtBack
+    && e.outRound <= buybackUpTo() && g.currentRound === e.outRound + 1 && (forAdmin || !picksClosed()));
+};
+const potTotal = () => (Number(S.config.entryFee) || 0) * S.entries.length + S.entries.reduce((t, e) => t + (Number(e.buybackPaid) || 0), 0);
 const euro = n => '€' + (Math.round(n * 100) / 100).toLocaleString('en-IE');
 const initials = n => n.split(/\s+/).filter(w => w && !/^(of|the)$/i.test(w)).map(w => w[0]).join('').slice(0, 3).toUpperCase();
 const hashStr = s => { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
@@ -444,7 +456,7 @@ function viewHeader() {
     if (l) bits.push(picksClosed() ? `<span class="deadline closed">Picks closed</span>` : `<span class="deadline">Picks close ${esc(fmtLock(l))}</span>`);
     bits.push(`<span><b>${left}</b> of ${total} still standing</span>`);
   }
-  if (fee && total) bits.push(`<span><b>${euro(fee * total)}</b> pot</span>`);
+  if (total && potTotal()) bits.push(`<span><b>${euro(potTotal())}</b> pot</span>`);
   return `<div class="comp">${title}</div><div class="round">${big}</div><div class="status">${bits.join('')}</div>`;
 }
  
@@ -475,10 +487,10 @@ const payInstructions = () => {
   return (S.config.payInstructions || '').trim() || `Pay your ${fee ? euro(fee) + ' ' : ''}entry to one of the organisers.`;
 };
 // Pay button plus the link written out, for when the button won't open the app
-function revolutBox() {
+function revolutBox(amount) {
   const link = S.config.revolutLink;
-  if (!revolutOn()) return `<p class="payinfo">${esc(payInstructions())}</p>`;
-  const fee = Number(S.config.entryFee) || 0;
+  if (!revolutOn()) return `<p class="payinfo">${esc(amount === undefined ? payInstructions() : `Pay the ${euro(amount)} buy-back to one of the organisers.`)}</p>`;
+  const fee = amount === undefined ? (Number(S.config.entryFee) || 0) : amount;
   const tag = (link.match(/revolut\.me\/@?([\w.-]+)/i) || [])[1];
   return `<div class="paybox">
     <a class="btn" href="${esc(link)}" target="_blank" rel="noopener">Pay ${fee ? euro(fee) + ' ' : ''}by Revolut</a>
@@ -510,7 +522,17 @@ function viewPick() {
   if (!me) return viewJoin();
   if (me.status === 'out') {
     const p = S.myPicks.find(x => x.round === me.outRound);
-    return `${payNote(me)}<div class="note out"><b>You're out.</b> ${p ? esc(p.teamName) + ' let you down' : 'Your team didn\'t win'} in Round ${me.outRound}. Keep an eye on the board. A new game starts when this one ends.</div>`;
+    const why = `${p ? esc(p.teamName) + ' let you down' : 'Your team didn\'t win'} in Round ${me.outRound}.`;
+    if (buybackOpen(me)) {
+      const fee = buybackFee();
+      return `${payNote(me)}<div class="note out"><b>You're out.</b> ${why}</div>
+        <div class="note warn"><b>Buy back in for ${euro(fee)}.</b> Pay before <b>${esc(fmtLock(lockAt()))}</b> and you're back in for Round ${me.outRound + 1}. The team you've used stays used, and you can only buy back once.
+        ${revolutBox(fee)}
+        ${me.buybackRequested
+          ? `<p class="payinfo"><b>Request sent.</b> You'll be back in as soon as an organiser confirms your payment.</p>`
+          : `<button class="btn" data-action="requestBuyback" style="margin-top:12px">I've paid, let me back in</button>`}</div>`;
+    }
+    return `${payNote(me)}<div class="note out"><b>You're out.</b> ${why} Keep an eye on the board. A new game starts when this one ends.</div>`;
   }
   const lastDone = Math.max(0, ...(g.confirmedRounds || []));
   const redo = (g.reinstatedRounds || []).includes(lastDone)
@@ -608,7 +630,7 @@ function viewConfirmBar() {
 function viewFinished() {
   const g = S.game;
   const names = (g.winners || []).map(nameOf);
-  const fee = Number(S.config.entryFee) || 0, pot = fee * S.entries.length;
+  const pot = potTotal();
   let who = names.length === 1 ? `${esc(names[0])} is the last one standing` : names.length ? `${esc(names.join(', '))} share the pot` : 'The game has ended';
   return `<h2>${who}.</h2>${pot ? `<p>Pot: ${euro(pot)}${names.length > 1 ? `, ${euro(pot / names.length)} each` : ''}.</p>` : ''}
     <p class="muted">The organiser will start the next game soon. The final board is below.</p>${boardList()}`;
@@ -621,9 +643,9 @@ function boardList() {
   const gone = S.entries.filter(e => e.status !== 'alive').sort((a, b) => (b.outRound || 0) - (a.outRound || 0) || a.name.localeCompare(b.name));
   const row = e => {
     const ps = (picksBy.get(e.uid) || []).sort((a, b) => a.round - b.round);
-    const chips = ps.map(p => `<span class="chip ${esc(p.result || '')}">R${p.round} ${esc(p.teamName)}${p.auto ? ' (auto)' : ''}${p.result === 'won' ? ' ✓' : p.result === 'postponed' ? ' (P)' : (p.result === 'lost' || p.result === 'drew') ? (p.reinstated ? ' ↺' : ' ✗') : ''}</span>`).join('');
+    const chips = ps.map(p => `<span class="chip ${esc(p.result || '')}">R${p.round} ${esc(p.teamName)}${p.auto ? ' (auto)' : ''}${p.result === 'won' ? ' ✓' : p.result === 'postponed' ? ' (P)' : (p.result === 'lost' || p.result === 'drew') ? (p.reinstated ? ' ↺' : p.round === e.boughtBack ? ' ✗ ↩' : ' ✗') : ''}</span>`).join('');
     const paid = S.isAdmin ? ` <span class="paid ${e.paid ? '' : 'no'}">${e.paid ? 'Paid' : 'Unpaid'}</span>` : '';
-    return `<div class="person ${e.status === 'alive' ? '' : 'gone'}"><div class="pname"><span>${esc(e.name)}</span><small>${e.status === 'alive' ? 'Still in' : 'Out R' + e.outRound}${paid}</small></div>${chips ? `<div class="chips">${chips}</div>` : ''}</div>`;
+    return `<div class="person ${e.status === 'alive' ? '' : 'gone'}"><div class="pname"><span>${esc(e.name)}</span><small>${e.status === 'alive' ? (e.boughtBack ? 'Bought back' : 'Still in') : 'Out R' + e.outRound}${paid}</small></div>${chips ? `<div class="chips">${chips}</div>` : ''}</div>`;
   };
   if (!S.entries.length) return `<p class="muted">No one has joined yet.</p>`;
   return `<div class="board">${still.map(row).join('')}${gone.map(row).join('')}</div>`;
@@ -695,6 +717,7 @@ function viewRules() {
     <p>If they win, you're through to the next round. If they lose or draw, you're out.</p>
     <p>You can't pick the same team twice in a game.</p>
     <p>You can pick once the organiser has marked your entry as paid.</p>
+    ${buybackOn() ? `<p><b>Buy-backs:</b> if you're knocked out${buybackUpTo() === 1 ? ' in Round 1' : ` in Rounds 1 to ${buybackUpTo()}`}, you can pay ${euro(buybackFee())} to come back in for the next round. Pay before that round's picks close. It goes into the pot, you can only buy back once, and teams you've used stay used.</p>` : ''}
     <p>Picks close at 3pm on the Friday before each round. You can change your pick until then. Once picks close, everyone's picks are shown on the board.</p>
     <p>If something goes wrong, like you can't get online before the deadline, contact the organiser. They can enter a pick for you or extend the deadline.</p>
     <p>If you don't pick at all, you're given a random team you haven't used yet.</p>
@@ -734,10 +757,24 @@ function viewAdmin() {
  
   if (g && (g.confirmedRounds || []).length) html += viewRoundupPanel();
  
+  // Buy-backs
+  if (g && g.status === 'active' && buybackOn()) {
+    const elig = S.entries.filter(e => buybackOpen(e, true)).sort((a, b) => (b.buybackRequested ? 1 : 0) - (a.buybackRequested ? 1 : 0) || a.name.localeCompare(b.name));
+    const back = S.entries.filter(e => e.boughtBack).sort((a, b) => a.name.localeCompare(b.name));
+    if (elig.length || back.length) {
+      html += `<div class="panel"><h3>Buy-backs</h3>
+        <p class="small muted">${euro(buybackFee())} to come back in. Open to anyone knocked out up to Round ${buybackUpTo()}, until ${esc(fmtLock(lockAt()))}.${picksClosed() ? ' Picks have closed, so anyone you bring back now gets a random team unless you enter a pick for them.' : ''}</p>
+        ${elig.length ? `<table class="list">${elig.map(e => `<tr><td><b>${esc(e.name)}</b><br><span class="muted">Out R${e.outRound}${e.buybackRequested ? ' · <b>says they\'ve paid</b>' : ''}</span></td>
+          <td><button class="btn small" data-action="doBuyback" data-id="${esc(e.id)}">Paid, bring back</button></td></tr>`).join('')}</table>` : '<p class="small muted">Nobody else can buy back right now.</p>'}
+        ${back.length ? `<h3 class="sub">Bought back</h3><table class="list">${back.map(e => `<tr><td><b>${esc(e.name)}</b><br><span class="muted">Out R${e.boughtBack}, paid ${euro(e.buybackPaid || 0)}</span></td>
+          <td><button class="btn ghost small" data-action="undoBuyback" data-id="${esc(e.id)}">Undo</button></td></tr>`).join('')}</table>` : ''}
+      </div>`;
+    }
+  }
   // Players
   if (g) {
     const rows = [...S.entries].sort((a, b) => a.name.localeCompare(b.name)).map(e => `<tr>
-      <td><b>${esc(e.name)}</b><br><span class="muted">${e.status === 'alive' ? 'Still in' : 'Out R' + e.outRound}</span></td>
+      <td><b>${esc(e.name)}</b><br><span class="muted">${e.status === 'alive' ? (e.boughtBack ? 'Still in (bought back)' : 'Still in') : 'Out R' + e.outRound}</span></td>
       <td><button class="btn small ${e.paid ? '' : 'ghost'}" data-action="togglePaid" data-id="${esc(e.id)}">${e.paid ? 'Paid' : 'Mark paid'}</button>
       <button class="btn danger small" data-action="removePlayer" data-id="${esc(e.id)}" aria-label="Remove ${esc(e.name)}">Remove</button></td></tr>`).join('');
     const paidCount = S.entries.filter(e => e.paid).length;
@@ -762,6 +799,11 @@ function viewAdmin() {
     <label class="field">Entry fee (€)<input id="setFee" type="number" min="0" step="1" value="${esc(draft('setFee', S.config.entryFee ?? 10))}"></label>
     <label class="field">Revolut payment link<input id="setRevolut" type="url" placeholder="https://revolut.me/yourname" value="${esc(draft('setRevolut', S.config.revolutLink || ''))}"></label>
     <label class="check"><input id="setShowRev" type="checkbox" ${draft('setShowRev', S.config.showRevolut !== false) ? 'checked' : ''}> Show the Revolut link and pay button to players</label>
+    <label class="check"><input id="setBuyback" type="checkbox" ${draft('setBuyback', S.config.buybackOn === true) ? 'checked' : ''}> Allow buy-backs</label>
+    <div class="row">
+      <label class="field">Buy-back price (€)<input id="setBuybackFee" type="number" min="0" step="1" value="${esc(draft('setBuybackFee', S.config.buybackFee ?? S.config.entryFee ?? 10))}"></label>
+      <label class="field">For anyone out by Round<input id="setBuybackUpTo" type="number" min="1" step="1" value="${esc(draft('setBuybackUpTo', S.config.buybackUpTo ?? 1))}"></label>
+    </div>
     <label class="field">How to pay, shown when the Revolut link is hidden<textarea id="setPayText" rows="3" placeholder="${esc(`Pay your ${Number(S.config.entryFee) ? euro(Number(S.config.entryFee)) + ' ' : ''}entry to one of the organisers.`)}">${esc(draft('setPayText', S.config.payInstructions || ''))}</textarea></label>
     <button class="btn small" data-action="saveSettings">Save settings</button></div></div>`;
  
@@ -915,7 +957,7 @@ async function confirmRound() {
     else { gUpd.currentRound = next; Object.assign(gUpd, lockFields(next, defaultLock(next))); }
     ops.push(b => b.update(doc(db, 'games', g.id), gUpd));
     const summary = outcomes.map(o => ({ uid: o.e.uid, name: o.e.name, teamName: o.p?.teamName || null, fixtureId: o.p?.fixtureId || null, teamId: o.p?.teamId || null, auto: !!o.auto, result: o.result }));
-    ops.push(b => b.set(doc(db, 'games', g.id, 'rounds', String(r)), { results, reinstated, summary, pot: (Number(S.config.entryFee) || 0) * S.entries.length, confirmedAt: serverTimestamp() }));
+    ops.push(b => b.set(doc(db, 'games', g.id, 'rounds', String(r)), { results, reinstated, summary, pot: potTotal(), confirmedAt: serverTimestamp() }));
     await commitOps(ops);
     fx.forEach(f => ['hs-', 'as-', 'pp-'].forEach(k => delete S.drafts[k + f.id]));
     toast(`Round ${r} confirmed`);
@@ -1084,7 +1126,7 @@ async function roundupData(r) {
     const sc = scoreAny(p);
     return { round: p.round, teamName: p.teamName, auto: p.auto, result: p.result, score: sc ? `${sc.mine}–${sc.theirs}` : '' };
   });
-  return { r, items, reinstated: !!rd.reinstated, pot: rd.pot || (Number(S.config.entryFee) || 0) * S.entries.length,
+  return { r, items, reinstated: !!rd.reinstated, pot: potTotal() || rd.pot,
     total, toGo, stage: idx + 1, breakAhead, winners, path, entered: S.entries.length,
     reinstatedCount: (g.reinstatedRounds || []).filter(x => x <= r).length };
 }
@@ -1128,6 +1170,21 @@ async function drawRoundup(data) {
   else sections.push({ title: T('fallen'), color: C.flag, entries: [{ text: joke('noneOut', String(r), {}) }] });
  
   const wins = survivors.filter(i => i.result === 'won' && i.sc && !i.auto).sort((a, b) => (a.sc.mine - a.sc.theirs) - (b.sc.mine - b.sc.theirs));
+  // Buy-backs: who came back from the dead this round, and a reminder if the window is open
+  const returned = items.filter(i => S.entries.find(e => e.uid === i.uid)?.boughtBack === r - 1);
+  if (returned.length) {
+    const ok = returned.filter(i => !fallen.includes(i)).map(i => i.name), bad = returned.filter(i => fallen.includes(i)).map(i => i.name);
+    const list = a => a.join(', ').replace(/, ([^,]*)$/, ' and $1');
+    let t = `${list(returned.map(i => i.name))} bought back in.`;
+    if (ok.length && bad.length) t += ` ${list(ok)} made it count. ${list(bad)} paid twice to go out twice.`;
+    else if (ok.length) t += returned.length === 1 ? ' Money well spent.' : ' Every one of them made it count.';
+    else t += returned.length === 1 ? ' That was an expensive way to go out twice.' : ' Not one of them made it through. Expensive weekend.';
+    sections.push({ title: 'Back from the dead', color: C.gold, entries: [{ text: t }] });
+  }
+  const g2 = S.game;
+  if (buybackOn() && fallen.length && r <= buybackUpTo() && g2?.status === 'active' && g2.currentRound === r + 1 && !picksClosed()) {
+    sections.push({ title: 'Second chances', color: C.gold, entries: [{ text: `Knocked out? Buy back in for ${euro(buybackFee())} before ${fmtLock(lockAt())}. One go only, and your team stays used.` }] });
+  }
   // Everyone who scraped through by a score or less, closest first (up to 4)
   const close = wins.filter(e => e.sc.mine - e.sc.theirs <= 7).slice(0, 4);
   const escT = T('escape');
@@ -1394,9 +1451,12 @@ const actions = {
         entryFee: Number($('#setFee').value) || 0,
         revolutLink: $('#setRevolut').value.trim(),
         showRevolut: $('#setShowRev').checked,
+        buybackOn: $('#setBuyback').checked,
+        buybackFee: Number($('#setBuybackFee').value) || 0,
+        buybackUpTo: Math.max(1, Number($('#setBuybackUpTo').value) || 1),
         payInstructions: $('#setPayText').value.trim(),
       }, { merge: true });
-      ['setTitle', 'setFee', 'setRevolut', 'setShowRev', 'setPayText'].forEach(k => delete S.drafts[k]);
+      ['setTitle', 'setFee', 'setRevolut', 'setShowRev', 'setPayText', 'setBuyback', 'setBuybackFee', 'setBuybackUpTo'].forEach(k => delete S.drafts[k]);
       toast('Settings saved');
     } catch (err) { toast(niceError(err)); }
   },
@@ -1420,6 +1480,30 @@ const actions = {
     if (!confirm(`End the game now? The ${still.length} player(s) still in will share the pot.`)) return;
     try { await updateDoc(doc(db, 'games', S.game.id), { status: 'finished', winners: still.map(e => e.uid), finishedRound: S.game.currentRound }); }
     catch (err) { toast(niceError(err)); }
+  },
+  async requestBuyback() {
+    const me = myEntry();
+    if (!buybackOpen(me)) { toast('Buy-backs have closed.'); return; }
+    try { await updateDoc(doc(db, 'entries', me.id), { buybackRequested: true }); toast('Thanks. An organiser will bring you back in once they see the payment.'); }
+    catch (err) { toast(niceError(err)); }
+  },
+  async doBuyback(el) {
+    const e = S.entries.find(x => x.id === el.dataset.id);
+    if (!e || !buybackOpen(e, true)) return;
+    if (!confirm(`Has ${e.name} paid the ${euro(buybackFee())} buy-back? They'll be back in for Round ${e.outRound + 1}.`)) return;
+    try {
+      await updateDoc(doc(db, 'entries', e.id), { status: 'alive', outRound: null, boughtBack: e.outRound, buybackPaid: buybackFee(), buybackRequested: false });
+      toast(`${e.name} is back in.`);
+    } catch (err) { toast(niceError(err)); }
+  },
+  async undoBuyback(el) {
+    const e = S.entries.find(x => x.id === el.dataset.id);
+    if (!e || !e.boughtBack) return;
+    if (!confirm(`Undo ${e.name}'s buy-back? They'll be out again from Round ${e.boughtBack}.`)) return;
+    try {
+      await updateDoc(doc(db, 'entries', e.id), { status: 'out', outRound: e.boughtBack, boughtBack: null, buybackPaid: 0, buybackRequested: false });
+      toast('Buy-back undone.');
+    } catch (err) { toast(niceError(err)); }
   },
   async togglePaid(el) {
     const e = S.entries.find(x => x.id === el.dataset.id);
