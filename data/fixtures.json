@@ -73,7 +73,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Temple Hill",
-   "status": "fixture",
+   "status": "pending",
    "postponed": false,
    "home": {
     "id": "57183",
@@ -117,7 +117,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Tom Clifford Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57249",
@@ -227,7 +227,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Forenaughts",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57209",
@@ -359,7 +359,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Clogher Valley",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "210005",
@@ -425,7 +425,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Holmpatrick",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "170675",
@@ -491,7 +491,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Virgin Media Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57187",
