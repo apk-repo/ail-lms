@@ -161,7 +161,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Palace Grounds",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "170673",
@@ -271,7 +271,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Spafield",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "170671",
@@ -315,7 +315,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "NUIG",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57181",
@@ -535,7 +535,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Liam Fitzgerald Park",
-   "status": "pending",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57239",
