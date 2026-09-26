@@ -51,7 +51,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Castle Avenue",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57177",
@@ -73,7 +73,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Temple Hill",
-   "status": "pending",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57183",
@@ -95,7 +95,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Aviva back pitch",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57203",
@@ -139,7 +139,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Stradbrook",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57167",
@@ -183,7 +183,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Dooradoyle",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57195",
@@ -293,7 +293,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Stevenson Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57191",
@@ -337,7 +337,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Ballyclare",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "239703",
@@ -381,7 +381,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Enniskillen",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "256526",
@@ -447,7 +447,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Energia Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57163",
@@ -469,7 +469,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Dubarry Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57171",
@@ -513,7 +513,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Monkstown",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "224866",
@@ -535,7 +535,7 @@
    "round": 1,
    "kickoff": 1790429400,
    "venue": "Liam Fitzgerald Park",
-   "status": "fixture",
+   "status": "pending",
    "postponed": false,
    "home": {
     "id": "57239",

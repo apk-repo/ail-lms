@@ -1,42 +1,42 @@
 {
- "fixturesChangedAt": "2026-09-26T15:26:47.800Z",
- "checkedAt": "2026-09-26T15:26:47.800Z",
+ "fixturesChangedAt": "2026-09-26T15:45:03.590Z",
+ "checkedAt": "2026-09-26T15:45:03.590Z",
  "total": 450,
  "divisions": [
   {
    "comp": "215682",
    "division": "2A",
    "ok": true,
-   "fixtures": 88,
-   "results": 1
+   "fixtures": 86,
+   "results": 2
   },
   {
    "comp": "215683",
    "division": "2BS",
    "ok": true,
    "fixtures": 85,
-   "results": 1
+   "results": 5
   },
   {
    "comp": "215684",
    "division": "1A",
    "ok": true,
-   "fixtures": 88,
-   "results": 2
+   "fixtures": 86,
+   "results": 4
   },
   {
    "comp": "215685",
    "division": "1B",
    "ok": true,
-   "fixtures": 89,
-   "results": 1
+   "fixtures": 87,
+   "results": 3
   },
   {
    "comp": "215686",
    "division": "2BN",
    "ok": true,
-   "fixtures": 88,
-   "results": 2
+   "fixtures": 86,
+   "results": 4
   }
  ]
 }
