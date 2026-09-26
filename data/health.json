@@ -1,6 +1,6 @@
 {
- "fixturesChangedAt": "2026-09-26T17:26:21.919Z",
- "checkedAt": "2026-09-26T17:26:21.919Z",
+ "fixturesChangedAt": "2026-09-26T18:01:50.973Z",
+ "checkedAt": "2026-09-26T18:01:50.973Z",
  "total": 450,
  "divisions": [
   {
@@ -35,8 +35,8 @@
    "comp": "215686",
    "division": "2BN",
    "ok": true,
-   "fixtures": 86,
-   "results": 4
+   "fixtures": 85,
+   "results": 5
   }
  ]
 }
