@@ -34,7 +34,34 @@ const cleanName = n => String(n || '')
   .replace(/\s+(RFC|R\.F\.C\.|FC)$/i, '')
   .trim();
 
-const toScore = v => (v === null || v === undefined || v === '' || !Number.isFinite(+v)) ? null : +v;
+// Scores come as "points;tries", e.g. "24;3" = 24 points, 3 tries. Plain numbers work too.
+const toScore = v => {
+  if (v === null || v === undefined) return null;
+  const m = String(v).trim().match(/^(\d+)\s*(?:;.*)?$/);
+  return m ? +m[1] : null;
+};
+
+// The results feed doesn't always name the score fields the same way as the fixtures feed,
+// so try the likely names, then a combined "25 - 10" style field, then any field that looks right.
+const scoreKeys = side => [`${side}Score`, `${side}TeamScore`, `${side}_score`, `${side}FinalScore`, `${side}Points`,
+  `${side}TeamPoints`, `${side}Goals`, `${side}Total`, `${side}FTScore`, `${side}ScoreFT`];
+function pickScores(r) {
+  const get = side => {
+    for (const k of scoreKeys(side)) { const v = toScore(r[k]); if (v !== null) return v; }
+    for (const [k, v] of Object.entries(r)) {
+      if (new RegExp(`^${side}`, 'i').test(k) && /score|points|total/i.test(k) && !/half|ht|bonus|try|tries/i.test(k)) { const n = toScore(v); if (n !== null) return n; }
+    }
+    return null;
+  };
+  let home = get('home'), away = get('away');
+  if (home === null || away === null) {
+    for (const k of ['score', 'result', 'fullTimeScore', 'ftScore', 'finalScore', 'fixtureResult', 'matchResult']) {
+      const m = String(r[k] ?? '').match(/(\d+)\s*[-–:v]\s*(\d+)/);
+      if (m) { home = +m[1]; away = +m[2]; break; }
+    }
+  }
+  return { home, away };
+}
 
 const isPostponed = r => {
   const p = r.postponed;
@@ -61,8 +88,8 @@ const normalise = r => ({
   venue: r.venue || '',
   status: r.fixtureStatus || '',
   postponed: isPostponed(r),
-  home: { id: String(r.homeTeamId), name: cleanName(r.homeTeam), logo: r.homeClubLogo || '', score: toScore(r.homeScore) },
-  away: { id: String(r.awayTeamId), name: cleanName(r.awayTeam), logo: r.awayClubLogo || '', score: toScore(r.awayScore) },
+  home: { id: String(r.homeTeamId), name: cleanName(r.homeTeam), logo: r.homeClubLogo || '', score: pickScores(r).home },
+  away: { id: String(r.awayTeamId), name: cleanName(r.awayTeam), logo: r.awayClubLogo || '', score: pickScores(r).away },
 });
 
 async function readJson(path, fallback) {
@@ -80,13 +107,37 @@ for (const comp of COMPETITIONS) {
       getFeed(feedUrl('fixtures', comp)),
       getFeed(feedUrl('results', comp)),
     ]);
-    // Results come second so played games take their scores from the results feed.
-    for (const row of [...fixtures, ...results]) {
+    for (const row of fixtures) {
       const f = normalise(row);
+      if (!/result/i.test(f.status) && !f.home.score && !f.away.score) { f.home.score = null; f.away.score = null; }
       if (f.kickoff && f.round) byId.set(f.id, f);
     }
+    // Results: merge the scores into the game we already have, matched by fixture id,
+    // or failing that by the two teams. Keep our kickoff/round if the result row lacks them.
+    let matched = 0;
+    for (const row of results) {
+      const f = normalise(row);
+      let cur = byId.get(f.id);
+      if (!cur) cur = [...byId.values()].find(x => x.comp === comp &&
+        ((x.home.id === f.home.id && x.away.id === f.away.id) || (x.home.name === f.home.name && x.away.name === f.away.name)) &&
+        (!f.kickoff || Math.abs(x.kickoff - f.kickoff) < 3 * 86400));
+      if (cur) {
+        byId.set(cur.id, { ...cur,
+          status: f.status || cur.status, postponed: f.postponed || cur.postponed,
+          home: { ...cur.home, score: f.home.score ?? cur.home.score },
+          away: { ...cur.away, score: f.away.score ?? cur.away.score } });
+        if (f.home.score !== null && f.away.score !== null) matched++;
+      } else if (f.kickoff && f.round) byId.set(f.id, f);
+    }
+    if (results.length) {
+      const r0 = results[0];
+      console.log(`  ${comp} results feed fields: ${Object.keys(r0).join(', ')}`);
+      console.log(`  ${comp} first result: ${JSON.stringify(Object.fromEntries(Object.entries(r0).filter(([k]) => /score|result|point|home|away|fixture|round|date|status/i.test(k))))}`);
+      console.log(`  ${comp}: scores read for ${matched} of ${results.length} results`);
+    }
     const rows = [...byId.values()].filter(f => f.comp === comp);
-    health.push({ comp, division: rows[0]?.div || '?', ok: true, fixtures: fixtures.length, results: results.length });
+    health.push({ comp, division: rows[0]?.div || '?', ok: true, fixtures: fixtures.length, results: results.length,
+      scored: rows.filter(x => x.home.score !== null && x.away.score !== null).length });
   } catch (err) {
     // Keep what we had for this division rather than wiping it.
     const kept = [...byId.values()].filter(f => f.comp === comp).length;
