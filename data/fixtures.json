@@ -2954,19 +2954,19 @@
    "div": "1B",
    "round": 6,
    "kickoff": 1794061800,
-   "venue": "The Mardyke",
+   "venue": "New Ormond Park",
    "status": "fixture",
    "postponed": false,
    "home": {
-    "id": "57241",
-    "name": "University College Cork Rugby",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
-    "score": null
-   },
-   "away": {
     "id": "57213",
     "name": "Nenagh Ormond",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11447/nenagh.gif",
+    "score": null
+   },
+   "away": {
+    "id": "57241",
+    "name": "University College Cork Rugby",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
     "score": null
    }
   },
@@ -3851,6 +3851,28 @@
    }
   },
   {
+   "id": "6945718",
+   "comp": "215682",
+   "div": "2A",
+   "round": 8,
+   "kickoff": 1796414400,
+   "venue": "Corinthian Park",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "57181",
+    "name": "Galway Corinthians",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/2994/Corinthians Logo.png",
+    "score": null
+   },
+   "away": {
+    "id": "57193",
+    "name": "Galwegians",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11427/galwegians.jpg",
+    "score": null
+   }
+  },
+  {
    "id": "6945536",
    "comp": "215684",
    "div": "1A",
@@ -4111,28 +4133,6 @@
     "id": "57245",
     "name": "UL Bohemian",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11477/logo.jpg",
-    "score": null
-   }
-  },
-  {
-   "id": "6945718",
-   "comp": "215682",
-   "div": "2A",
-   "round": 8,
-   "kickoff": 1796481000,
-   "venue": "Corinthian Park",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "57181",
-    "name": "Galway Corinthians",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/2994/Corinthians Logo.png",
-    "score": null
-   },
-   "away": {
-    "id": "57193",
-    "name": "Galwegians",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11427/galwegians.jpg",
     "score": null
    }
   },
@@ -6804,19 +6804,19 @@
    "div": "1B",
    "round": 13,
    "kickoff": 1801924200,
-   "venue": "New Ormond Park",
+   "venue": "The Mardyke",
    "status": "fixture",
    "postponed": false,
    "home": {
-    "id": "57213",
-    "name": "Nenagh Ormond",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11447/nenagh.gif",
-    "score": null
-   },
-   "away": {
     "id": "57241",
     "name": "University College Cork Rugby",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
+    "score": null
+   },
+   "away": {
+    "id": "57213",
+    "name": "Nenagh Ormond",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11447/nenagh.gif",
     "score": null
    }
   },
