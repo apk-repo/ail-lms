@@ -1101,6 +1101,28 @@
    }
   },
   {
+   "id": "6945691",
+   "comp": "215682",
+   "div": "2A",
+   "round": 3,
+   "kickoff": 1791638640,
+   "venue": "Eaton Park",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "57157",
+    "name": "Ballymena",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4028/Screenshot_20230614_211918_Samsung Internet.jpg",
+    "score": null
+   },
+   "away": {
+    "id": "57223",
+    "name": "Queen's University",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11457/queens.gif",
+    "score": null
+   }
+  },
+  {
    "id": "6945511",
    "comp": "215684",
    "div": "1A",
@@ -1317,28 +1339,6 @@
     "id": "57201",
     "name": "Instonians",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4034/seahorses pic 2.png",
-    "score": null
-   }
-  },
-  {
-   "id": "6945691",
-   "comp": "215682",
-   "div": "2A",
-   "round": 3,
-   "kickoff": 1791639000,
-   "venue": "Eaton Park",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "57157",
-    "name": "Ballymena",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4028/Screenshot_20230614_211918_Samsung Internet.jpg",
-    "score": null
-   },
-   "away": {
-    "id": "57223",
-    "name": "Queen's University",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11457/queens.gif",
     "score": null
    }
   },
