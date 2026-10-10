@@ -1,6 +1,6 @@
 {
  "fixturesChangedAt": "2026-10-10T16:29:16.407Z",
- "checkedAt": "2026-10-10T23:01:39.532Z",
+ "checkedAt": "2026-10-10T23:27:46.166Z",
  "total": 450,
  "divisions": [
   {
@@ -21,9 +21,11 @@
   },
   {
    "comp": "215684",
-   "ok": false,
-   "error": "HTTP 502",
-   "keptPrevious": 90
+   "division": "1A",
+   "ok": true,
+   "fixtures": 75,
+   "results": 15,
+   "scored": 15
   },
   {
    "comp": "215685",
