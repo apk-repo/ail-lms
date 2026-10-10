@@ -1195,19 +1195,19 @@
    "round": 3,
    "kickoff": 1791639000,
    "venue": "Lakelands",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57237",
     "name": "Terenure College",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3161/Clear Background.jpg",
-    "score": null
+    "score": 34
    },
    "away": {
     "id": "57221",
     "name": "Old Wesley",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3167/old_wesley.jpg",
-    "score": null
+    "score": 26
    }
   },
   {
@@ -1349,19 +1349,19 @@
    "round": 3,
    "kickoff": 1791639000,
    "venue": "Spafield",
-   "status": "pending",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "170671",
     "name": "Cashel",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/8476/Cashel_RFC_Crest.jpg",
-    "score": null
+    "score": 33
    },
    "away": {
     "id": "57193",
     "name": "Galwegians",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11427/galwegians.jpg",
-    "score": null
+    "score": 12
    }
   },
   {
@@ -1613,19 +1613,19 @@
    "round": 3,
    "kickoff": 1791639000,
    "venue": "Monkstown",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "224866",
     "name": "Monkstown",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3181/Monkstown FC-jpg.jpg",
-    "score": null
+    "score": 31
    },
    "away": {
     "id": "57169",
     "name": "Bruff",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/8500/xlcrest.jpg",
-    "score": null
+    "score": 16
    }
   },
   {
