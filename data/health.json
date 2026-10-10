@@ -1,13 +1,13 @@
 {
- "fixturesChangedAt": "2026-10-10T16:01:18.078Z",
- "checkedAt": "2026-10-10T16:01:18.078Z",
+ "fixturesChangedAt": "2026-10-10T16:29:16.407Z",
+ "checkedAt": "2026-10-10T16:29:16.407Z",
  "total": 450,
  "divisions": [
   {
    "comp": "215682",
    "division": "2A",
    "ok": true,
-   "fixtures": 76,
+   "fixtures": 75,
    "results": 15,
    "scored": 15
   },
@@ -31,17 +31,17 @@
    "comp": "215685",
    "division": "1B",
    "ok": true,
-   "fixtures": 76,
-   "results": 14,
-   "scored": 14
+   "fixtures": 75,
+   "results": 15,
+   "scored": 15
   },
   {
    "comp": "215686",
    "division": "2BN",
    "ok": true,
-   "fixtures": 76,
-   "results": 14,
-   "scored": 14
+   "fixtures": 75,
+   "results": 15,
+   "scored": 15
   }
  ]
 }

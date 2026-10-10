@@ -1305,19 +1305,19 @@
    "round": 3,
    "kickoff": 1791639000,
    "venue": "Forenaughts",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57209",
     "name": "Naas",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3170/Naas Logo Final Edit.jpg",
-    "score": null
+    "score": 54
    },
    "away": {
     "id": "57167",
     "name": "Blackrock College",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11401/blackrock-logo.png",
-    "score": null
+    "score": 14
    }
   },
   {
@@ -1459,19 +1459,19 @@
    "round": 3,
    "kickoff": 1791639000,
    "venue": "Clogher Valley",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "210005",
     "name": "Clogher Valley",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4040/ClogherValleyRFCEdited.gif",
-    "score": null
+    "score": 25
    },
    "away": {
     "id": "57161",
     "name": "Banbridge",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4033/be438ef1-4b21-46b8-9193-54dc3bfda9d3.jpeg",
-    "score": null
+    "score": 24
    }
   },
   {
