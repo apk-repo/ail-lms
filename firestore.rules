@@ -38,7 +38,7 @@ service cloud.firestore {
     match /entries/{entryId} {
       allow read: if true;
       allow create: if isAdmin() || validJoin(entryId);
-      allow update: if isAdmin() || validPickedFlag();
+      allow update: if isAdmin() || validPickedFlag() || validBuybackRequest();
       allow delete: if isAdmin();
     }
 
@@ -49,6 +49,19 @@ service cloud.firestore {
         && resource.data.uid == request.auth.uid
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pickedRound'])
         && request.resource.data.pickedRound == g.currentRound
+        && request.time < g.lockAt;
+    }
+
+    // A knocked-out player may say "I've paid my buy-back" (an organiser still has to bring them back in).
+    function validBuybackRequest() {
+      let g = gameDoc(resource.data.gameId);
+      return signedIn()
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['buybackRequested'])
+        && request.resource.data.buybackRequested == true
+        && resource.data.status == 'out'
+        && resource.data.get('boughtBack', null) == null
+        && g.currentRound == resource.data.outRound + 1
         && request.time < g.lockAt;
     }
 

@@ -109,6 +109,8 @@
   .div-head span { font: 500 14px var(--body); color: var(--muted); }
   .match { background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
   .match .sides { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: stretch; }
+  .match.has-score .sides { grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); }
+  .match.has-score .team .name { overflow-wrap: anywhere; }
   .match .v { display: grid; place-items: center; font: 700 16px var(--display); color: var(--muted); }
   .team {
     display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
@@ -118,6 +120,10 @@
   .team .tag { font-size: 13px; color: var(--muted); min-height: 18px; }
   .team:disabled { cursor: default; }
   .team.unavailable .crest, .team.unavailable .name { opacity: .4; }
+  .team.won .crest, .team.won .name { opacity: 1; }
+  .team.won .tag { color: var(--pitch); font-weight: 700; }
+  .match .v.sc { font: 700 30px/1 var(--display); color: var(--ink); white-space: nowrap; text-align: center; padding: 0 6px; align-content: center; }
+  .match .v.sc small { display: block; margin-top: 4px; font: 600 11px var(--body, inherit); letter-spacing: .08em; color: var(--muted); }
   .team.used .name { text-decoration: line-through; text-decoration-thickness: 2px; }
   .team.chosen { background: var(--gold); color: #0E1C15; }
   .team.chosen .crest { border-color: #0E1C15; }
@@ -142,6 +148,17 @@
   .confirm-bar .btn.ghost { background: transparent; color: #fff; border-color: #fff; }
 
   /* Board */
+  .rtabs { display: flex; gap: 8px; overflow-x: auto; margin: 0 0 14px; padding-bottom: 4px; scrollbar-width: none; }
+  .rtab { flex: none; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 7px 14px; font: 600 15px var(--body); cursor: pointer; }
+  .rtab small { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-left: 4px; }
+  .rtab.on { background: var(--pitch); border-color: var(--pitch); color: #fff; }
+  .rtab.on small { color: rgba(255,255,255,.8); }
+  .v-ok { color: var(--good); font-weight: 700; } .v-out { color: var(--flag); font-weight: 700; } .v-mid { color: var(--gold); font-weight: 700; }
+  .allres { margin: -10px 0 22px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  .allres summary { padding: 12px 16px; cursor: pointer; font-weight: 700; }
+  .rrow { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 2px 10px; padding: 9px 16px; border-top: 1px solid var(--line); align-items: center; font-size: 15px; }
+  .rrow .r { text-align: right; } .rrow .w { font-weight: 700; } .rrow b { font: 700 18px var(--display); white-space: nowrap; }
+  .rrow small { grid-column: 1 / -1; text-align: center; color: var(--muted); font-size: 12px; }
   .this-round { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 22px; }
   .this-round .head { padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
   .this-round .head b { font: 700 22px/1 var(--display); }
@@ -183,6 +200,7 @@
   label.check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--pitch); flex: none; }
   .field textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--ink); resize: vertical; }
   .payinfo { margin: 10px 0 0; white-space: pre-line; }
+  .rnd { font: 600 11px var(--body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; vertical-align: 2px; }
   .paybox { margin-top: 12px; display: grid; gap: 10px; }
   .paybox > .btn { justify-self: start; }
   .paylink { display: flex; align-items: center; gap: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 8px 8px 8px 12px; }
@@ -244,7 +262,7 @@
 
 <script>
 (function () {
-  const LS = 'ailLmsDemo_v3';
+  const LS = 'ailLmsDemo_v4';
   const realNow = Date.now.bind(Date);
   let offset = 0;            // seconds the demo clock is ahead of real time
   let store = new Map();     // 'collection/id' -> data
@@ -304,7 +322,7 @@
   function seed() {
     offset = 0; store = new Map(); fixtures = buildFixtures(); user = USERS.aaron;
     const ts = { seconds: nowS() };
-    store.set('config/settings', { title: "Cill Dara Senior Men's AIL Last Man Standing", entryFee: 10, revolutLink: 'https://revolut.me/example' });
+    store.set('config/settings', { title: "Cill Dara Senior Men's AIL Last Man Standing", entryFee: 10, revolutLink: 'https://revolut.me/example', buybackOn: true, buybackFee: 10, buybackUpTo: 1 });
     store.set('admins/aaron', { role: 'organiser' });
     store.set('games/g1', { status: 'active', startRound: 1, currentRound: 1, joinOpen: true, confirmedRounds: [], winners: [], createdAt: ts });
     const people = [['aaron', 'Aaron K', true], ['niamh', 'Niamh B', true], ['bot1', 'Dec M', true], ['bot2', 'Ciarán O', false],
@@ -561,6 +579,18 @@ const now = () => Date.now() / 1000;
 const fmt = (ts, opts) => new Intl.DateTimeFormat('en-IE', { timeZone: TZ, ...opts }).format(new Date(ts * 1000));
 const fmtKick = ts => fmt(ts, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 const fmtDay = ts => fmt(ts, { weekday: 'long', day: 'numeric', month: 'long' });
+// Buy-backs: players knocked out early can pay to come back in for the next round
+const buybackOn = () => S.config.buybackOn === true;
+const buybackFee = () => (S.config.buybackFee === undefined || S.config.buybackFee === null || S.config.buybackFee === '')
+  ? (Number(S.config.entryFee) || 0) : (Number(S.config.buybackFee) || 0);
+const buybackUpTo = () => Number(S.config.buybackUpTo) || 1;
+// Can this player still buy back? (Organisers can do it after the deadline too.)
+const buybackOpen = (e, forAdmin = false) => {
+  const g = S.game;
+  return !!(g && g.status === 'active' && buybackOn() && e && e.status === 'out' && !e.boughtBack
+    && e.outRound <= buybackUpTo() && g.currentRound === e.outRound + 1 && (forAdmin || !picksClosed()));
+};
+const potTotal = () => (Number(S.config.entryFee) || 0) * S.entries.length + S.entries.reduce((t, e) => t + (Number(e.buybackPaid) || 0), 0);
 const euro = n => '€' + (Math.round(n * 100) / 100).toLocaleString('en-IE');
 const initials = n => n.split(/\s+/).filter(w => w && !/^(of|the)$/i.test(w)).map(w => w[0]).join('').slice(0, 3).toUpperCase();
 const hashStr = s => { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
@@ -734,7 +764,7 @@ function viewHeader() {
     if (l) bits.push(picksClosed() ? `<span class="deadline closed">Picks closed</span>` : `<span class="deadline">Picks close ${esc(fmtLock(l))}</span>`);
     bits.push(`<span><b>${left}</b> of ${total} still standing</span>`);
   }
-  if (fee && total) bits.push(`<span><b>${euro(fee * total)}</b> pot</span>`);
+  if (total && potTotal()) bits.push(`<span><b>${euro(potTotal())}</b> pot</span>`);
   return `<div class="comp">${title}</div><div class="round">${big}</div><div class="status">${bits.join('')}</div>`;
 }
 
@@ -765,10 +795,10 @@ const payInstructions = () => {
   return (S.config.payInstructions || '').trim() || `Pay your ${fee ? euro(fee) + ' ' : ''}entry to one of the organisers.`;
 };
 // Pay button plus the link written out, for when the button won't open the app
-function revolutBox() {
+function revolutBox(amount) {
   const link = S.config.revolutLink;
-  if (!revolutOn()) return `<p class="payinfo">${esc(payInstructions())}</p>`;
-  const fee = Number(S.config.entryFee) || 0;
+  if (!revolutOn()) return `<p class="payinfo">${esc(amount === undefined ? payInstructions() : `Pay the ${euro(amount)} buy-back to one of the organisers.`)}</p>`;
+  const fee = amount === undefined ? (Number(S.config.entryFee) || 0) : amount;
   const tag = (link.match(/revolut\.me\/@?([\w.-]+)/i) || [])[1];
   return `<div class="paybox">
     <a class="btn" href="${esc(link)}" target="_blank" rel="noopener">Pay ${fee ? euro(fee) + ' ' : ''}by Revolut</a>
@@ -800,7 +830,17 @@ function viewPick() {
   if (!me) return viewJoin();
   if (me.status === 'out') {
     const p = S.myPicks.find(x => x.round === me.outRound);
-    return `${payNote(me)}<div class="note out"><b>You're out.</b> ${p ? esc(p.teamName) + ' let you down' : 'Your team didn\'t win'} in Round ${me.outRound}. Keep an eye on the board. A new game starts when this one ends.</div>`;
+    const why = `${p ? esc(p.teamName) + ' let you down' : 'Your team didn\'t win'} in Round ${me.outRound}.`;
+    if (buybackOpen(me)) {
+      const fee = buybackFee();
+      return `${payNote(me)}<div class="note out"><b>You're out.</b> ${why}</div>
+        <div class="note warn"><b>Buy back in for ${euro(fee)}.</b> Pay before <b>${esc(fmtLock(lockAt()))}</b> and you're back in for Round ${me.outRound + 1}. The team you've used stays used, and you can only buy back once.
+        ${revolutBox(fee)}
+        ${me.buybackRequested
+          ? `<p class="payinfo"><b>Request sent.</b> You'll be back in as soon as an organiser confirms your payment.</p>`
+          : `<button class="btn" data-action="requestBuyback" style="margin-top:12px">I've paid, let me back in</button>`}</div>`;
+    }
+    return `${payNote(me)}<div class="note out"><b>You're out.</b> ${why} Keep an eye on the board. A new game starts when this one ends.</div>`;
   }
   const lastDone = Math.max(0, ...(g.confirmedRounds || []));
   const redo = (g.reinstatedRounds || []).includes(lastDone)
@@ -836,10 +876,11 @@ function viewRoundPicker(me) {
   const unpaid = !me.paid;
 
   let status;
-  if (myPick && locked) status = `<div class="note"><b>Locked in: ${esc(myPick.teamName)}.</b> Everyone's picks are now on the board. Results are confirmed after the final whistle.</div>`;
+  if (myPick && locked && myPick.auto) status = `<div class="note warn"><b>You didn't pick, so you've been given ${esc(myPick.teamName)} at random.</b> Fingers crossed. Everyone's picks are on the board.</div>`;
+  else if (myPick && locked) status = `<div class="note"><b>Locked in: ${esc(myPick.teamName)}.</b> Everyone's picks are now on the board. Results are confirmed after the final whistle.</div>`;
   else if (myPick) status = `<div class="note"><b>Your pick: ${esc(myPick.teamName)}.</b> ${pickFx ? `You can change it until ${esc(fmtLock(lock))}.` : 'Its game is no longer listed, so pick again.'}</div>`;
   else if (unpaid && !locked) status = `<div class="note warn"><b>Pay to pick.</b> Picks open once the organiser marks your entry as paid. Picks close <b>${esc(fmtLock(lock))}</b>.${revolutBox()}</div>`;
-  else if (locked) status = `<div class="note warn">Picks for Round ${r} closed ${esc(fmtLock(lock))}. As you didn't pick, you'll be given a random team you haven't used.</div>`;
+  else if (locked) status = `<div class="note warn">Picks for Round ${r} closed ${esc(fmtLock(lock))}. As you didn't pick, you're being given a random team you haven't used. It will show here shortly.</div>`;
   else status = `<div class="note warn"><b>No pick yet.</b> Tap a team to pick them. Picks close <b>${esc(fmtLock(lock))}</b>. If you don't pick, you'll be given a random team you haven't used.</div>`;
 
   let html = `<h2>${esc(fmtDay(firstKick))}</h2><p class="muted">Pick one team to win.</p>${status}`;
@@ -860,12 +901,18 @@ function viewRoundPicker(me) {
 
 function matchCard(f, ctx) {
   const started = now() >= f.kickoff;
+  const scored = !f.postponed && f.home.score !== null && f.away.score !== null && f.home.score !== undefined && f.away.score !== undefined;
+  const hs = Number(f.home.score), as = Number(f.away.score);
+  const final = scored && (/result|final|full|ft|played|complete/i.test(f.status || '') || now() > f.kickoff + 110 * 60 * 1000);
+  const resOf = t => !scored ? '' : hs === as ? 'Drew' : ((t === f.home) === (hs > as) ? (final ? 'Won' : 'Ahead') : (final ? 'Lost' : 'Behind'));
   const side = t => {
     const isUsed = ctx.used.has(t.id) || ctx.usedRound.has(t.id);
     const chosen = ctx.myPick?.teamId === t.id;
     const pending = S.pending?.teamId === t.id;
     let tag = '', off = false, cls = '';
-    if (chosen) tag = ctx.locked ? 'Locked in' : 'Your pick';
+    const res = resOf(t);
+    if (chosen) tag = res ? `Your pick, ${res.toLowerCase()}` : ctx.locked ? 'Locked in' : 'Your pick';
+    else if (res && (started || ctx.locked)) { tag = res; off = true; cls = res === 'Won' || res === 'Ahead' ? 'won' : ''; }
     else if (f.postponed) { tag = 'Postponed'; off = true; }
     else if (isUsed) { tag = ctx.usedRound.has(t.id) ? `Used R${ctx.usedRound.get(t.id)}` : 'Used'; off = true; cls = 'used'; }
     else if (ctx.locked) { tag = 'Picks closed'; off = true; }
@@ -880,9 +927,9 @@ function matchCard(f, ctx) {
       <span class="crest" aria-hidden="true"><b>${esc(initials(t.name))}</b>${logo}</span>
       <span class="name">${esc(t.name)}</span><span class="tag">${esc(tag)}</span></button>`;
   };
-  const score = (f.home.score !== null && f.away.score !== null) ? `${f.home.score}–${f.away.score}` : '';
-  return `<div class="match"><div class="sides">${side(f.home)}<div class="v">v</div>${side(f.away)}</div>
-    <div class="meta"><span>${esc(fmtKick(f.kickoff))}</span><span>${score ? esc(score) : esc(f.venue)}</span></div></div>`;
+  const mid = scored ? `<div class="v sc">${hs}–${as}<small>${final ? 'FT' : 'Latest'}</small></div>` : `<div class="v">v</div>`;
+  return `<div class="match ${scored ? 'has-score' : ''}"><div class="sides">${side(f.home)}${mid}${side(f.away)}</div>
+    <div class="meta"><span>${esc(fmtKick(f.kickoff))}</span><span>${f.postponed ? 'Postponed' : esc(f.venue)}</span></div></div>`;
 }
 
 function viewConfirmBar() {
@@ -898,7 +945,7 @@ function viewConfirmBar() {
 function viewFinished() {
   const g = S.game;
   const names = (g.winners || []).map(nameOf);
-  const fee = Number(S.config.entryFee) || 0, pot = fee * S.entries.length;
+  const pot = potTotal();
   let who = names.length === 1 ? `${esc(names[0])} is the last one standing` : names.length ? `${esc(names.join(', '))} share the pot` : 'The game has ended';
   return `<h2>${who}.</h2>${pot ? `<p>Pot: ${euro(pot)}${names.length > 1 ? `, ${euro(pot / names.length)} each` : ''}.</p>` : ''}
     <p class="muted">The organiser will start the next game soon. The final board is below.</p>${boardList()}`;
@@ -911,9 +958,9 @@ function boardList() {
   const gone = S.entries.filter(e => e.status !== 'alive').sort((a, b) => (b.outRound || 0) - (a.outRound || 0) || a.name.localeCompare(b.name));
   const row = e => {
     const ps = (picksBy.get(e.uid) || []).sort((a, b) => a.round - b.round);
-    const chips = ps.map(p => `<span class="chip ${esc(p.result || '')}">R${p.round} ${esc(p.teamName)}${p.auto ? ' (auto)' : ''}${p.result === 'won' ? ' ✓' : p.result === 'postponed' ? ' (P)' : (p.result === 'lost' || p.result === 'drew') ? (p.reinstated ? ' ↺' : ' ✗') : ''}</span>`).join('');
+    const chips = ps.map(p => `<span class="chip ${esc(p.result || '')}">R${p.round} ${esc(p.teamName)}${p.auto ? ' (random)' : ''}${p.result === 'won' ? ' ✓' : p.result === 'postponed' ? ' (P)' : (p.result === 'lost' || p.result === 'drew') ? (p.reinstated ? ' ↺' : p.round === e.boughtBack ? ' ✗ ↩' : ' ✗') : ''}</span>`).join('');
     const paid = S.isAdmin ? ` <span class="paid ${e.paid ? '' : 'no'}">${e.paid ? 'Paid' : 'Unpaid'}</span>` : '';
-    return `<div class="person ${e.status === 'alive' ? '' : 'gone'}"><div class="pname"><span>${esc(e.name)}</span><small>${e.status === 'alive' ? 'Still in' : 'Out R' + e.outRound}${paid}</small></div>${chips ? `<div class="chips">${chips}</div>` : ''}</div>`;
+    return `<div class="person ${e.status === 'alive' ? '' : 'gone'}"><div class="pname"><span>${esc(e.name)}</span><small>${e.status === 'alive' ? (e.boughtBack ? 'Bought back' : 'Still in') : 'Out R' + e.outRound}${paid}</small></div>${chips ? `<div class="chips">${chips}</div>` : ''}</div>`;
   };
   if (!S.entries.length) return `<p class="muted">No one has joined yet.</p>`;
   return `<div class="board">${still.map(row).join('')}${gone.map(row).join('')}</div>`;
@@ -921,10 +968,52 @@ function boardList() {
 
 function viewBoard() {
   if (!S.game) return `<h2>No game running yet</h2>`;
-  const a = alive().length, o = S.entries.length - a;
-  return `<h2>${a} still standing</h2><p class="muted">${o} out.</p>${S.game.status === 'active' ? roundPicksSection() : ''}<h3>Whole game</h3>${boardList()}`;
+  const g = S.game, a = alive().length, o = S.entries.length - a;
+  const done = [...(g.confirmedRounds || [])].sort((x, y) => y - x);
+  const live = g.status === 'active' && !done.includes(g.currentRound);
+  const tabs = [...(live ? [g.currentRound] : []), ...done];
+  if (!tabs.includes(S.boardRound)) S.boardRound = tabs[0];
+  const strip = tabs.length > 1 ? `<div class="rtabs" role="tablist">${tabs.map(r => `<button role="tab" class="rtab ${r === S.boardRound ? 'on' : ''}" data-action="boardRound" data-r="${r}">Round ${r}${live && r === g.currentRound ? ' <small>now</small>' : ''}</button>`).join('')}</div>` : '';
+  const body = live && S.boardRound === g.currentRound ? roundPicksSection() : (S.boardRound ? pastRoundSection(S.boardRound) : '');
+  return `<h2>${a} still standing</h2><p class="muted">${o} out.</p>${strip}${body}<h3>Whole game</h3>${boardList()}`;
 }
 
+// A finished round: everyone who played it, their team, the score and how they got on,
+// then every result from that round.
+function pastRoundSection(r) {
+  const ps = S.revealed.filter(p => p.round === r);
+  const order = { won: 0, postponed: 1, drew: 2, lost: 3 };
+  const rows = ps.map(p => ({ p, name: nameOf(p.uid) }))
+    .sort((x, y) => (order[x.p.result] ?? 4) - (order[y.p.result] ?? 4) || x.name.localeCompare(y.name))
+    .map(({ p, name }) => {
+      const f = fxById.get(p.fixtureId), isMe = S.user && p.uid === S.user.uid;
+      let sub = '';
+      if (f) {
+        const t = f.home.id === p.teamId ? f.home : f.away, o = f.home.id === p.teamId ? f.away : f.home;
+        sub = f.postponed || p.result === 'postponed' ? `v ${esc(o.name)}, postponed`
+          : (t.score !== null && t.score !== undefined && o.score !== null && o.score !== undefined) ? `v ${esc(o.name)}, ${t.score}–${o.score}` : `v ${esc(o.name)}`;
+      }
+      const verdict = p.result === 'won' ? '<span class="v-ok">Through</span>' : p.result === 'postponed' ? '<span class="v-ok">Through (postponed)</span>'
+        : p.reinstated ? '<span class="v-mid">Lost, reinstated</span>' : p.result === 'drew' ? '<span class="v-out">Drew, out</span>' : p.result === 'lost' ? '<span class="v-out">Out</span>' : '';
+      return `<div class="prow ${isMe ? 'me' : ''}"><span class="who">${esc(name)}</span><div class="what">${esc(p.teamName)}${p.auto ? ' <span class="rnd">random</span>' : ''}<small>${sub}${sub && verdict ? ' · ' : ''}${verdict}</small></div></div>`;
+    }).join('');
+  const through = ps.filter(p => p.result === 'won' || p.result === 'postponed').length;
+  const out = ps.filter(p => (p.result === 'lost' || p.result === 'drew') && !p.reinstated).length;
+  const head = ps.length ? `${through} through, ${out} out` : 'No picks recorded';
+  const counts = new Map(); ps.forEach(p => counts.set(p.teamName, (counts.get(p.teamName) || 0) + 1));
+  const top = [...counts.entries()].sort((x, y) => y[1] - x[1])[0];
+  const tally = top && top[1] > 1 ? `<div class="tally">Most backed: <b>${esc(top[0])}</b>, ${top[1]} players.</div>` : '';
+  const picked = new Map(); ps.forEach(p => picked.set(p.teamId, (picked.get(p.teamId) || 0) + 1));
+  const results = roundFixtures(r).map(f => {
+    const sc = f.postponed ? 'P' : (f.home.score !== null && f.home.score !== undefined && f.away.score !== null && f.away.score !== undefined) ? `${f.home.score}–${f.away.score}` : '–';
+    const hw = !f.postponed && f.home.score > f.away.score, aw = !f.postponed && f.away.score > f.home.score;
+    const n = (picked.get(f.home.id) || 0) + (picked.get(f.away.id) || 0);
+    return `<div class="rrow"><span class="${hw ? 'w' : ''}">${esc(f.home.name)}</span><b>${sc}</b><span class="r ${aw ? 'w' : ''}">${esc(f.away.name)}</span><small>${esc(divName(f.div))}${n ? ` · ${n} picked` : ''}</small></div>`;
+  }).join('');
+  return `<div class="this-round"><div class="head"><b>Round ${r}</b><span>${head}</span></div>${rows}${tally}</div>
+    <details class="allres"><summary>All Round ${r} results</summary>${results}</details>`;
+}
+ 
 // This round: who's picked, and once picks close, what everyone picked.
 function roundPicksSection() {
   const g = S.game, r = g.currentRound, closed = picksClosed(), l = lockAt();
@@ -950,8 +1039,8 @@ function roundPicksSection() {
           sub = `v ${esc(o.name)} <span class="score ${cls}">${t.score}–${o.score}</span>`;
         } else sub = `v ${esc(o.name)}, ${esc(fmtKick(f.kickoff))}`;
       }
-      what = `<div class="what">${esc(p.teamName)}${sub ? `<small>${sub}</small>` : ''}</div>`;
-    } else if (closed) what = `<div class="what nopick">No pick<small>Gets a random team</small></div>`;
+      what = `<div class="what">${esc(p.teamName)}${p.auto ? ' <span class="rnd">random</span>' : ''}${sub ? `<small>${sub}</small>` : ''}</div>`;
+    } else if (closed) what = `<div class="what nopick">No pick<small>Random team on the way</small></div>`;
     else what = e.pickedRound === r ? `<div class="what wait">Picked ✓</div>` : `<div class="what wait">Not picked yet</div>`;
     return `<div class="prow ${isMe ? 'me' : ''}"><span class="who">${esc(e.name)}</span>${what}</div>`;
   }).join('');
@@ -972,7 +1061,7 @@ function viewMine() {
   const labels = { won: 'Won, through', lost: 'Lost, out', drew: 'Drew, out', postponed: 'Postponed, through' };
   const ps = [...S.myPicks].sort((a, b) => b.round - a.round);
   const lbl = p => !p.result ? 'Awaiting result' : p.reinstated ? `${p.result === 'drew' ? 'Drew' : 'Lost'}, but everyone was reinstated` : labels[p.result];
-  const rows = ps.map(p => `<tr><td>Round ${p.round}</td><td><b>${esc(p.teamName)}</b>${p.auto ? ' (auto)' : ''}</td><td>${lbl(p)}</td></tr>`).join('');
+  const rows = ps.map(p => `<tr><td>Round ${p.round}</td><td><b>${esc(p.teamName)}</b>${p.auto ? ' (random)' : ''}</td><td>${lbl(p)}</td></tr>`).join('');
   return `<h2>My picks</h2>${rows ? `<div class="panel"><table class="list">${rows}</table></div>` : '<p class="muted">No picks yet.</p>'}
     <h3>Account</h3><p class="small">Signed in as ${esc(S.user.email || S.user.displayName || 'you')}.</p>
     <button class="btn ghost small" data-action="signOut">Sign out</button>`;
@@ -985,6 +1074,7 @@ function viewRules() {
     <p>If they win, you're through to the next round. If they lose or draw, you're out.</p>
     <p>You can't pick the same team twice in a game.</p>
     <p>You can pick once the organiser has marked your entry as paid.</p>
+    ${buybackOn() ? `<p><b>Buy-backs:</b> if you're knocked out${buybackUpTo() === 1 ? ' in Round 1' : ` in Rounds 1 to ${buybackUpTo()}`}, you can pay ${euro(buybackFee())} to come back in for the next round. Pay before that round's picks close. It goes into the pot, you can only buy back once, and teams you've used stay used.</p>` : ''}
     <p>Picks close at 3pm on the Friday before each round. You can change your pick until then. Once picks close, everyone's picks are shown on the board.</p>
     <p>If something goes wrong, like you can't get online before the deadline, contact the organiser. They can enter a pick for you or extend the deadline.</p>
     <p>If you don't pick at all, you're given a random team you haven't used yet.</p>
@@ -1024,10 +1114,24 @@ function viewAdmin() {
 
   if (g && (g.confirmedRounds || []).length) html += viewRoundupPanel();
 
+  // Buy-backs
+  if (g && g.status === 'active' && buybackOn()) {
+    const elig = S.entries.filter(e => buybackOpen(e, true)).sort((a, b) => (b.buybackRequested ? 1 : 0) - (a.buybackRequested ? 1 : 0) || a.name.localeCompare(b.name));
+    const back = S.entries.filter(e => e.boughtBack).sort((a, b) => a.name.localeCompare(b.name));
+    if (elig.length || back.length) {
+      html += `<div class="panel"><h3>Buy-backs</h3>
+        <p class="small muted">${euro(buybackFee())} to come back in. Open to anyone knocked out up to Round ${buybackUpTo()}, until ${esc(fmtLock(lockAt()))}.${picksClosed() ? ' Picks have closed, so anyone you bring back now gets a random team unless you enter a pick for them.' : ''}</p>
+        ${elig.length ? `<table class="list">${elig.map(e => `<tr><td><b>${esc(e.name)}</b><br><span class="muted">Out R${e.outRound}${e.buybackRequested ? ' · <b>says they\'ve paid</b>' : ''}</span></td>
+          <td><button class="btn small" data-action="doBuyback" data-id="${esc(e.id)}">Paid, bring back</button></td></tr>`).join('')}</table>` : '<p class="small muted">Nobody else can buy back right now.</p>'}
+        ${back.length ? `<h3 class="sub">Bought back</h3><table class="list">${back.map(e => `<tr><td><b>${esc(e.name)}</b><br><span class="muted">Out R${e.boughtBack}, paid ${euro(e.buybackPaid || 0)}</span></td>
+          <td><button class="btn ghost small" data-action="undoBuyback" data-id="${esc(e.id)}">Undo</button></td></tr>`).join('')}</table>` : ''}
+      </div>`;
+    }
+  }
   // Players
   if (g) {
     const rows = [...S.entries].sort((a, b) => a.name.localeCompare(b.name)).map(e => `<tr>
-      <td><b>${esc(e.name)}</b><br><span class="muted">${e.status === 'alive' ? 'Still in' : 'Out R' + e.outRound}</span></td>
+      <td><b>${esc(e.name)}</b><br><span class="muted">${e.status === 'alive' ? (e.boughtBack ? 'Still in (bought back)' : 'Still in') : 'Out R' + e.outRound}</span></td>
       <td><button class="btn small ${e.paid ? '' : 'ghost'}" data-action="togglePaid" data-id="${esc(e.id)}">${e.paid ? 'Paid' : 'Mark paid'}</button>
       <button class="btn danger small" data-action="removePlayer" data-id="${esc(e.id)}" aria-label="Remove ${esc(e.name)}">Remove</button></td></tr>`).join('');
     const paidCount = S.entries.filter(e => e.paid).length;
@@ -1040,7 +1144,7 @@ function viewAdmin() {
   const errors = (h?.divisions || []).filter(d => !d.ok);
   html += `<div class="panel"><h3>Fixture feed</h3>
     <p class="small">${S.fixtures.length} fixtures loaded (${esc(counts)}).</p>
-    ${(h?.divisions || []).length ? `<table class="list small">${h.divisions.map(d => `<tr><td>ID ${esc(d.comp)}</td><td>${d.ok ? `${esc(divName(d.division || '?'))}: ${d.fixtures ?? 0} fixtures, ${d.results ?? 0} results` : 'Failed'}</td></tr>`).join('')}</table>` : ''}
+    ${(h?.divisions || []).length ? `<table class="list small">${h.divisions.map(d => `<tr><td>ID ${esc(d.comp)}</td><td>${d.ok ? `${esc(divName(d.division || '?'))}: ${d.fixtures ?? 0} fixtures, ${d.results ?? 0} results${d.scored !== undefined ? `, ${d.scored} with scores` : ''}` : 'Failed'}</td></tr>`).join('')}</table>` : ''}
     ${h?.fixturesChangedAt ? `<p class="small muted">Feed last changed ${esc(new Date(h.fixturesChangedAt).toLocaleString('en-IE', { timeZone: TZ }))}.</p>` : ''}
     ${errors.length ? `<div class="note out small">Feed problem: ${errors.map(e => esc(e.comp + ' ' + e.error)).join('; ')}. Previous data is being kept.</div>` : ''}
     <p class="small muted">Firebase copy: ${esc(S.syncState || 'Checking…')}</p>
@@ -1052,6 +1156,11 @@ function viewAdmin() {
     <label class="field">Entry fee (€)<input id="setFee" type="number" min="0" step="1" value="${esc(draft('setFee', S.config.entryFee ?? 10))}"></label>
     <label class="field">Revolut payment link<input id="setRevolut" type="url" placeholder="https://revolut.me/yourname" value="${esc(draft('setRevolut', S.config.revolutLink || ''))}"></label>
     <label class="check"><input id="setShowRev" type="checkbox" ${draft('setShowRev', S.config.showRevolut !== false) ? 'checked' : ''}> Show the Revolut link and pay button to players</label>
+    <label class="check"><input id="setBuyback" type="checkbox" ${draft('setBuyback', S.config.buybackOn === true) ? 'checked' : ''}> Allow buy-backs</label>
+    <div class="row">
+      <label class="field">Buy-back price (€)<input id="setBuybackFee" type="number" min="0" step="1" value="${esc(draft('setBuybackFee', S.config.buybackFee ?? S.config.entryFee ?? 10))}"></label>
+      <label class="field">For anyone out by Round<input id="setBuybackUpTo" type="number" min="1" step="1" value="${esc(draft('setBuybackUpTo', S.config.buybackUpTo ?? 1))}"></label>
+    </div>
     <label class="field">How to pay, shown when the Revolut link is hidden<textarea id="setPayText" rows="3" placeholder="${esc(`Pay your ${Number(S.config.entryFee) ? euro(Number(S.config.entryFee)) + ' ' : ''}entry to one of the organisers.`)}">${esc(draft('setPayText', S.config.payInstructions || ''))}</textarea></label>
     <button class="btn small" data-action="saveSettings">Save settings</button></div></div>`;
 
@@ -1088,6 +1197,7 @@ function viewDeadlinePanel() {
       ${g.lockOverride ? `<button class="btn ghost small" data-action="resetLock">Back to Friday 3pm</button>` : ''}
     </div>
     <p></p>
+    ${picksClosed() ? `<p class="small">Random teams are given out automatically once picks close, whenever an organiser has the app open. <button class="btn ghost small" data-action="assignRandom">Give out random teams now</button></p>` : ''}
     <label class="field">Player<select id="ovPlayer"><option value="">Choose a player</option>${people.map(e => `<option value="${esc(e.uid)}" ${e.uid === ovP ? 'selected' : ''}>${esc(e.name)}${picks.has(e.uid) ? '' : ' (no pick)'}</option>`).join('')}</select></label>
     ${ent ? `${current ? `<p class="hint">Current pick: ${esc(current.teamName)}.</p>` : ''}
       <p></p><label class="field">Team<select id="ovTeam">${teamOpts}</select></label>
@@ -1133,6 +1243,49 @@ function viewRoundupPanel() {
   </div>`;
 }
 
+// Random team for someone who didn't pick: any unused team in the round, excluding postponed games.
+// Seeded by player and round, so it's the same whoever works it out.
+function randomTeamFor(e, r, isPostponed) {
+  const used = new Set(e.usedTeams || []);
+  const options = roundFixtures(r).filter(f => !isPostponed(f))
+    .flatMap(f => [[f, f.home], [f, f.away]])
+    .filter(([, t]) => !used.has(t.id))
+    .sort((a, b) => a[1].id.localeCompare(b[1].id));
+  return options.length ? options[hashStr(e.uid + ':' + r) % options.length] : null;
+}
+
+// Once picks close, an organiser's app hands out the random teams straight away,
+// so everyone can see them on the board during the games.
+let assigningRandom = false;
+async function assignRandomPicks(manual = false) {
+  const g = S.game;
+  if (!S.isAdmin || !g || g.status !== 'active' || !picksClosed() || assigningRandom) return 0;
+  const r = g.currentRound;
+  if ((g.confirmedRounds || []).includes(r)) return 0;
+  assigningRandom = true;
+  try {
+    const snap = await getDocs(query(collection(db, 'picks'), where('gameId', '==', g.id), where('round', '==', r)));
+    const have = new Set(snap.docs.map(d => d.data().uid));
+    const missing = alive().filter(e => !have.has(e.uid));
+    if (!missing.length) { if (manual) toast('Everyone has a team for this round.'); return 0; }
+    const b = writeBatch(db); let n = 0;
+    for (const e of missing) {
+      const pick = randomTeamFor(e, r, f => !!f.postponed);
+      if (!pick) continue;
+      const [f, t] = pick;
+      b.set(doc(db, 'picks', `${g.id}_${e.uid}_${r}`), {
+        gameId: g.id, uid: e.uid, round: r, fixtureId: f.id, teamId: t.id, teamName: t.name,
+        auto: true, revealed: false, updatedAt: serverTimestamp(), setBy: 'random',
+      });
+      b.update(doc(db, 'entries', e.id), { pickedRound: r });
+      n++;
+    }
+    if (n) { await b.commit(); toast(`${n} random ${n === 1 ? 'team' : 'teams'} given out for Round ${r}.`); }
+    return n;
+  } catch (err) { if (manual) toast(niceError(err)); return 0; }
+  finally { assigningRandom = false; }
+}
+
 async function confirmRound() {
   const g = S.game, r = g.currentRound, fx = roundFixtures(r);
   const results = {}; const missing = [];
@@ -1149,15 +1302,11 @@ async function confirmRound() {
   const picks = new Map(snap.docs.map(d => [d.data().uid, d.data()]));
   const outcomes = [];
   for (const e of aliveNow) {
-    let p = picks.get(e.uid), auto = false;
+    let p = picks.get(e.uid), auto = !!p?.auto;
     if (!p) {
-      const used = new Set(e.usedTeams || []);
-      const options = fx.filter(f => !results[f.id].postponed)
-        .flatMap(f => [[f, f.home], [f, f.away]])
-        .filter(([, t]) => !used.has(t.id))
-        .sort((a, b) => a[1].id.localeCompare(b[1].id));
-      if (!options.length) { outcomes.push({ e, p: null, result: 'postponed' }); continue; }
-      const [f, t] = options[hashStr(e.uid + ':' + r) % options.length];
+      const choice = randomTeamFor(e, r, f => !!results[f.id]?.postponed);
+      if (!choice) { outcomes.push({ e, p: null, result: 'postponed' }); continue; }
+      const [f, t] = choice;
       p = { gameId: g.id, uid: e.uid, round: r, fixtureId: f.id, teamId: t.id, teamName: t.name };
       auto = true;
     }
@@ -1205,7 +1354,7 @@ async function confirmRound() {
     else { gUpd.currentRound = next; Object.assign(gUpd, lockFields(next, defaultLock(next))); }
     ops.push(b => b.update(doc(db, 'games', g.id), gUpd));
     const summary = outcomes.map(o => ({ uid: o.e.uid, name: o.e.name, teamName: o.p?.teamName || null, fixtureId: o.p?.fixtureId || null, teamId: o.p?.teamId || null, auto: !!o.auto, result: o.result }));
-    ops.push(b => b.set(doc(db, 'games', g.id, 'rounds', String(r)), { results, reinstated, summary, pot: (Number(S.config.entryFee) || 0) * S.entries.length, confirmedAt: serverTimestamp() }));
+    ops.push(b => b.set(doc(db, 'games', g.id, 'rounds', String(r)), { results, reinstated, summary, pot: potTotal(), confirmedAt: serverTimestamp() }));
     await commitOps(ops);
     fx.forEach(f => ['hs-', 'as-', 'pp-'].forEach(k => delete S.drafts[k + f.id]));
     toast(`Round ${r} confirmed`);
@@ -1374,7 +1523,7 @@ async function roundupData(r) {
     const sc = scoreAny(p);
     return { round: p.round, teamName: p.teamName, auto: p.auto, result: p.result, score: sc ? `${sc.mine}–${sc.theirs}` : '' };
   });
-  return { r, items, reinstated: !!rd.reinstated, pot: rd.pot || (Number(S.config.entryFee) || 0) * S.entries.length,
+  return { r, items, reinstated: !!rd.reinstated, pot: potTotal() || rd.pot,
     total, toGo, stage: idx + 1, breakAhead, winners, path, entered: S.entries.length,
     reinstatedCount: (g.reinstatedRounds || []).filter(x => x <= r).length };
 }
@@ -1418,6 +1567,21 @@ async function drawRoundup(data) {
   else sections.push({ title: T('fallen'), color: C.flag, entries: [{ text: joke('noneOut', String(r), {}) }] });
 
   const wins = survivors.filter(i => i.result === 'won' && i.sc && !i.auto).sort((a, b) => (a.sc.mine - a.sc.theirs) - (b.sc.mine - b.sc.theirs));
+  // Buy-backs: who came back from the dead this round, and a reminder if the window is open
+  const returned = items.filter(i => S.entries.find(e => e.uid === i.uid)?.boughtBack === r - 1);
+  if (returned.length) {
+    const ok = returned.filter(i => !fallen.includes(i)).map(i => i.name), bad = returned.filter(i => fallen.includes(i)).map(i => i.name);
+    const list = a => a.join(', ').replace(/, ([^,]*)$/, ' and $1');
+    let t = `${list(returned.map(i => i.name))} bought back in.`;
+    if (ok.length && bad.length) t += ` ${list(ok)} made it count. ${list(bad)} paid twice to go out twice.`;
+    else if (ok.length) t += returned.length === 1 ? ' Money well spent.' : ' Every one of them made it count.';
+    else t += returned.length === 1 ? ' That was an expensive way to go out twice.' : ' Not one of them made it through. Expensive weekend.';
+    sections.push({ title: 'Back from the dead', color: C.gold, entries: [{ text: t }] });
+  }
+  const g2 = S.game;
+  if (buybackOn() && fallen.length && r <= buybackUpTo() && g2?.status === 'active' && g2.currentRound === r + 1 && !picksClosed()) {
+    sections.push({ title: 'Second chances', color: C.gold, entries: [{ text: `Knocked out? Buy back in for ${euro(buybackFee())} before ${fmtLock(lockAt())}. One go only, and your team stays used.` }] });
+  }
   // Everyone who scraped through by a score or less, closest first (up to 4)
   const close = wins.filter(e => e.sc.mine - e.sc.theirs <= 7).slice(0, 4);
   const escT = T('escape');
@@ -1630,6 +1794,7 @@ const actions = {
     try { await navigator.clipboard.writeText(S.config.revolutLink); toast('Revolut link copied.'); }
     catch { toast('Press and hold the link to copy it.'); }
   },
+  boardRound: el => { S.boardRound = Number(el.dataset.r); render(); },
   tab: el => { S.tab = el.dataset.tab; S.pending = null; render(); window.scrollTo(0, 0); },
   async google() {
     try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch (err) { toast(niceError(err)); }
@@ -1684,9 +1849,12 @@ const actions = {
         entryFee: Number($('#setFee').value) || 0,
         revolutLink: $('#setRevolut').value.trim(),
         showRevolut: $('#setShowRev').checked,
+        buybackOn: $('#setBuyback').checked,
+        buybackFee: Number($('#setBuybackFee').value) || 0,
+        buybackUpTo: Math.max(1, Number($('#setBuybackUpTo').value) || 1),
         payInstructions: $('#setPayText').value.trim(),
       }, { merge: true });
-      ['setTitle', 'setFee', 'setRevolut', 'setShowRev', 'setPayText'].forEach(k => delete S.drafts[k]);
+      ['setTitle', 'setFee', 'setRevolut', 'setShowRev', 'setPayText', 'setBuyback', 'setBuybackFee', 'setBuybackUpTo'].forEach(k => delete S.drafts[k]);
       toast('Settings saved');
     } catch (err) { toast(niceError(err)); }
   },
@@ -1710,6 +1878,30 @@ const actions = {
     if (!confirm(`End the game now? The ${still.length} player(s) still in will share the pot.`)) return;
     try { await updateDoc(doc(db, 'games', S.game.id), { status: 'finished', winners: still.map(e => e.uid), finishedRound: S.game.currentRound }); }
     catch (err) { toast(niceError(err)); }
+  },
+  async requestBuyback() {
+    const me = myEntry();
+    if (!buybackOpen(me)) { toast('Buy-backs have closed.'); return; }
+    try { await updateDoc(doc(db, 'entries', me.id), { buybackRequested: true }); toast('Thanks. An organiser will bring you back in once they see the payment.'); }
+    catch (err) { toast(niceError(err)); }
+  },
+  async doBuyback(el) {
+    const e = S.entries.find(x => x.id === el.dataset.id);
+    if (!e || !buybackOpen(e, true)) return;
+    if (!confirm(`Has ${e.name} paid the ${euro(buybackFee())} buy-back? They'll be back in for Round ${e.outRound + 1}.`)) return;
+    try {
+      await updateDoc(doc(db, 'entries', e.id), { status: 'alive', outRound: null, boughtBack: e.outRound, buybackPaid: buybackFee(), buybackRequested: false });
+      toast(`${e.name} is back in.`);
+    } catch (err) { toast(niceError(err)); }
+  },
+  async undoBuyback(el) {
+    const e = S.entries.find(x => x.id === el.dataset.id);
+    if (!e || !e.boughtBack) return;
+    if (!confirm(`Undo ${e.name}'s buy-back? They'll be out again from Round ${e.boughtBack}.`)) return;
+    try {
+      await updateDoc(doc(db, 'entries', e.id), { status: 'out', outRound: e.boughtBack, boughtBack: null, buybackPaid: 0, buybackRequested: false });
+      toast('Buy-back undone.');
+    } catch (err) { toast(niceError(err)); }
   },
   async togglePaid(el) {
     const e = S.entries.find(x => x.id === el.dataset.id);
@@ -1744,6 +1936,7 @@ const actions = {
     try { await updateDoc(doc(db, 'games', S.game.id), lockFields(r, defaultLock(r))); delete S.drafts.ovLock; toast('Deadline back to Friday 3pm'); }
     catch (err) { toast(niceError(err)); }
   },
+  async assignRandom() { await assignRandomPicks(true); },
   async savePickFor() {
     const g = S.game, r = g.currentRound;
     const e = alive().find(x => x.uid === S.drafts.ovPlayer);
@@ -1816,6 +2009,7 @@ async function handleEmailLink() {
 }
 
 const fixturesReady = loadFixtures();
+fixturesReady.then(() => setTimeout(() => assignRandomPicks(), 4000));
 handleEmailLink();
 onSnapshot(doc(db, 'config', 'settings'), s => { S.config = s.data() || {}; render(); });
 onSnapshot(query(collection(db, 'games'), orderBy('createdAt', 'desc'), limit(1)), snap => {
@@ -1834,7 +2028,7 @@ onAuthStateChanged(auth, async u => {
     syncFixtures(false).then(refreshLock).catch(err => { S.syncState = niceError(err); render(); });
   }
 });
-setInterval(() => { syncRoundSub(); render(); }, 30 * 1000);   // opens picks up on the board when the deadline passes
+setInterval(() => { syncRoundSub(); render(); assignRandomPicks(); }, 30 * 1000);   // opens picks up on the board when the deadline passes
 setInterval(loadFixtures, 5 * 60 * 1000);  // picks up time changes and scores
 window.__reloadFixtures = loadFixtures;
 </script>

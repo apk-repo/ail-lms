@@ -148,6 +148,17 @@
   .confirm-bar .btn.ghost { background: transparent; color: #fff; border-color: #fff; }
  
   /* Board */
+  .rtabs { display: flex; gap: 8px; overflow-x: auto; margin: 0 0 14px; padding-bottom: 4px; scrollbar-width: none; }
+  .rtab { flex: none; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 7px 14px; font: 600 15px var(--body); cursor: pointer; }
+  .rtab small { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-left: 4px; }
+  .rtab.on { background: var(--pitch); border-color: var(--pitch); color: #fff; }
+  .rtab.on small { color: rgba(255,255,255,.8); }
+  .v-ok { color: var(--good); font-weight: 700; } .v-out { color: var(--flag); font-weight: 700; } .v-mid { color: var(--gold); font-weight: 700; }
+  .allres { margin: -10px 0 22px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  .allres summary { padding: 12px 16px; cursor: pointer; font-weight: 700; }
+  .rrow { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 2px 10px; padding: 9px 16px; border-top: 1px solid var(--line); align-items: center; font-size: 15px; }
+  .rrow .r { text-align: right; } .rrow .w { font-weight: 700; } .rrow b { font: 700 18px var(--display); white-space: nowrap; }
+  .rrow small { grid-column: 1 / -1; text-align: center; color: var(--muted); font-size: 12px; }
   .this-round { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 22px; }
   .this-round .head { padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
   .this-round .head b { font: 700 22px/1 var(--display); }
@@ -667,8 +678,50 @@ function boardList() {
  
 function viewBoard() {
   if (!S.game) return `<h2>No game running yet</h2>`;
-  const a = alive().length, o = S.entries.length - a;
-  return `<h2>${a} still standing</h2><p class="muted">${o} out.</p>${S.game.status === 'active' ? roundPicksSection() : ''}<h3>Whole game</h3>${boardList()}`;
+  const g = S.game, a = alive().length, o = S.entries.length - a;
+  const done = [...(g.confirmedRounds || [])].sort((x, y) => y - x);
+  const live = g.status === 'active' && !done.includes(g.currentRound);
+  const tabs = [...(live ? [g.currentRound] : []), ...done];
+  if (!tabs.includes(S.boardRound)) S.boardRound = tabs[0];
+  const strip = tabs.length > 1 ? `<div class="rtabs" role="tablist">${tabs.map(r => `<button role="tab" class="rtab ${r === S.boardRound ? 'on' : ''}" data-action="boardRound" data-r="${r}">Round ${r}${live && r === g.currentRound ? ' <small>now</small>' : ''}</button>`).join('')}</div>` : '';
+  const body = live && S.boardRound === g.currentRound ? roundPicksSection() : (S.boardRound ? pastRoundSection(S.boardRound) : '');
+  return `<h2>${a} still standing</h2><p class="muted">${o} out.</p>${strip}${body}<h3>Whole game</h3>${boardList()}`;
+}
+
+// A finished round: everyone who played it, their team, the score and how they got on,
+// then every result from that round.
+function pastRoundSection(r) {
+  const ps = S.revealed.filter(p => p.round === r);
+  const order = { won: 0, postponed: 1, drew: 2, lost: 3 };
+  const rows = ps.map(p => ({ p, name: nameOf(p.uid) }))
+    .sort((x, y) => (order[x.p.result] ?? 4) - (order[y.p.result] ?? 4) || x.name.localeCompare(y.name))
+    .map(({ p, name }) => {
+      const f = fxById.get(p.fixtureId), isMe = S.user && p.uid === S.user.uid;
+      let sub = '';
+      if (f) {
+        const t = f.home.id === p.teamId ? f.home : f.away, o = f.home.id === p.teamId ? f.away : f.home;
+        sub = f.postponed || p.result === 'postponed' ? `v ${esc(o.name)}, postponed`
+          : (t.score !== null && t.score !== undefined && o.score !== null && o.score !== undefined) ? `v ${esc(o.name)}, ${t.score}–${o.score}` : `v ${esc(o.name)}`;
+      }
+      const verdict = p.result === 'won' ? '<span class="v-ok">Through</span>' : p.result === 'postponed' ? '<span class="v-ok">Through (postponed)</span>'
+        : p.reinstated ? '<span class="v-mid">Lost, reinstated</span>' : p.result === 'drew' ? '<span class="v-out">Drew, out</span>' : p.result === 'lost' ? '<span class="v-out">Out</span>' : '';
+      return `<div class="prow ${isMe ? 'me' : ''}"><span class="who">${esc(name)}</span><div class="what">${esc(p.teamName)}${p.auto ? ' <span class="rnd">random</span>' : ''}<small>${sub}${sub && verdict ? ' · ' : ''}${verdict}</small></div></div>`;
+    }).join('');
+  const through = ps.filter(p => p.result === 'won' || p.result === 'postponed').length;
+  const out = ps.filter(p => (p.result === 'lost' || p.result === 'drew') && !p.reinstated).length;
+  const head = ps.length ? `${through} through, ${out} out` : 'No picks recorded';
+  const counts = new Map(); ps.forEach(p => counts.set(p.teamName, (counts.get(p.teamName) || 0) + 1));
+  const top = [...counts.entries()].sort((x, y) => y[1] - x[1])[0];
+  const tally = top && top[1] > 1 ? `<div class="tally">Most backed: <b>${esc(top[0])}</b>, ${top[1]} players.</div>` : '';
+  const picked = new Map(); ps.forEach(p => picked.set(p.teamId, (picked.get(p.teamId) || 0) + 1));
+  const results = roundFixtures(r).map(f => {
+    const sc = f.postponed ? 'P' : (f.home.score !== null && f.home.score !== undefined && f.away.score !== null && f.away.score !== undefined) ? `${f.home.score}–${f.away.score}` : '–';
+    const hw = !f.postponed && f.home.score > f.away.score, aw = !f.postponed && f.away.score > f.home.score;
+    const n = (picked.get(f.home.id) || 0) + (picked.get(f.away.id) || 0);
+    return `<div class="rrow"><span class="${hw ? 'w' : ''}">${esc(f.home.name)}</span><b>${sc}</b><span class="r ${aw ? 'w' : ''}">${esc(f.away.name)}</span><small>${esc(divName(f.div))}${n ? ` · ${n} picked` : ''}</small></div>`;
+  }).join('');
+  return `<div class="this-round"><div class="head"><b>Round ${r}</b><span>${head}</span></div>${rows}${tally}</div>
+    <details class="allres"><summary>All Round ${r} results</summary>${results}</details>`;
 }
  
 // This round: who's picked, and once picks close, what everyone picked.
@@ -1451,6 +1504,7 @@ const actions = {
     try { await navigator.clipboard.writeText(S.config.revolutLink); toast('Revolut link copied.'); }
     catch { toast('Press and hold the link to copy it.'); }
   },
+  boardRound: el => { S.boardRound = Number(el.dataset.r); render(); },
   tab: el => { S.tab = el.dataset.tab; S.pending = null; render(); window.scrollTo(0, 0); },
   async google() {
     try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch (err) { toast(niceError(err)); }
