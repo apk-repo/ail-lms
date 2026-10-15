@@ -816,6 +816,7 @@ function viewAdmin() {
   } else {
     html += viewDeadlinePanel();
     html += viewConfirmPanel();
+    html += viewFixPanel();
     html += `<div class="panel"><h3>Game</h3>
       <p class="small">Started at Round ${g.startRound}. Now on Round ${g.currentRound}. Entries are ${g.joinOpen ? 'open' : 'closed'}.</p>
       <div class="row"><button class="btn ghost small" data-action="toggleJoin">${g.joinOpen ? 'Close entries' : 'Reopen entries'}</button>
@@ -915,6 +916,104 @@ function viewDeadlinePanel() {
   </div>`;
 }
  
+// ---- Fixing a confirmed result ----
+// Stored results for confirmed rounds (organisers only), compared with the feed to spot corrections.
+S.roundDocs = {}; S.roundDocsAt = 0;
+async function loadRoundDocs() {
+  const g = S.game; if (!S.isAdmin || !g) return;
+  S.roundDocsAt = Date.now();
+  const out = {};
+  await Promise.all((g.confirmedRounds || []).map(async r => {
+    try { const d = await getDoc(doc(db, 'games', g.id, 'rounds', String(r))); if (d.exists()) out[r] = d.data(); } catch {}
+  }));
+  S.roundDocs = out; render();
+}
+const outcomeOf = (f, res, teamId) => {
+  if (!res || res.postponed) return 'postponed';
+  const mine = f.home.id === teamId ? res.home : res.away, theirs = f.home.id === teamId ? res.away : res.home;
+  return mine > theirs ? 'won' : mine === theirs ? 'drew' : 'lost';
+};
+const scoreTxt = res => !res ? '?' : res.postponed ? 'postponed' : `${res.home}–${res.away}`;
+function feedMismatches() {
+  const list = [];
+  for (const [r, rd] of Object.entries(S.roundDocs)) {
+    for (const [fid, res] of Object.entries(rd.results || {})) {
+      const f = fxById.get(fid); if (!f) continue;
+      const feed = f.postponed ? { postponed: true, home: null, away: null }
+        : (f.home.score === null || f.home.score === undefined || f.away.score === null || f.away.score === undefined) ? null
+        : { postponed: false, home: Number(f.home.score), away: Number(f.away.score) };
+      if (!feed) continue;
+      if (!!feed.postponed !== !!res.postponed || (!feed.postponed && (feed.home !== res.home || feed.away !== res.away)))
+        list.push({ r: Number(r), f, saved: res, feed });
+    }
+  }
+  return list.sort((a, b) => a.r - b.r);
+}
+function viewFixPanel() {
+  const g = S.game, done = [...(g.confirmedRounds || [])].sort((a, b) => b - a);
+  if (!done.length) return '';
+  if (Date.now() - S.roundDocsAt > 60000) setTimeout(loadRoundDocs, 0);
+  const mm = feedMismatches();
+  const warn = mm.length ? `<div class="note warn"><b>The feed has changed ${mm.length === 1 ? 'a result' : `${mm.length} results`} since you confirmed ${mm.length === 1 ? 'it' : 'them'}.</b>
+    ${mm.map(m => `<p class="small" style="margin:10px 0 6px">Round ${m.r}: ${esc(m.f.home.name)} v ${esc(m.f.away.name)}. You confirmed <b>${esc(scoreTxt(m.saved))}</b>, the feed now says <b>${esc(scoreTxt(m.feed))}</b>.</p>
+      <button class="btn small" data-action="fixFromFeed" data-r="${m.r}" data-f="${esc(m.f.id)}">Use the feed's score</button>`).join('')}</div>` : '';
+  const fr = Number(draft('fixRound', String(done[0])));
+  const fx = roundFixtures(fr);
+  const ff = draft('fixGame', fx[0]?.id || '');
+  const saved = S.roundDocs[fr]?.results?.[ff];
+  return `<div class="panel"><h3>Fix a confirmed result</h3>${warn}
+    <p class="small muted">Correct a score after a round was confirmed. Everyone who picked either team is re-marked: anyone now on the losing side goes out, and anyone who was wrongly put out comes back in.</p>
+    <div class="row">
+      <label class="field">Round<select id="fixRound">${done.map(r => `<option value="${r}" ${r === fr ? 'selected' : ''}>Round ${r}</option>`).join('')}</select></label>
+      <label class="field">Game<select id="fixGame">${fx.map(f => `<option value="${esc(f.id)}" ${f.id === ff ? 'selected' : ''}>${esc(f.home.name)} v ${esc(f.away.name)}</option>`).join('')}</select></label>
+    </div>
+    ${saved ? `<p class="small">Currently saved: <b>${esc(scoreTxt(saved))}</b></p>` : ''}
+    <div class="row">
+      <label class="field">Home<input id="fixHome" type="number" min="0" inputmode="numeric"></label>
+      <label class="field">Away<input id="fixAway" type="number" min="0" inputmode="numeric"></label>
+    </div>
+    <label class="check"><input id="fixPP" type="checkbox"> Postponed</label>
+    <button class="btn ghost" data-action="fixManual">Fix this result</button></div>`;
+}
+async function fixResult(r, fid, res) {
+  const g = S.game, f = fxById.get(fid), rd = S.roundDocs[r];
+  if (!f || !rd) { toast('Still loading. Try again in a moment.'); loadRoundDocs(); return; }
+  if (rd.reinstated) { alert(`Everyone was reinstated in Round ${r}, so changing a result there could change the whole round. Contact Aaron to sort this one by hand.`); return; }
+  const picks = S.allPicks.filter(p => p.round === r && p.fixtureId === fid);
+  const changes = [];
+  for (const p of picks) {
+    const now = outcomeOf(f, res, p.teamId);
+    const was = p.result;
+    const passes = x => x === 'won' || x === 'postponed';
+    if (passes(now) !== passes(was) || now !== was) changes.push({ p, was, now, e: S.entries.find(e => e.uid === p.uid) });
+  }
+  const moves = changes.filter(c => (c.was === 'won' || c.was === 'postponed') !== (c.now === 'won' || c.now === 'postponed'));
+  const later = (g.confirmedRounds || []).some(x => x > r);
+  const lines = moves.map(c => `${c.e?.name || 'Unknown'} (${c.p.teamName}): ${c.now === 'won' || c.now === 'postponed' ? 'back IN' : 'now OUT'}`);
+  const msg = `Change ${f.home.name} v ${f.away.name} (Round ${r}) from ${scoreTxt(rd.results?.[fid])} to ${scoreTxt(res)}?\n\n` +
+    (lines.length ? lines.join('\n') : 'Nobody\'s through or out changes.') +
+    (later && moves.length ? `\n\nLater rounds are already confirmed. Anyone put out now is out from Round ${r}. Anyone brought back in is in for the current round.` : '');
+  if (!confirm(msg)) return;
+  try {
+    const b = writeBatch(db);
+    const summary = (rd.summary || []).map(x => {
+      const c = changes.find(c => c.p.uid === x.uid);
+      return c ? { ...x, result: c.now } : x;
+    });
+    b.update(doc(db, 'games', g.id, 'rounds', String(r)), { results: { ...(rd.results || {}), [fid]: res }, summary, correctedAt: serverTimestamp() });
+    for (const c of changes) {
+      b.update(doc(db, 'picks', `${g.id}_${c.p.uid}_${r}`), { result: c.now, reinstated: false });
+      if (!c.e) continue;
+      const nowPass = c.now === 'won' || c.now === 'postponed';
+      if (!nowPass && c.e.status === 'alive') b.update(doc(db, 'entries', c.e.id), { status: 'out', outRound: r });
+      if (nowPass && c.e.status === 'out' && c.e.outRound === r) b.update(doc(db, 'entries', c.e.id), { status: 'alive', outRound: null });
+    }
+    await b.commit();
+    toast(moves.length ? `Fixed. ${moves.length} player${moves.length === 1 ? '' : 's'} updated.` : 'Result fixed.');
+    loadRoundDocs();
+  } catch (err) { toast(niceError(err)); }
+}
+
 function viewConfirmPanel() {
   const g = S.game, r = g.currentRound, fx = roundFixtures(r);
   const picked = S.allPicks.filter(p => p.round === r).length;
@@ -1504,6 +1603,16 @@ const actions = {
     try { await navigator.clipboard.writeText(S.config.revolutLink); toast('Revolut link copied.'); }
     catch { toast('Press and hold the link to copy it.'); }
   },
+  async fixFromFeed(el) {
+    const m = feedMismatches().find(x => x.r === Number(el.dataset.r) && x.f.id === el.dataset.f);
+    if (m) await fixResult(m.r, m.f.id, m.feed);
+  },
+  async fixManual() {
+    const r = Number($('#fixRound').value), fid = $('#fixGame').value, pp = $('#fixPP').checked;
+    const h = $('#fixHome').value, a = $('#fixAway').value;
+    if (!pp && (h === '' || a === '')) { toast('Enter both scores, or tick Postponed.'); return; }
+    await fixResult(r, fid, { postponed: pp, home: pp ? null : +h, away: pp ? null : +a });
+  },
   boardRound: el => { S.boardRound = Number(el.dataset.r); render(); },
   tab: el => { S.tab = el.dataset.tab; S.pending = null; render(); window.scrollTo(0, 0); },
   async google() {
@@ -1701,7 +1810,8 @@ document.addEventListener('input', e => {
 });
 document.addEventListener('change', e => {
   const el = e.target; if (el.id) S.drafts[el.id] = el.type === 'checkbox' ? el.checked : el.value;
-  if (el.id === 'ovPlayer' || el.id === 'ruRound') { el.blur(); render(); }
+  if (el.id === 'fixRound') delete S.drafts.fixGame;
+  if (el.id === 'ovPlayer' || el.id === 'ruRound' || el.id === 'fixRound' || el.id === 'fixGame') { el.blur(); render(); }
 });
 document.addEventListener('focusout', () => setTimeout(() => {
   if (S.renderPending) { S.renderPending = false; render(); }
