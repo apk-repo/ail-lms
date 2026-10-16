@@ -64,6 +64,8 @@
     background: repeating-linear-gradient(90deg, var(--turf-a) 0 56px, var(--turf-b) 56px 112px);
   }
   .wrap { max-width: 640px; margin: 0 auto; }
+  header .brand { display: flex; align-items: center; gap: 12px; }
+  header .logo { width: 44px; height: 44px; flex: none; border-radius: 11px; box-shadow: 0 0 0 1.5px rgba(232,182,61,.55), 0 2px 8px rgba(0,0,0,.25); }
   header .comp { font: 600 15px/1.25 var(--body); opacity: .9; max-width: 34ch; }
   header .round { font: 700 68px/.9 var(--display); margin: 12px 0 10px; letter-spacing: .5px; }
   header .status { font-size: 15px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; }
@@ -464,10 +466,12 @@ function render() {
   $('#bar').innerHTML = S.tab === 'pick' ? viewConfirmBar() : '';
 }
  
+const LOGO = '<svg class="logo" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">  <rect width="64" height="64" rx="14" fill="#0B3B26"/>  <rect y="49" width="64" height="5" fill="#E8B63D"/>  <g transform="rotate(-35 32 28)">    <ellipse cx="32" cy="28" rx="21" ry="13" fill="#E8B63D"/>    <path d="M14 28h36" stroke="#0B3B26" stroke-width="2.4" stroke-linecap="round"/>    <path d="M25 24.5v7M29.5 24.5v7M34 24.5v7M38.5 24.5v7" stroke="#0B3B26" stroke-width="2.4" stroke-linecap="round"/>  </g></svg>';
 function viewHeader() {
   const title = esc(S.config.title || DEFAULT_TITLE);
   const g = S.game;
-  if (!g) return `<div class="comp">${title}</div><div class="round">Coming soon</div>`;
+  const brand = `<div class="brand">${LOGO}<div class="comp">${title}</div></div>`;
+  if (!g) return `${brand}<div class="round">Coming soon</div>`;
   const total = S.entries.length, left = alive().length;
   const fee = Number(S.config.entryFee) || 0;
   let big = g.status === 'finished' ? 'Game over' : `Round ${g.currentRound}`;
@@ -478,7 +482,7 @@ function viewHeader() {
     bits.push(`<span><b>${left}</b> of ${total} still standing</span>`);
   }
   if (total && potTotal()) bits.push(`<span><b>${euro(potTotal())}</b> pot</span>`);
-  return `<div class="comp">${title}</div><div class="round">${big}</div><div class="status">${bits.join('')}</div>`;
+  return `${brand}<div class="round">${big}</div><div class="status">${bits.join('')}</div>`;
 }
  
 function viewTabs() {
