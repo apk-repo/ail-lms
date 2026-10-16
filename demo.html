@@ -838,9 +838,9 @@ function viewPick() {
         ${revolutBox(fee)}
         ${me.buybackRequested
           ? `<p class="payinfo"><b>Request sent.</b> You'll be back in as soon as an organiser confirms your payment.</p>`
-          : `<button class="btn" data-action="requestBuyback" style="margin-top:12px">I've paid, let me back in</button>`}</div>`;
+          : `<button class="btn" data-action="requestBuyback" style="margin-top:12px">I've paid, let me back in</button>`}</div>` + spectatorFixtures();
     }
-    return `${payNote(me)}<div class="note out"><b>You're out.</b> ${why} Keep an eye on the board. A new game starts when this one ends.</div>`;
+    return `${payNote(me)}<div class="note out"><b>You're out.</b> ${why} Keep an eye on the board. A new game starts when this one ends.</div>` + spectatorFixtures();
   }
   const lastDone = Math.max(0, ...(g.confirmedRounds || []));
   const redo = (g.reinstatedRounds || []).includes(lastDone)
@@ -883,22 +883,37 @@ function viewRoundPicker(me) {
   else if (locked) status = `<div class="note warn">Picks for Round ${r} closed ${esc(fmtLock(lock))}. As you didn't pick, you're being given a random team you haven't used. It will show here shortly.</div>`;
   else status = `<div class="note warn"><b>No pick yet.</b> Tap a team to pick them. Picks close <b>${esc(fmtLock(lock))}</b>. If you don't pick, you'll be given a random team you haven't used.</div>`;
 
-  let html = `<h2>${esc(fmtDay(firstKick))}</h2><p class="muted">Pick one team to win.</p>${status}`;
+  return `<h2>${esc(fmtDay(firstKick))}</h2><p class="muted">Pick one team to win.</p>${status}` + fixtureList(fx, { myPick, locked, used, usedRound, unpaid });
+}
+
+// The round's games, grouped by division
+function fixtureList(fx, ctx) {
+  let html = '';
   for (const div of DIVS) {
     const games = fx.filter(f => f.div === div);
     if (!games.length) continue;
     html += `<div class="div-head">Division ${esc(divName(div))}<span>${games.length} ${games.length === 1 ? 'game' : 'games'}</span></div>`;
-    html += games.map(f => matchCard(f, { myPick, locked, used, usedRound, unpaid })).join('');
+    html += games.map(f => matchCard(f, ctx)).join('');
   }
   // Anything the feed labels differently still gets shown, under its own heading
   for (const div of [...new Set(fx.filter(f => !DIVS.includes(f.div)).map(f => f.div))]) {
     const games = fx.filter(f => f.div === div);
     html += `<div class="div-head">${esc(String(div))}<span>${games.length} ${games.length === 1 ? 'game' : 'games'}</span></div>`;
-    html += games.map(f => matchCard(f, { myPick, locked, used, usedRound, unpaid })).join('');
+    html += games.map(f => matchCard(f, ctx)).join('');
   }
   return html;
 }
 
+// Knocked out: this round's games, greyed out and not pickable, for following along
+function spectatorFixtures() {
+  const g = S.game; if (!g || g.status !== 'active') return '';
+  const r = g.currentRound, fx = roundFixtures(r);
+  if (!fx.length) return '';
+  const firstKick = Math.min(...fx.map(f => f.kickoff));
+  return `<h2 style="margin-top:22px">Round ${r}: ${esc(fmtDay(firstKick))}</h2><p class="muted">You're watching from the stands this time. Who's everyone backing? Check the Board.</p>`
+    + fixtureList(fx, { myPick: null, locked: false, used: new Set(), usedRound: new Map(), unpaid: false, spectator: true });
+}
+ 
 function matchCard(f, ctx) {
   const started = now() >= f.kickoff;
   const scored = !f.postponed && f.home.score !== null && f.away.score !== null && f.home.score !== undefined && f.away.score !== undefined;
@@ -913,6 +928,7 @@ function matchCard(f, ctx) {
     const res = resOf(t);
     if (chosen) tag = res ? `Your pick, ${res.toLowerCase()}` : ctx.locked ? 'Locked in' : 'Your pick';
     else if (res && (started || ctx.locked)) { tag = res; off = true; cls = res === 'Won' || res === 'Ahead' ? 'won' : ''; }
+    else if (ctx.spectator) { off = true; if (f.postponed) tag = 'Postponed'; }
     else if (f.postponed) { tag = 'Postponed'; off = true; }
     else if (isUsed) { tag = ctx.usedRound.has(t.id) ? `Used R${ctx.usedRound.get(t.id)}` : 'Used'; off = true; cls = 'used'; }
     else if (ctx.locked) { tag = 'Picks closed'; off = true; }
