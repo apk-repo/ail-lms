@@ -4071,28 +4071,6 @@
    }
   },
   {
-   "id": "6945630",
-   "comp": "215685",
-   "div": "1B",
-   "round": 8,
-   "kickoff": 1796481000,
-   "venue": "The Mardyke",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "57241",
-    "name": "University College Cork Rugby",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
-    "score": null
-   },
-   "away": {
-    "id": "57189",
-    "name": "Dublin University",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3176/dufc.jpg",
-    "score": null
-   }
-  },
-  {
    "id": "6945716",
    "comp": "215682",
    "div": "2A",
@@ -4397,6 +4375,28 @@
     "id": "57169",
     "name": "Bruff",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/8500/xlcrest.jpg",
+    "score": null
+   }
+  },
+  {
+   "id": "6945630",
+   "comp": "215685",
+   "div": "1B",
+   "round": 8,
+   "kickoff": 1796482800,
+   "venue": "The Mardyke",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "57241",
+    "name": "University College Cork Rugby",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
+    "score": null
+   },
+   "away": {
+    "id": "57189",
+    "name": "Dublin University",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3176/dufc.jpg",
     "score": null
    }
   },
