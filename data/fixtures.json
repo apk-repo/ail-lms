@@ -1657,19 +1657,19 @@
    "round": 4,
    "kickoff": 1792841400,
    "venue": "Crowley Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57193",
     "name": "Galwegians",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11427/galwegians.jpg",
-    "score": null
+    "score": 12
    },
    "away": {
     "id": "57157",
     "name": "Ballymena",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4028/Screenshot_20230614_211918_Samsung Internet.jpg",
-    "score": null
+    "score": 17
    }
   },
   {
