@@ -1943,19 +1943,19 @@
    "round": 4,
    "kickoff": 1792848600,
    "venue": "University Limerick",
-   "status": "pending",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57245",
     "name": "UL Bohemian",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11477/logo.jpg",
-    "score": null
+    "score": 0
    },
    "away": {
     "id": "57181",
     "name": "Galway Corinthians",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/2994/Corinthians Logo.png",
-    "score": null
+    "score": 19
    }
   },
   {
