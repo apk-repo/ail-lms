@@ -2581,19 +2581,19 @@
    "round": 5,
    "kickoff": 1793457000,
    "venue": "Gibson Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57205",
     "name": "Malone",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4036/malone rfc.png",
-    "score": null
+    "score": 34
    },
    "away": {
     "id": "210005",
     "name": "Clogher Valley",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4040/ClogherValleyRFCEdited.gif",
-    "score": null
+    "score": 28
    }
   },
   {
@@ -2603,19 +2603,19 @@
    "round": 5,
    "kickoff": 1793457000,
    "venue": "Hatrick Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57225",
     "name": "Rainey",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4032/Rainey-Rugby-Club-Logo---Colour.jpg",
-    "score": null
+    "score": 36
    },
    "away": {
     "id": "247851",
     "name": "Malahide",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3179/42023417-487D-4583-9586-1420478BE4CB.jpeg",
-    "score": null
+    "score": 33
    }
   },
   {
