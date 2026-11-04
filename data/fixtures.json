@@ -3873,6 +3873,28 @@
    }
   },
   {
+   "id": "6945806",
+   "comp": "215686",
+   "div": "2BN",
+   "round": 8,
+   "kickoff": 1796479200,
+   "venue": "Rifle Park",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "57161",
+    "name": "Banbridge",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4033/be438ef1-4b21-46b8-9193-54dc3bfda9d3.jpeg",
+    "score": null
+   },
+   "away": {
+    "id": "247851",
+    "name": "Malahide",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3179/42023417-487D-4583-9586-1420478BE4CB.jpeg",
+    "score": null
+   }
+  },
+  {
    "id": "6945536",
    "comp": "215684",
    "div": "1A",
@@ -4155,28 +4177,6 @@
     "id": "57223",
     "name": "Queen's University",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11457/queens.gif",
-    "score": null
-   }
-  },
-  {
-   "id": "6945806",
-   "comp": "215686",
-   "div": "2BN",
-   "round": 8,
-   "kickoff": 1796481000,
-   "venue": "Rifle Park",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "57161",
-    "name": "Banbridge",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4033/be438ef1-4b21-46b8-9193-54dc3bfda9d3.jpeg",
-    "score": null
-   },
-   "away": {
-    "id": "247851",
-    "name": "Malahide",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3179/42023417-487D-4583-9586-1420478BE4CB.jpeg",
     "score": null
    }
   },
