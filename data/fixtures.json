@@ -3851,6 +3851,28 @@
    }
   },
   {
+   "id": "6945538",
+   "comp": "215684",
+   "div": "1A",
+   "round": 8,
+   "kickoff": 1796412600,
+   "venue": "Aviva back pitch",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "57203",
+    "name": "Lansdowne",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3171/new lansdowne logo.gif",
+    "score": null
+   },
+   "away": {
+    "id": "57237",
+    "name": "Terenure College",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3161/Clear Background.jpg",
+    "score": null
+   }
+  },
+  {
    "id": "6945718",
    "comp": "215682",
    "div": "2A",
@@ -3935,28 +3957,6 @@
     "id": "57183",
     "name": "Cork Constitution",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4124/Blue Logo.jpg",
-    "score": null
-   }
-  },
-  {
-   "id": "6945538",
-   "comp": "215684",
-   "div": "1A",
-   "round": 8,
-   "kickoff": 1796481000,
-   "venue": "Aviva back pitch",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "57203",
-    "name": "Lansdowne",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3171/new lansdowne logo.gif",
-    "score": null
-   },
-   "away": {
-    "id": "57237",
-    "name": "Terenure College",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3161/Clear Background.jpg",
     "score": null
    }
   },
