@@ -2757,19 +2757,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Ballymacarn Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57159",
     "name": "Ballynahinch",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4029/79CFFE79-9FBB-4B29-8AB4-70FB57C91B34.jpeg",
-    "score": null
+    "score": 31
    },
    "away": {
     "id": "57183",
     "name": "Cork Constitution",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4124/Blue Logo.jpg",
-    "score": null
+    "score": 14
    }
   },
   {
@@ -2779,19 +2779,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Aviva back pitch",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57203",
     "name": "Lansdowne",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3171/new lansdowne logo.gif",
-    "score": null
+    "score": 37
    },
    "away": {
     "id": "57177",
     "name": "Clontarf",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3177/Clontarf RFC.jpg",
-    "score": null
+    "score": 21
    }
   },
   {
@@ -2823,19 +2823,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Templeville Road",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57231",
     "name": "St. Mary's College",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3488/st_marys.png",
-    "score": null
+    "score": 35
    },
    "away": {
     "id": "57249",
     "name": "Young Munster",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4121/EB7611BD-3C39-4160-98FC-737CD9220854.png",
-    "score": null
+    "score": 22
    }
   },
   {
@@ -2867,19 +2867,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Stradbrook",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57167",
     "name": "Blackrock College",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11401/blackrock-logo.png",
-    "score": null
+    "score": 31
    },
    "away": {
     "id": "57199",
     "name": "Highfield",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11433/highfield.gif",
-    "score": null
+    "score": 40
    }
   },
   {
@@ -2889,19 +2889,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Palace Grounds",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "170673",
     "name": "City of Armagh",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4039/city-of-armagh.jpg",
-    "score": null
+    "score": 20
    },
    "away": {
     "id": "57195",
     "name": "Garryowen",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4125/Garryowen logo.png",
-    "score": null
+    "score": 7
    }
   },
   {
@@ -2911,19 +2911,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "College Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57189",
     "name": "Dublin University",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3176/dufc.jpg",
-    "score": null
+    "score": 21
    },
    "away": {
     "id": "57209",
     "name": "Naas",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3170/Naas Logo Final Edit.jpg",
-    "score": null
+    "score": 45
    }
   },
   {
@@ -2933,19 +2933,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Parsonstown",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "222376",
     "name": "MU Barnhall",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/48233/MU Barnhall RFC_women.jpg",
-    "score": null
+    "score": 30
    },
    "away": {
     "id": "57201",
     "name": "Instonians",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4034/seahorses pic 2.png",
-    "score": null
+    "score": 20
    }
   },
   {
@@ -2955,19 +2955,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "New Ormond Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57213",
     "name": "Nenagh Ormond",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11447/nenagh.gif",
-    "score": null
+    "score": 40
    },
    "away": {
     "id": "57241",
     "name": "University College Cork Rugby",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
-    "score": null
+    "score": 20
    }
   },
   {
@@ -2977,19 +2977,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Stevenson Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57191",
     "name": "Dungannon",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4031/dfc - Club Logo.pdf",
-    "score": null
+    "score": 10
    },
    "away": {
     "id": "57157",
     "name": "Ballymena",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4028/Screenshot_20230614_211918_Samsung Internet.jpg",
-    "score": null
+    "score": 19
    }
   },
   {
@@ -2999,19 +2999,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Crowley Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57193",
     "name": "Galwegians",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11427/galwegians.jpg",
-    "score": null
+    "score": 12
    },
    "away": {
     "id": "57245",
     "name": "UL Bohemian",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11477/logo.jpg",
-    "score": null
+    "score": 35
    }
   },
   {
@@ -3065,19 +3065,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Merrion Road",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57247",
     "name": "Wanderers",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3160/wfc logo.jpg",
-    "score": null
+    "score": 29
    },
    "away": {
     "id": "57197",
     "name": "Greystones",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3164/IMG_3586.jpeg",
-    "score": null
+    "score": 20
    }
   },
   {
@@ -3131,19 +3131,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Malahide",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "247851",
     "name": "Malahide",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3179/42023417-487D-4583-9586-1420478BE4CB.jpeg",
-    "score": null
+    "score": 30
    },
    "away": {
     "id": "57205",
     "name": "Malone",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4036/malone rfc.png",
-    "score": null
+    "score": 28
    }
   },
   {
@@ -3175,19 +3175,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Holmpatrick",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "170675",
     "name": "Skerries",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3162/Skerries RFC New Approved Logo 2020.PNG",
-    "score": null
+    "score": 17
    },
    "away": {
     "id": "239703",
     "name": "Ballyclare",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4049/BallyclareRFCEdited.gif",
-    "score": null
+    "score": 31
    }
   },
   {
@@ -3197,19 +3197,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Energia Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57163",
     "name": "Bective Rangers",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3166/bective-rangers.png",
-    "score": null
+    "score": 42
    },
    "away": {
     "id": "224866",
     "name": "Monkstown",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3181/Monkstown FC-jpg.jpg",
-    "score": null
+    "score": 14
    }
   },
   {
@@ -3219,19 +3219,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Kilballyowen Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57169",
     "name": "Bruff",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/8500/xlcrest.jpg",
-    "score": null
+    "score": 19
    },
    "away": {
     "id": "210009",
     "name": "Clonmel",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/8479/ClonmelRFClogo_women.jpg",
-    "score": null
+    "score": 20
    }
   },
   {
@@ -3241,19 +3241,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Dubarry Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57171",
     "name": "Buccaneers",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/2991/Buccaneers crest 2007 (2).jpg",
-    "score": null
+    "score": 27
    },
    "away": {
     "id": "57187",
     "name": "Dolphin",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4122/DolphinLogo.jpg",
-    "score": null
+    "score": 12
    }
   },
   {
@@ -3263,19 +3263,19 @@
    "round": 6,
    "kickoff": 1794061800,
    "venue": "Towns Park",
-   "status": "fixture",
+   "status": "result",
    "postponed": false,
    "home": {
     "id": "57207",
     "name": "Midleton",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/8505/Midleton RFC.jpg",
-    "score": null
+    "score": 57
    },
    "away": {
     "id": "210017",
     "name": "Enniscorthy",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/3470/erfc-logo.PNG",
-    "score": null
+    "score": 5
    }
   },
   {
