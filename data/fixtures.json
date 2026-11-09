@@ -2201,28 +2201,6 @@
    }
   },
   {
-   "id": "6945612",
-   "comp": "215685",
-   "div": "1B",
-   "round": 5,
-   "kickoff": 1793388600,
-   "venue": "Woodleigh Park",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "57199",
-    "name": "Highfield",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11433/highfield.gif",
-    "score": null
-   },
-   "away": {
-    "id": "57241",
-    "name": "University College Cork Rugby",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
-    "score": null
-   }
-  },
-  {
    "id": "6945613",
    "comp": "215685",
    "div": "1B",
@@ -4401,6 +4379,28 @@
    }
   },
   {
+   "id": "6945725",
+   "comp": "215682",
+   "div": "2A",
+   "round": 9,
+   "kickoff": 1797017400,
+   "venue": "Thomond Park",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "57245",
+    "name": "UL Bohemian",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11477/logo.jpg",
+    "score": null
+   },
+   "away": {
+    "id": "57229",
+    "name": "Shannon",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4120/Shannon RFC.jpg",
+    "score": null
+   }
+  },
+  {
    "id": "6945812",
    "comp": "215686",
    "div": "2BN",
@@ -4731,28 +4731,6 @@
    }
   },
   {
-   "id": "6945725",
-   "comp": "215682",
-   "div": "2A",
-   "round": 9,
-   "kickoff": 1797085800,
-   "venue": "Thomond Park",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "57245",
-    "name": "UL Bohemian",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11477/logo.jpg",
-    "score": null
-   },
-   "away": {
-    "id": "57229",
-    "name": "Shannon",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4120/Shannon RFC.jpg",
-    "score": null
-   }
-  },
-  {
    "id": "6945811",
    "comp": "215686",
    "div": "2BN",
@@ -4947,6 +4925,50 @@
     "id": "57171",
     "name": "Buccaneers",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/2991/Buccaneers crest 2007 (2).jpg",
+    "score": null
+   }
+  },
+  {
+   "id": "6945612",
+   "comp": "215685",
+   "div": "1B",
+   "round": 5,
+   "kickoff": 1797690600,
+   "venue": "Woodleigh Park",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "57199",
+    "name": "Highfield",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11433/highfield.gif",
+    "score": null
+   },
+   "away": {
+    "id": "57241",
+    "name": "University College Cork Rugby",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
+    "score": null
+   }
+  },
+  {
+   "id": "6945729",
+   "comp": "215682",
+   "div": "2A",
+   "round": 10,
+   "kickoff": 1799436600,
+   "venue": "Thomond Park",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "57229",
+    "name": "Shannon",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4120/Shannon RFC.jpg",
+    "score": null
+   },
+   "away": {
+    "id": "57245",
+    "name": "UL Bohemian",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11477/logo.jpg",
     "score": null
    }
   },
@@ -5255,28 +5277,6 @@
     "id": "57157",
     "name": "Ballymena",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4028/Screenshot_20230614_211918_Samsung Internet.jpg",
-    "score": null
-   }
-  },
-  {
-   "id": "6945729",
-   "comp": "215682",
-   "div": "2A",
-   "round": 10,
-   "kickoff": 1799505000,
-   "venue": "Thomond Park",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "57229",
-    "name": "Shannon",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4120/Shannon RFC.jpg",
-    "score": null
-   },
-   "away": {
-    "id": "57245",
-    "name": "UL Bohemian",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11477/logo.jpg",
     "score": null
    }
   },
