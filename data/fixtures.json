@@ -3279,6 +3279,28 @@
    }
   },
   {
+   "id": "6945623",
+   "comp": "215685",
+   "div": "1B",
+   "round": 7,
+   "kickoff": 1795872600,
+   "venue": "Shaws Bridge",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "57201",
+    "name": "Instonians",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4034/seahorses pic 2.png",
+    "score": null
+   },
+   "away": {
+    "id": "57241",
+    "name": "University College Cork Rugby",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
+    "score": null
+   }
+  },
+  {
    "id": "6945531",
    "comp": "215684",
    "div": "1A",
@@ -3429,28 +3451,6 @@
     "id": "170673",
     "name": "City of Armagh",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4039/city-of-armagh.jpg",
-    "score": null
-   }
-  },
-  {
-   "id": "6945623",
-   "comp": "215685",
-   "div": "1B",
-   "round": 7,
-   "kickoff": 1795876200,
-   "venue": "Shaws Bridge",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "57201",
-    "name": "Instonians",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4034/seahorses pic 2.png",
-    "score": null
-   },
-   "away": {
-    "id": "57241",
-    "name": "University College Cork Rugby",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/11475/University College Cork.jpg",
     "score": null
    }
   },
