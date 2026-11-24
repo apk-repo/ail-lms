@@ -4423,6 +4423,28 @@
    }
   },
   {
+   "id": "6945815",
+   "comp": "215686",
+   "div": "2BN",
+   "round": 9,
+   "kickoff": 1797084000,
+   "venue": "Hamilton Park",
+   "status": "fixture",
+   "postponed": false,
+   "home": {
+    "id": "170677",
+    "name": "Sligo Rugby",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/2995/Sligo-Rugby-Logo-2023-1600px.png",
+    "score": null
+   },
+   "away": {
+    "id": "256526",
+    "name": "Enniskillen",
+    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4044/ERFC LOGO copy.gif",
+    "score": null
+   }
+  },
+  {
    "id": "6945541",
    "comp": "215684",
    "div": "1A",
@@ -4793,28 +4815,6 @@
     "id": "210005",
     "name": "Clogher Valley",
     "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4040/ClogherValleyRFCEdited.gif",
-    "score": null
-   }
-  },
-  {
-   "id": "6945815",
-   "comp": "215686",
-   "div": "2BN",
-   "round": 9,
-   "kickoff": 1797085800,
-   "venue": "Hamilton Park",
-   "status": "fixture",
-   "postponed": false,
-   "home": {
-    "id": "170677",
-    "name": "Sligo Rugby",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/2995/Sligo-Rugby-Logo-2023-1600px.png",
-    "score": null
-   },
-   "away": {
-    "id": "256526",
-    "name": "Enniskillen",
-    "logo": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/4044/ERFC LOGO copy.gif",
     "score": null
    }
   },
