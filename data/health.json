@@ -1,47 +1,47 @@
 {
- "fixturesChangedAt": "2026-11-26T17:26:03.869Z",
- "checkedAt": "2026-11-26T17:26:03.870Z",
+ "fixturesChangedAt": "2026-11-28T21:44:18.962Z",
+ "checkedAt": "2026-11-28T21:44:18.962Z",
  "total": 450,
  "divisions": [
   {
    "comp": "215682",
    "division": "2A",
    "ok": true,
-   "fixtures": 60,
-   "results": 30,
-   "scored": 30
+   "fixtures": 55,
+   "results": 35,
+   "scored": 35
   },
   {
    "comp": "215683",
    "division": "2BS",
    "ok": true,
-   "fixtures": 60,
-   "results": 30,
-   "scored": 30
+   "fixtures": 55,
+   "results": 35,
+   "scored": 35
   },
   {
    "comp": "215684",
    "division": "1A",
    "ok": true,
-   "fixtures": 60,
-   "results": 30,
-   "scored": 30
+   "fixtures": 55,
+   "results": 35,
+   "scored": 35
   },
   {
    "comp": "215685",
    "division": "1B",
    "ok": true,
-   "fixtures": 61,
-   "results": 29,
-   "scored": 29
+   "fixtures": 56,
+   "results": 34,
+   "scored": 34
   },
   {
    "comp": "215686",
    "division": "2BN",
    "ok": true,
-   "fixtures": 60,
-   "results": 30,
-   "scored": 30
+   "fixtures": 55,
+   "results": 35,
+   "scored": 35
   }
  ]
 }
